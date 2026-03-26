@@ -182,7 +182,7 @@ footer p{font-size:18.2px;color:var(--ts);}
 </footer>
 
 <script>
-var WK = 'https://numerolog.poponina73.workers.dev'; // замените на адрес вашего Worker для нумерологии
+var WK = 'https://numer.poponina73.workers.dev'; // можете оставить любой, он не будет использоваться
 var SP = {
   lifepath: 'Число жизненного пути — главное число судьбы. Оно показывает вашу миссию, врождённые таланты и направление развития.',
   soul: 'Число души — ваши истинные желания, внутренние мотивы, то, что приносит радость и удовлетворение.',
@@ -213,8 +213,7 @@ function fixIncompleteSentences(str){
   return str;
 }
 function getRemarkByTheme(theme){
-  // можно добавить специфичные для нумерологии ремарки, если нужно
-  return null;
+  return null; // можно добавить специфичные ремарки для нумерологии
 }
 
 function selectSpread(val){
@@ -225,8 +224,7 @@ function selectSpread(val){
 }
 function toggleQuestion(val){
   var block = document.getElementById('questionBlock');
-  if(block) block.style.display = 'block';
-  // поле даты всегда видимо
+  if(block) block.style.display = 'block'; // всегда показываем поле даты
 }
 function updatePrice(){
   var priceSpan = document.getElementById('priceDisplay');
@@ -237,70 +235,16 @@ document.addEventListener('DOMContentLoaded', function() {
   toggleQuestion(document.getElementById('spreadSelect').value);
 });
 
+// ДЕМО-РЕЖИМ: startReading сразу вызывает performReading (без оплаты)
 function startReading(){
   var birthdate = document.getElementById('qInput').value.trim();
   var sp = document.getElementById('spreadSelect').value;
   if(!birthdate){alert('Введите дату рождения');return;}
   if(!sp){alert('Выберите тип расчёта');return;}
-  var btn = document.getElementById('orderBtn');
-  btn.disabled = true;
-  btn.textContent = '🔢 Создаём платёж...';
-  localStorage.setItem('pendingSp', sp);
-  localStorage.setItem('pendingQ', birthdate);
-  fetch(WK + '/create-payment', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      amount: '299.00',
-      description: 'Нумерологический расчёт: ' + (SP[sp] || 'по дате рождения'),
-      returnUrl: window.location.href
-    })
-  })
-  .then(r => r.json())
-  .then(payment => {
-    if(payment.confirmation && payment.confirmation.confirmation_url){
-      localStorage.setItem('paymentId', payment.id);
-      window.location.href = payment.confirmation.confirmation_url;
-    } else {
-      alert('Ошибка создания платежа');
-      btn.disabled = false;
-      btn.textContent = '🔢 Рассчитать';
-    }
-  })
-  .catch(err => {
-    console.error(err);
-    alert('Ошибка при создании платежа');
-    btn.disabled = false;
-    btn.textContent = '🔢 Рассчитать';
-  });
+  performReading(sp, birthdate);
 }
 
-window.addEventListener('DOMContentLoaded', function() {
-  var pendingSp = localStorage.getItem('pendingSp');
-  var pendingQ = localStorage.getItem('pendingQ');
-  var paymentId = localStorage.getItem('paymentId');
-  if (pendingSp && pendingQ && paymentId) {
-    fetch(WK + '/payment-status?id=' + paymentId)
-      .then(r => r.json())
-      .then(payment => {
-        if (payment.status === 'succeeded') {
-          localStorage.removeItem('pendingSp');
-          localStorage.removeItem('pendingQ');
-          localStorage.removeItem('paymentId');
-          performReading(pendingSp, pendingQ);
-        } else {
-          alert('Платёж не завершён. Попробуйте ещё раз.');
-          localStorage.removeItem('pendingSp');
-          localStorage.removeItem('pendingQ');
-          localStorage.removeItem('paymentId');
-          document.getElementById('orderBtn').disabled = false;
-          document.getElementById('orderBtn').textContent = '🔢 Рассчитать';
-        }
-      })
-      .catch(err => console.error(err));
-  }
-});
-
+// Функция performReading с реальным запросом к Groq через Worker (или без Worker, если нет)
 function performReading(sp, birthdate) {
   var btn = document.getElementById('orderBtn');
   btn.disabled = true;
@@ -314,6 +258,7 @@ function performReading(sp, birthdate) {
 
   var prompt = 'Тип расчёта: ' + SP[sp] + '. Дата рождения: "' + birthdate + '". Ты профессиональный нумеролог. Выполни подробный нумерологический разбор. ОТВЕТ ТОЛЬКО JSON. Структура: {"cards":[{"name":"Число","reading":"текст"}],"conclusion":"текст"}. Для полного разбора (full) включи несколько чисел (жизненный путь, душа, судьба, личность, зрелость) с их описанием. Для других типов — только одно число с развёрнутым описанием. Пиши развёрнуто, с теплотой, без команд, без отправки к специалистам. Каждую мысль доводи до конца. Запрещены звёздочки и английские слова.';
 
+  // Если Worker не настроен, замените fetch на заглушку (как в психологии)
   fetch(WK, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -406,6 +351,37 @@ function copyR(){
     if(success) alert('Разбор скопирован');
     else alert('Не удалось скопировать');
   }
+}
+</script>
+✅ Что изменилось
+startReading теперь сразу вызывает performReading (без создания платежа).
+
+Удалён код, связанный с localStorage и проверкой статуса платежа (теперь они не нужны).
+
+performReading осталась без изменений: она отправляет запрос к Worker и получает реальный нумерологический разбор. Если Worker ещё не настроен, вы можете временно заменить fetch на заглушку (как в психологии), чтобы получать тестовый ответ.
+
+🧪 Для тестирования без Worker
+Если вы ещё не настроили Worker для нумерологии, но хотите видеть какой-то ответ, замените в performReading блок fetch на временную заглушку. Например:
+
+javascript
+// Временно закомментировать fetch и раскомментировать заглушку
+function performReading(sp, birthdate) {
+  // ... начало функции
+  document.getElementById('ldiv').style.display = 'block';
+  
+  // Заглушка:
+  setTimeout(() => {
+    document.getElementById('ldiv').style.display = 'none';
+    document.getElementById('rdiv').innerHTML = `
+      <div class="rb"><div class="rb-name">Число жизненного пути</div><div class="rb-text">Ваше число жизненного пути — 7. Это число искателя истины, аналитика и философа. Вы стремитесь к глубокому пониманию мира, цените одиночество и время для размышлений. Ваш путь — это поиск знаний, мудрости и духовного развития.</div></div>
+      <div class="rb"><div class="rb-name">Число души</div><div class="rb-text">Число души 5 — вы жаждете свободы, перемен и новых впечатлений. Вам важно быть в движении, менять обстановку, пробовать новое. Это число даёт любопытство и лёгкость на подъём, но требует осторожности, чтобы не распыляться.</div></div>
+    `;
+    document.getElementById('ctxt').textContent = 'Ваши числа показывают, что вы находитесь на пути самопознания. Доверьтесь своей интуиции и не бойтесь перемен.';
+    document.getElementById('cdiv').style.display = 'block';
+    window.lastResult = { cards: [...], conclusion: '...' };
+    btn.disabled = false;
+    btn.textContent = '🔢 Рассчитать';
+  }, 500);
 }
 </script>
 </body>
