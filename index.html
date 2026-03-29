@@ -3,1001 +3,682 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Яна Белова — Нумерология</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=EB+Garamond&display=swap" rel="stylesheet">
+<title>КЕУ — Калькулятор нумерологии</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#f0e8e4;color:#3a2820;font-family:'EB Garamond',serif;line-height:1.5}
-.hero{text-align:center;padding:24px 24px 16px;background:linear-gradient(160deg,#f5ede8,#ede0d8)}
-.hero h1{font-family:'Cormorant Garamond',serif;font-size:58px;font-weight:300;color:#6b4c3b;margin-bottom:0}
-.hero-orn{font-size:26px;letter-spacing:0.2em;color:#6b4c3b;font-weight:500;margin-bottom:4px}
-.hero-photo{width:190px;height:210px;border-radius:50%;object-fit:cover;object-position:center 20%;border:2px solid #c4a882;box-shadow:0 6px 20px rgba(107,76,59,.2);display:block;margin:14px auto 14px}
-.slogan{font-size:22px;color:#7e5e4a;margin-top:0;font-family:'Cormorant Garamond',serif;font-weight:400;max-width:440px;margin:0 auto;line-height:1.4}
-.about{max-width:800px;margin:0 auto;padding:24px 24px;text-align:center}
-.about p{font-size:20px;color:#6b4c3b;line-height:1.4}
-.calc-wrapper{max-width:800px;margin:0 auto 48px;background:#f5eeea;border-radius:36px;padding:28px;border:1px solid #e0c8c0;box-shadow:0 8px 24px rgba(0,0,0,0.05)}
-.type-selector-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:12px;margin-bottom:28px}
-.type-btn{background:#e2c2b5;border:none;padding:10px 8px;border-radius:8px;font-size:18px;font-family:'Cormorant Garamond',serif;font-weight:500;cursor:pointer;transition:0.2s;color:#3a2820;text-align:center;line-height:1.2}
-.type-btn.active{background:#c9a8a0;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.1)}
-.type-btn:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,0.1)}
-.symbolic-text{font-size:13px;color:#9a7a70;text-align:center;margin-top:8px;margin-bottom:20px;font-style:italic}
-.field{margin-bottom:24px}
-label{display:block;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:#9a7a70;margin-bottom:8px}
-input{width:100%;padding:12px 16px;font-family:'EB Garamond',serif;font-size:18px;border:1px solid #e0c8c0;border-radius:60px;background:#fff;outline:none;transition:border-color 0.3s}
-input:focus{border-color:#c4a882;box-shadow:0 0 0 3px rgba(196,168,130,0.2)}
-.button-group{display:flex;justify-content:center;margin-bottom:24px}
-.button-group button{padding:12px 32px;font-size:20px;border-radius:60px;cursor:pointer;font-family:'Cormorant Garamond',serif;font-weight:500;border:none;transition:all 0.3s;background:#c9a8a0;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
-.button-group button:hover{transform:translateY(-2px);background:#b8918a}
-.result{background:#fef6ef;padding:16px;border-radius:24px;border-left:4px solid #c4a882;font-size:16px;line-height:1.4;animation:fadeIn 0.5s}
-.result b{font-size:20px;display:block;margin-bottom:6px;color:#6b4c3b;font-family:'Cormorant Garamond',serif;border-bottom:2px solid #f0e8e4;padding-bottom:4px}
-.result .tip{background:#f5eeea;padding:8px;border-radius:8px;margin:3px 0;border-left:3px solid #c4a882;font-size:15px}
-.result .tip b{font-size:16px;border:none;padding:0;margin-bottom:2px;display:inline}
-footer{text-align:center;padding:40px 24px;border-top:1px solid #e0c8c0;color:#9a7a70;font-size:14px}
-footer a{color:#9a7a70;text-decoration:none;border-bottom:1px dotted #c4a882}
-.disclaimer{font-size:12px;color:#9a7a70;max-width:600px;margin:16px auto 0}
-.matrix-chart{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:260px;margin:15px auto;padding:12px;background:#fff;border-radius:10px;border:2px solid #c4a882}
-.matrix-cell{background:#f5eeea;padding:10px;text-align:center;border-radius:6px}
-.matrix-cell.center{background:#e8ddd8;grid-column:2;grid-row:2}
-.matrix-cell.top{grid-column:2;grid-row:1}
-.matrix-cell.bottom{grid-column:2;grid-row:3}
-.matrix-cell.left{grid-column:1;grid-row:2}
-.matrix-cell.right{grid-column:3;grid-row:2}
-.matrix-num{font-size:22px;font-weight:bold;color:#6b4c3b;display:block}
-.matrix-label{font-size:10px;color:#9a7a70;margin-top:3px;display:block}
-.pythagoras-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:300px;margin:15px auto;background:#fff3e8;border-radius:12px;padding:12px}
-.pythagoras-cell{background:#f5e5d8;padding:10px;text-align:center;border-radius:8px;transition:transform 0.2s}
-.pythagoras-cell:hover{transform:scale(1.02)}
-.pythagoras-num{font-size:20px;font-weight:bold;color:#6b4c3b;display:block}
-.pythagoras-count{font-size:12px;color:#9a7a70;margin-top:4px;display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:700px){.hero h1{font-size:42px}.hero-orn{font-size:20px}.slogan{font-size:20px}}
+:root{
+  --bg:#f0e8e4;--card:#f5eeea;--border:#e0c8c0;--accent:#c9a8a0;--accent2:#b8918a;
+  --text:#3a2820;--muted:#9a7a70;--title:#6b4c3b;--result:#fef6ef;
+}
+body{background:var(--bg);color:var(--text);font-family:'EB Garamond',serif;line-height:1.5;min-height:100vh}
+
+/* HEADER */
+.header{text-align:center;padding:28px 20px 16px;background:linear-gradient(160deg,#f5ede8,#ede0d8);border-bottom:1px solid var(--border)}
+.header h1{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--title);letter-spacing:0.05em}
+.header p{color:var(--muted);font-size:17px;margin-top:4px;font-style:italic}
+
+/* TABS */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;padding:16px 20px;max-width:900px;margin:0 auto;justify-content:center}
+.tab{background:var(--card);border:1px solid var(--border);padding:7px 14px;border-radius:20px;font-size:15px;font-family:'Cormorant Garamond',serif;font-weight:500;cursor:pointer;transition:.2s;color:var(--title)}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab:hover:not(.active){background:var(--border)}
+
+/* PANELS */
+.panels{max-width:720px;margin:0 auto;padding:0 16px 48px}
+.panel{display:none}
+.panel.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.panel-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--title);margin-bottom:6px;margin-top:8px}
+.panel-desc{color:var(--muted);font-size:15px;margin-bottom:20px;font-style:italic}
+
+/* FORM */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.field input{width:100%;padding:11px 16px;font-family:'EB Garamond',serif;font-size:18px;border:1px solid var(--border);border-radius:40px;background:#fff;outline:none;transition:border-color .3s;color:var(--text)}
+.field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(201,168,160,.18)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.btn{display:inline-block;padding:11px 32px;font-size:19px;border-radius:40px;cursor:pointer;font-family:'Cormorant Garamond',serif;font-weight:500;border:none;transition:all .3s;background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);margin:8px auto;display:block}
+.btn:hover{background:var(--accent2);transform:translateY(-1px)}
+
+/* RESULT */
+.result{background:var(--result);border-left:4px solid var(--accent);border-radius:16px;padding:18px;margin-top:16px;display:none}
+.result.show{display:block;animation:fadeIn .4s}
+.result-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--title);font-weight:500;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+
+.r-block{background:var(--card);border-radius:10px;padding:12px 14px;margin:8px 0;border-left:3px solid var(--accent)}
+.r-block .r-label{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.r-block .r-val{font-size:28px;font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--title)}
+.r-block .r-steps{font-size:13px;color:var(--muted);margin-top:2px}
+.r-block .r-note{font-size:15px;color:var(--text);margin-top:4px}
+
+.r-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.r-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+.pair-section{margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)}
+.pair-title{font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+
+.step-chain{font-size:13px;color:var(--muted);font-style:italic;margin-top:2px}
+
+/* ИНТЕРПРЕТАЦИИ */
+.interp-block{margin-top:12px;padding-top:10px;border-top:1px dashed var(--border)}
+.interp-full{display:none;font-size:14px;color:var(--text);line-height:1.6;margin-top:8px}
+.interp-toggle{margin-top:8px;padding:5px 14px;font-size:12px;background:var(--accent);color:#fff;border:none;border-radius:20px;cursor:pointer;transition:.2s;font-family:'Cormorant Garamond',serif}
+.interp-toggle:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.12)}
+
+@media(max-width:600px){
+  .header h1{font-size:30px}
+  .r-grid,.r-grid3{grid-template-columns:1fr 1fr}
+  .field-row{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<div class="hero">
-  <div class="hero-orn">нумерология</div>
-  <h1>Яна Белова</h1>
-  <img class="hero-photo" src="data:image/jpeg;base64,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" alt="Яна Белова"/>
-  <p class="slogan">Каждое число в вашей дате рождения — ключ к вашей истинной сути. Откройте его.</p>
-</div>
-<div class="about">
-  <p>Все расчёты бесплатны. Выберите тип анализа, введите данные и нажмите «Получи ответ».</p>
-</div>
-<div class="calc-wrapper">
-  <div class="type-selector-grid" id="typeSelector"></div>
 
-  <div class="field" id="inputField"></div>
-  <div class="button-group">
-    <button id="getAnswerBtn">🔮 Получи ответ</button>
+<div class="header">
+  <h1>КЕУ — Калькулятор</h1>
+  <p>Нумерологические расчёты · 7 таблиц</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showPanel(0)">1 · Число Действия</button>
+  <button class="tab" onclick="showPanel(1)">2 · Личный Календарь</button>
+  <button class="tab" onclick="showPanel(2)">3 · Энергия Событий</button>
+  <button class="tab" onclick="showPanel(3)">4 · Ежедневный Прогноз</button>
+  <button class="tab" onclick="showPanel(4)">5 · Личный Разбор</button>
+  <button class="tab" onclick="showPanel(5)">6 · Совместимость</button>
+  <button class="tab" onclick="showPanel(6)">7 · Договор</button>
+</div>
+
+<div class="panels">
+
+  <!-- ========== 1 · ЧИСЛО ДЕЙСТВИЯ ========== -->
+  <div class="panel active" id="p0">
+    <div class="panel-title">№ 1 · Расчёт Числа Действия</div>
+    <div class="panel-desc">Число Действия — сумма всех цифр даты рождения, сведённая к одной цифре</div>
+    <div class="field"><label>Дата рождения</label><input id="t1_date" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
+    <button class="btn" onclick="calc1()">Рассчитать</button>
+    <div class="result" id="r1">
+      <div class="result-title" id="r1_title"></div>
+      <div class="r-grid" id="r1_body"></div>
+    </div>
   </div>
-  <div class="result" id="resultArea">Выберите тип расчёта и введите данные</div>
+
+  <!-- ========== 2 · ЛИЧНЫЙ КАЛЕНДАРЬ ========== -->
+  <div class="panel" id="p1">
+    <div class="panel-title">№ 2 · Личный Календарь</div>
+    <div class="panel-desc">Личные числа года, месяца и дня для любой даты на основе даты рождения</div>
+    <div class="field"><label>Дата рождения</label><input id="t2_birth" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
+    <div class="field-row">
+      <div class="field"><label>Год (интересует)</label><input id="t2_year" type="text" placeholder="ГГГГ" maxlength="4"></div>
+      <div class="field"><label>Месяц (1–12)</label><input id="t2_month" type="text" placeholder="Номер месяца" maxlength="2"></div>
+    </div>
+    <div class="field"><label>День (1–31)</label><input id="t2_day" type="text" placeholder="Номер дня" maxlength="2"></div>
+    <button class="btn" onclick="calc2()">Рассчитать</button>
+    <div class="result" id="r2">
+      <div class="result-title" id="r2_title"></div>
+      <div id="r2_body"></div>
+    </div>
+  </div>
+
+  <!-- ========== 3 · ЭНЕРГИЯ СОБЫТИЙ ========== -->
+  <div class="panel" id="p2">
+    <div class="panel-title">№ 3 · Энергия Событий</div>
+    <div class="panel-desc">Энергетический код любой даты — встречи, события, сделки, поездки</div>
+    <div class="field"><label>Дата события</label><input id="t3_date" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
+    <button class="btn" onclick="calc3()">Рассчитать</button>
+    <div class="result" id="r3">
+      <div class="result-title" id="r3_title"></div>
+      <div id="r3_body"></div>
+    </div>
+  </div>
+
+  <!-- ========== 4 · ЕЖЕДНЕВНЫЙ ПРОГНОЗ ========== -->
+  <div class="panel" id="p3">
+    <div class="panel-title">№ 4 · Ежедневный Прогноз</div>
+    <div class="panel-desc">Фон дня + личные числа дня, месяца и года для конкретной даты</div>
+    <div class="field"><label>Дата рождения</label><input id="t4_birth" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
+    <div class="field"><label>Дата прогноза</label><input id="t4_target" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
+    <button class="btn" onclick="calc4()">Рассчитать</button>
+    <div class="result" id="r4">
+      <div class="result-title" id="r4_title"></div>
+      <div id="r4_body"></div>
+    </div>
+  </div>
+
+  <!-- ========== 5 · ЛИЧНЫЙ РАЗБОР ========== -->
+  <div class="panel" id="p4">
+    <div class="panel-title">№ 5 · Личный Разбор</div>
+    <div class="panel-desc">Число Сознания, Удачи, Миссии, Личный Код и Число Реализации по дате рождения</div>
+    <div class="field"><label>Дата рождения</label><input id="t5_date" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
+    <button class="btn" onclick="calc5()">Рассчитать</button>
+    <div class="result" id="r5">
+      <div class="result-title" id="r5_title"></div>
+      <div id="r5_body"></div>
+    </div>
+  </div>
+
+  <!-- ========== 6 · СОВМЕСТИМОСТЬ ========== -->
+  <div class="panel" id="p5">
+    <div class="panel-title">№ 6 · Совместимость</div>
+    <div class="panel-desc">Числа Сознания, Миссии и Реализации для пары — и итоговые числа совместимости</div>
+    <div class="field"><label>Дата рождения № 1 (мужчина)</label><input id="t6_b1" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
+    <div class="field"><label>Дата рождения № 2 (женщина)</label><input id="t6_b2" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
+    <button class="btn" onclick="calc6()">Рассчитать</button>
+    <div class="result" id="r6">
+      <div class="result-title" id="r6_title"></div>
+      <div id="r6_body"></div>
+    </div>
+  </div>
+
+  <!-- ========== 7 · ДОГОВОР ========== -->
+  <div class="panel" id="p6">
+    <div class="panel-title">№ 7 · Договор</div>
+    <div class="panel-desc">Число Ума, Число Действия и Энергия Договора по дате рождения человека</div>
+    <div class="field"><label>Дата рождения</label><input id="t7_date" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
+    <button class="btn" onclick="calc7()">Рассчитать</button>
+    <div class="result" id="r7">
+      <div class="result-title" id="r7_title"></div>
+      <div id="r7_body"></div>
+    </div>
+  </div>
+
 </div>
-<footer>
-  <div>© Яна Белова · Нумерология · 2025</div>
-  <div>Самозанятая · ИНН: 430501352204</div>
-  <div>Связь: <a href="mailto:7novna@mail.ru">7novna@mail.ru</a></div>
-  <div class="disclaimer">Информация на сайте — инструмент для саморазвития и самопознания. Она не заменяет профессиональную психологическую или медицинскую помощь. Помните: ключи от вашей жизни всегда в ваших руках.</div>
-</footer>
+
 <script>
-// ===================== Утилиты =====================
-function parseDate(s) {
-  if (!s) return null;
-  const parts = s.split(/[.\/]/);
-  if (parts.length !== 3) return null;
-  let [day, month, year] = parts.map(Number);
-  if (isNaN(day) || isNaN(month) || isNaN(year)) return null;
-  const date = new Date(year, month-1, day);
-  if (date.getFullYear() !== year || date.getMonth() !== month-1 || date.getDate() !== day) return null;
-  return { day, month, year };
-}
-
-function reduceToSingle(n) {
-  while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
-    n = String(n).split('').reduce((s, d) => s + +d, 0);
-  }
-  return n;
-}
-
-function reduceTo22(n) {
-  while (n > 22) {
-    n = String(n).split('').reduce((s, d) => s + +d, 0);
-  }
-  return n;
-}
-
-function sumDate(d) {
-  return d.day + d.month + d.year;
-}
-
-function nameToNumber(n) {
-  const m = {'а':1,'б':2,'в':3,'г':4,'д':5,'е':6,'ё':6,'ж':7,'з':8,'и':9,'й':1,'к':2,'л':3,'м':4,'н':5,'о':6,'п':7,'р':8,'с':9,'т':1,'у':2,'ф':3,'х':4,'ц':5,'ч':6,'ш':7,'щ':8,'ъ':9,'ы':1,'ь':2,'э':3,'ю':4,'я':5};
-  let s = 0;
-  for (let ch of n.toLowerCase()) if (m[ch]) s += m[ch];
-  return reduceToSingle(s);
-}
-
-function getArcanaMeaning(num) {
-  const m = {
-    1: "Энергия начала, лидерства и самостоятельности. Вы способны вести за собой, открывать новые пути и вдохновлять окружающих своей уверенностью.",
-    2: "Энергия партнёрства, чувствительности и дипломатии. Вы тонко чувствуете других, умеете создавать гармонию и находить компромиссы.",
-    3: "Энергия творчества, радости и самовыражения. Ваша задача — дарить миру красоту, вдохновение и лёгкость, не боясь проявлять свои таланты.",
-    4: "Энергия стабильности, труда и порядка. Вы строите прочные основы, цените надёжность и способны превращать хаос в структуру.",
-    5: "Энергия свободы, перемен и адаптивности. Вы прирождённый исследователь, легко принимаете новое и учитесь на любом опыте.",
-    6: "Энергия любви, заботы и гармонии. Ваше сердце открыто для близких, вы создаёте уют и умеете исцелять душевные раны.",
-    7: "Энергия мудрости, анализа и внутреннего поиска. Вы стремитесь к глубине, любите уединение и способны видеть скрытые закономерности.",
-    8: "Энергия силы, успеха и материального мастерства. Вы умеете управлять ресурсами, достигать целей и строить устойчивые системы.",
-    9: "Энергия завершения, мудрости и служения. Ваш путь — отпускать отжившее, прощать и помогать миру становиться добрее.",
-    10: "Энергия потока, удачи и судьбоносных перемен. Вы идёте по жизни легко, когда доверяете знакам и не сопротивляетесь течению.",
-    11: "Энергия вдохновения, лидерства и высокой вибрации. Вы способны видеть идеи, опережающие время, и вдохновлять массы. Важно сохранять связь с реальностью.",
-    12: "Энергия служения, милосердия и принятия. Ваша задача — помогать другим с любовью, не теряя себя. Вы учитесь жертвовать мудро.",
-    13: "Энергия трансформации и возрождения. Вы проходите через кризисы, чтобы выйти обновлённым. Смерть старого даёт рождение нового.",
-    14: "Энергия баланса, исцеления и умеренности. Вы учитесь соединять противоположности и находить золотую середину во всём.",
-    15: "Энергия страсти, свободы выбора и личной силы. Вы пробуждаетесь через искушения, чтобы обрести истинную свободу.",
-    16: "Энергия пробуждения, разрушения иллюзий и обновления. Вы ломаете старые конструкции, чтобы построить более устойчивые.",
-    17: "Энергия надежды, таланта и вдохновения. Вы яркая звезда, способная зажигать сердца и верить в лучшее.",
-    18: "Энергия интуиции, тайн и подсознания. Вы чувствуете то, что скрыто от глаз, и учитесь доверять своей внутренней луне.",
-    19: "Энергия радости, успеха и жизненной силы. Вы излучаете свет, привлекаете удачу и вдохновляете окружающих на достижения.",
-    20: "Энергия рода, возрождения и семейных связей. Вы связаны с предками, несёте их мудрость и можете исцелять родовые сценарии.",
-    21: "Энергия целостности, гармонии и достижения. Вы способны объединять людей и идеи, создавая нечто цельное и прекрасное.",
-    22: "Энергия начала пути, свободы и доверия жизни. Вы творец своей реальности, но должны отпустить контроль и позволить миру вести вас.",
-    33: "Энергия высшего служения, всеобъемлющей любви и духовного учительства. Вы пришли нести свет, объединять людей и напоминать о безусловной любви."
-  };
-  return m[num] || "Энергия, которая ждёт вашего осознания.";
-}
-
-// ===================== Типы расчётов =====================
-const types = [
-  {
-    id: 'innerSelf', name: 'Число Реализации', fields: ['date'],
-    brief: (v) => { let d = parseDate(v[0]); if (!d) return "Ошибка"; return 'Ваше число: ' + reduceToSingle(sumDate(d)); },
-    full: (v) => {
-      let d = parseDate(v[0]); if (!d) return "Ошибка";
-      let num = reduceToSingle(sumDate(d));
-      const realDesc = {
-        1:"Ваш путь — путь первопроходца. Вы реализуетесь, когда берёте на себя инициативу и действуете самостоятельно. Ждать чужого разрешения или одобрения — значит идти против своей природы. Ваша сила включается в момент, когда вы принимаете решение и делаете первый шаг. Сферы, где вы расцветаете: своё дело, руководящие роли, проекты «с нуля». Главный барьер — страх ошибиться. Разрешите себе ошибаться — именно через это вы растёте быстрее всего.",
-        2:"Ваш путь — путь партнёрства и тонкого взаимодействия. Вы реализуетесь в союзах: деловых, творческих, личных. Ваша сила — в умении слышать, чувствовать настроение другого человека и находить решение, подходящее всем. Одиночество и изоляция вам противопоказаны — вы буквально черпаете энергию из контакта с людьми. Главный барьер — страх конфликта, из-за которого вы соглашаетесь там, где стоит отстоять своё.",
-        3:"Ваш путь — путь творческого самовыражения. Вы реализуетесь, когда создаёте: пишете, рисуете, говорите, придумываете. Даже если творчество не ваша профессия, оно должно быть в жизни. Когда вы прячете свой внутренний мир, вы чувствуете опустошение. Ваша энергия возрождается в моменты, когда вы делитесь собой с миром — без цензуры. Главный барьер — страх оценки и критики.",
-        4:"Ваш путь — путь созидателя и организатора. Вы реализуетесь через конкретные, ощутимые результаты: построенный дом, отлаженный процесс, стабильная семья. Хаос и неопределённость выматывают вас. Вам нужен план, структура и понимание, куда вы движетесь. Ваша сила — в последовательности: вы не сдаётесь на полпути. Главный барьер — страх перемен, который иногда превращается в застревание.",
-        5:"Ваш путь — путь свободного исследователя. Вы реализуетесь через разнообразие, перемены и новый опыт. Однообразие и рутина буквально душат вас. Вам нужно двигаться — физически, интеллектуально, географически. Ваш главный ресурс — адаптивность: вы можете найти себя в любых обстоятельствах. Главный барьер — страх потерять свободу, из-за чего вы избегаете обязательств даже там, где они пошли бы вам на пользу.",
-        6:"Ваш путь — путь любви и гармонии. Вы реализуетесь через заботу о близких, создание красоты и поддержание мира в отношениях. Вы буквально расцветаете, когда чувствуете, что нужны, что от вас тепло. Семья, дом, уют — не просто быт для вас, а смысл. Главный барьер — склонность жертвовать собой ради других до полного опустошения.",
-        7:"Ваш путь — путь знания и внутренней мудрости. Вы реализуетесь через глубокое погружение в то, что вам интересно. Поверхностность и суета вас утомляют. Вам нужно время в одиночестве — это не слабость, а ваш способ заряжаться. Ваша сила — в умении видеть суть и находить ответы там, где другие видят только вопросы. Главный барьер — закрытость, из-за которой ваша мудрость остаётся невостребованной.",
-        8:"Ваш путь — путь достижений и управления ресурсами. Вы реализуетесь через результат, успех и ощущение, что контролируете свою жизнь. Деньги, карьера, статус — для вас это не тщеславие, а способ ощущать себя живым. Ваша сила — в способности организовывать и доводить до конца масштабные проекты. Главный барьер — страх потерять всё, из-за чего вы иногда держите контроль там, где стоит довериться.",
-        9:"Ваш путь — путь мудрости и завершения циклов. Вы реализуетесь, когда помогаете другим и отпускаете то, что отжило. Вы накапливаете огромный опыт — и ваша задача делиться им, не держась за прошлое. Сострадание — ваша суперсила. Главный барьер — неумение отпускать: людей, обиды, ситуации, которые давно просят о завершении.",
-        11:"Ваш путь — путь вдохновения и пробуждения. Вы реализуетесь, когда работаете с идеями, опережающими время. Ваша интуиция часто точнее логики. Вы способны зажигать людей одним разговором. Главная ловушка — жить только в мире идей, не воплощая их. Вам нужно научиться «заземлять» своё видение в конкретные шаги.",
-        22:"Ваш путь — путь Мастера Созидания. Вы реализуетесь через воплощение масштабных идей, которые служат многим людям. Ваш потенциал огромен, и именно это пугает. Главная ловушка — бежать от масштаба своей миссии и уходить в обычность. Когда вы позволяете себе мыслить и действовать по-крупному — жизнь открывается во всей полноте.",
-        33:"Ваш путь — путь безусловной любви и духовного учительства. Вы реализуетесь через служение, объединение людей и напоминание о том, что важно. Это редкое и ответственное число. Главная ловушка — растворение в других и потеря себя. Сохраняя собственные границы, вы несёте свой свет дольше и ярче."
-      };
-      const realTip = {
-        1:"В работе вам лучше всего в роли руководителя, предпринимателя или эксперта. Вы не созданы для подчинения — даже если пока находитесь в найме, ищите способы проявлять инициативу и вести за собой. В отношениях вам важна независимость — партнёр должен быть рядом, а не ограничивать.",
-        2:"В работе вы незаменимы как партнёр, советник, помощник лидера. Вы чувствуете людей лучше всех — используйте это. В отношениях вам нужна глубокая эмоциональная связь. Одиночество и поверхностные контакты вас опустошают.",
-        3:"В работе вам нужен творческий элемент — иначе вы быстро теряете интерес. Вы прекрасны в общении, обучении, маркетинге, искусстве. В отношениях вам важно, чтобы вас слышали и восхищались вашим внутренним миром.",
-        4:"В работе вы идеальный исполнитель сложных долгосрочных проектов. Вас можно поставить на самый ответственный участок — не подведёте. В отношениях вы ищете стабильности и предсказуемости: вам важно знать, что партнёр рядом надолго.",
-        5:"В работе вам нужна свобода и разнообразие. Монотонные задачи убивают вашу мотивацию. Вы лучше всего в переговорах, продажах, путешествиях, всём новом. В отношениях вам нужен партнёр, который не ограничивает вашу свободу и сам является интересной личностью.",
-        6:"В работе вы расцветаете в заботливых профессиях: психология, педагогика, медицина, дизайн. Вам важна атмосфера в коллективе. В отношениях вы отдаёте очень много — следите, чтобы партнёр отвечал взаимностью.",
-        7:"В работе вам нужны глубина и смысл. Поверхностная деятельность вас утомляет. Вы сильны в аналитике, исследованиях, консультировании. В отношениях вам важно интеллектуальное единство — скука хуже конфликта.",
-        8:"В работе вы нацелены на результат и готовы брать на себя большую ответственность. Вы прекрасны в управлении, финансах, бизнесе. В отношениях вам важно уважение и статус пары — вы не потерпите, чтобы отношения тянули вас вниз.",
-        9:"В работе вы часто становитесь «старейшиной» — тем, к кому идут за советом. Вы сильны в помогающих профессиях. В отношениях вы глубоко преданы, но должны научиться принимать столько же, сколько отдаёте.",
-        11:"Вы реализуетесь там, где есть пространство для нестандартного мышления. Преподавание, коучинг, искусство, духовные практики — ваши сферы. В отношениях вам нужен человек, который принимает вашу чувствительность и глубину.",
-        22:"Вы созданы для масштабных проектов, которые меняют жизни многих. Не разменивайтесь на мелкое. В отношениях вам важен партнёр, разделяющий ваши ценности и способный поддержать ваш масштаб.",
-        33:"Ваше место — там, где нужна любовь и мудрость. Не прячьте свой свет из скромности. В отношениях вам нужен человек, способный принять вашу глубину и не использовать вашу доброту."
-      };
-      return `<b>🔢 Число Реализации — ${num}</b><br>${realDesc[num] || getArcanaMeaning(num)}<div class="tip"><b>Как это работает в вашей жизни:</b> ${realTip[num] || 'Действуйте в согласии с этой энергией — и путь станет легче.'}</div>`;
-    }
-  },
-  {
-    id: 'arcana', name: 'Аркан судьбы', fields: ['date'],
-    brief: (v) => { let d = parseDate(v[0]); if (!d) return "Ошибка"; return 'Аркан: ' + reduceTo22(sumDate(d)); },
-    full: (v) => {
-      let d = parseDate(v[0]); if (!d) return "Ошибка";
-      let num = reduceTo22(sumDate(d));
-      const arcDesc = {
-        1:"Ваш аркан — Маг. Вы пришли в этот мир с миссией действовать и создавать. Судьба раз за разом ставит вас в ситуации, где нужно принять решение первым, взять ответственность, начать с нуля. Это не случайность — это ваш путь. Чем больше вы берёте на себя инициативу, тем удачнее складываются обстоятельства. Когда вы ждёте, что кто-то другой сделает за вас — жизнь останавливается.",
-        2:"Ваш аркан — Верховная Жрица. Вы пришли учиться слушать: себя, других, мир вокруг. Судьба ведёт вас через отношения и союзы, где вы то и дело учитесь балансу между отдачей и получением. Ваша интуиция — главный компас. Когда вы действуете из чувства, а не из страха — всё встаёт на свои места. Ваш путь — это путь глубины, а не скорости.",
-        3:"Ваш аркан — Императрица. Вы пришли нести красоту, радость и плодородие — в широком смысле. Творчество, рождение нового, забота, изобилие — это ваши темы. Судьба постоянно предлагает вам раскрыться и проявить себя. Когда вы зажимаете свой внутренний мир — всё становится серым. Когда вы творите и дарите — жизнь расцветает.",
-        4:"Ваш аркан — Император. Вы пришли строить и организовывать. Судьба раз за разом ставит вас в позицию того, кто должен взять ответственность и навести порядок. Это ваша природа, а не бремя. Чем больше вы принимаете роль опоры — для себя, своей семьи, своего дела — тем стабильнее и богаче становится ваша жизнь.",
-        5:"Ваш аркан — Иерофант. Вы пришли искать и передавать знание. Судьба регулярно сводит вас с учителями, традициями и системами знаний — и одновременно предлагает самому стать источником мудрости для других. Ваш путь — между уважением к опыту прошлого и созданием своего собственного пути.",
-        6:"Ваш аркан — Влюблённые. Ваша судьба разворачивается через выборы — особенно в отношениях. Каждый раз, когда вы стоите перед развилкой, вы на самом деле учитесь слушать своё сердце. Отношения — главная школа вашей жизни. Через любовь вы познаёте себя. Гармония внутри — залог гармонии снаружи.",
-        7:"Ваш аркан — Колесница. Вы пришли учиться управлять своей жизнью — направлять её силой воли, а не плыть по течению. Судьба раз за разом испытывает вашу решимость. Когда вы берёте контроль над своими реакциями и решениями — вы побеждаете. Когда позволяете обстоятельствам управлять вами — теряете путь.",
-        8:"Ваш аркан — Сила. Судьба учит вас истинной силе — той, что идёт изнутри, а не через давление на других. Ваша жизнь наполнена ситуациями, где нужно укротить собственные страхи, сомнения или импульсы. Мягкая настойчивость сильнее жёсткого напора — это ваш главный урок.",
-        9:"Ваш аркан — Отшельник. Вы пришли искать смысл. Судьба периодически выводит вас из шумного мира в одиночество — не в наказание, а чтобы вы нашли ответы внутри себя. Ваша мудрость рождается в тишине. После каждого периода уединения вы возвращаетесь к людям обновлённым и способным указать им путь.",
-        10:"Ваш аркан — Колесо Фортуны. Ваша жизнь богата неожиданными поворотами. Судьба постоянно меняет декорации — и это не хаос, а приглашение развить гибкость и доверие к жизни. Когда вы учитесь видеть в каждом повороте возможность, а не угрозу — фортуна начинает работать на вас.",
-        11:"Ваш аркан — Справедливость. Судьба строго соблюдает баланс в вашей жизни: что отдаёте, то и получаете. Вы чувствуете это острее других. Честность с собой и миром — ваш главный инструмент. Когда вы живёте в согласии со своими ценностями — жизнь выстраивается справедливо.",
-        12:"Ваш аркан — Повешенный. Ваша судьба учит вас принятию и умению ждать. Периоды, когда всё будто застывает, — не тупики, а моменты глубокого внутреннего преобразования. Ваш путь требует умения жертвовать сиюминутным ради важного. В паузах рождается ваша лучшая версия.",
-        13:"Ваш аркан — Смерть. Не пугайтесь: это аркан трансформации. Ваша жизнь полна завершений и начал. Судьба раз за разом предлагает вам умереть и возродиться — сменить работу, город, убеждения, окружение. Чем легче вы отпускаете старое, тем скорее приходит лучшее.",
-        14:"Ваш аркан — Умеренность. Ваша судьба учит вас балансу и исцелению через соединение противоположностей. Крайности в вашей жизни — учителя. Ваш путь — найти золотую середину: между работой и отдыхом, духовным и земным, своим и чужим. В гармонии рождается ваша настоящая сила.",
-        15:"Ваш аркан — Дьявол. Ваша судьба испытывает вас через соблазны, зависимости и привязанности. Не потому что вы плохой человек — а потому что ваш путь именно через осознанный выбор. Когда вы начинаете действовать из свободы, а не из страха или желания — цепи спадают и открывается ваша настоящая сила.",
-        16:"Ваш аркан — Башня. В вашей жизни бывают моменты, когда рушится то, что казалось незыблемым. Это не катастрофа — это расчистка. Судьба разрушает то, что держало вас в иллюзии, чтобы освободить место для настоящего. После каждого «обрушения» вы строите что-то гораздо более прочное.",
-        17:"Ваш аркан — Звезда. Вы пришли нести надежду. Даже в самые тёмные периоды в вас есть свет, который не гаснет. Судьба раз за разом ставит вас в ситуации, где нужно поверить — в себя, в людей, в лучшее. Ваш оптимизм — не наивность, а настоящий дар.",
-        18:"Ваш аркан — Луна. Ваша судьба разворачивается через тонкий мир: интуицию, сны, подсознание. Вы чувствуете то, что скрыто от других. Иллюзии и страхи — ваши учителя. Путь требует честности с самим собой и умения отличать реальное от воображаемого.",
-        19:"Ваш аркан — Солнце. Ваша судьба ведёт вас к радости и успеху — буквально. Вы рождены, чтобы светить. Когда вы живёте открыто, с любовью и энтузиазмом — всё складывается. Ваш главный барьер — страх быть слишком заметным или счастливым.",
-        20:"Ваш аркан — Суд. Ваша судьба связана с пробуждением и переосмыслением. Вас зовут к чему-то большему, чем обычная жизнь. Родовые паттерны, прошлые решения, незавершённые циклы — всё это просит вашего внимания и осознания. Когда вы слышите этот зов — жизнь обретает смысл.",
-        21:"Ваш аркан — Мир. Это аркан завершения и целостности. Вы пришли в этот мир с большим потенциалом интеграции: объединять людей, идеи, культуры. Ваша судьба ведёт вас через разные опыты — чтобы в итоге вы пришли к полному принятию себя и мира. Целостность — ваш главный приз.",
-        22:"Ваш аркан — Шут. Начало нового пути, доверие жизни, прыжок в неизвестность. Судьба снова и снова ставит вас перед выбором: остаться в безопасном привычном или шагнуть в новое. Ваша миссия — научиться доверять процессу. Страх — ваш главный ограничитель. Смелость — ваш главный ресурс."
-      };
-      const arcTip = {
-        1:"Практически: берите на себя больше инициативы. Не ждите идеального момента — начинайте сейчас. Ваши победы рождаются из действия, а не из ожидания.",
-        2:"Практически: инвестируйте в отношения. Цените тех, кто рядом. Учитесь просить о помощи — это не слабость, а часть вашего пути.",
-        3:"Практически: уберите самоцензуру. Рисуйте, пишите, пойте, создавайте — неважно, насколько «хорошо». Когда вы творите — вы в потоке своей судьбы.",
-        4:"Практически: планируйте и действуйте методично. Ваши большие цели достигаются маленькими ежедневными шагами. Структура — ваш лучший друг.",
-        5:"Практически: не останавливайтесь на достигнутом. Продолжайте учиться и делиться знанием. Ваш авторитет растёт, когда вы остаётесь в роли и ученика, и учителя.",
-        6:"Практически: прежде чем принять важное решение — спросите своё сердце. Ваши лучшие выборы рождаются из любви, а не из страха или рационального расчёта.",
-        7:"Практически: работайте над дисциплиной. Ставьте цели и отслеживайте прогресс. Ваша воля — мышца, которую нужно тренировать.",
-        8:"Практически: когда хочется давить или требовать — остановитесь. Попробуйте убедить, вдохновить, поддержать. Это эффективнее и приносит больше.",
-        9:"Практически: выделяйте время на уединение и размышление. Ведите дневник, медитируйте, гуляйте в одиночестве. Ваши лучшие ответы приходят в тишине.",
-        10:"Практически: тренируйте гибкость мышления. Когда что-то рушится или меняется — спрашивайте себя: «Что это открывает?», а не «Почему со мной?».",
-        11:"Практически: будьте честны — с собой в первую очередь. Когда вы в согласии со своими ценностями, жизнь сама расставляет всё по местам.",
-        12:"Практически: не торопите события. Если что-то не движется — возможно, это время для внутренней работы. Доверяйте паузе.",
-        13:"Практически: каждый раз, когда что-то заканчивается, спрашивайте себя: «Что я готов начать?» Не зависайте в прошлом дольше, чем нужно.",
-        14:"Практически: когда чувствуете внутренний конфликт — ищите, как совместить, а не как выбрать. Ваша сила в синтезе, а не в крайностях.",
-        15:"Практически: замечайте, когда действуете из страха или зависимости. Задайте себе вопрос: «Я делаю это потому что хочу, или потому что боюсь?» Ответ меняет всё.",
-        16:"Практически: не держитесь за то, что трещит по швам. Чем раньше вы отпустите отжившее, тем быстрее придёт новое и лучшее.",
-        17:"Практически: культивируйте веру осознанно. Когда всё плохо — вспоминайте, через что вы уже прошли. Вы справлялись раньше — справитесь и сейчас.",
-        18:"Практически: ведите дневник снов, замечайте совпадения, доверяйте предчувствиям. Ваша интуиция — не фантазия, а реальный инструмент навигации.",
-        19:"Практически: позвольте себе быть счастливым. Не объясняйте и не оправдывайте свою радость. Ваш свет нужен миру — не прячьте его.",
-        20:"Практически: займитесь изучением своей семейной истории. Осознание родовых паттернов — первый шаг к их завершению.",
-        21:"Практически: принимайте разные стороны себя. Ваши «противоречия» — на самом деле богатство. Целостность приходит через принятие, а не через борьбу с собой.",
-        22:"Практически: делайте то, чего боитесь — маленькими шагами. Ваша судьба буквально разворачивается в моменты, когда вы решаетесь."
-      };
-      return `<b>🌀 Ваш Аркан судьбы — ${num}</b><br>${arcDesc[num] || getArcanaMeaning(num)}<div class="tip"><b>Как работать с этой энергией:</b> ${arcTip[num] || 'Действуйте в согласии с этой энергией — и путь станет легче.'}</div>`;
-    }
-  },
-  {
-    id: 'soul', name: 'Число души', fields: ['date'],
-    brief: (v) => { let d = parseDate(v[0]); if (!d) return "Ошибка"; return 'Число души: ' + reduceToSingle(d.day); },
-    full: (v) => {
-      let d = parseDate(v[0]); if (!d) return "Ошибка";
-      let num = reduceToSingle(d.day);
-      const soulDesc = {
-        1:"Внутри вы — первопроходец. Ваша душа жаждет самостоятельности, свободы решений и ощущения, что вы сами управляете своей жизнью. Когда вас заставляют делать что-то против воли или ограничивают вашу независимость — вы угасаете. Ваша душа расцветает в моменты, когда вы первым делаете шаг, принимаете решение, открываете что-то новое. Даже если снаружи вы мягкий и ведомый — внутри живёт лидер, которому нужно пространство.",
-        2:"Внутри вы — человек глубоких чувств и тонких связей. Ваша душа нуждается в близости, понимании и гармонии. Конфликты и грубость причиняют вам боль острее, чем другим. Вы расцветаете, когда чувствуете, что вас принимают таким, какой вы есть — без условий. Ваша истинная радость — это тихие, доверительные моменты с теми, кого вы любите.",
-        3:"Внутри вы — творец и рассказчик. Ваша душа требует самовыражения. Когда вы не можете говорить, создавать, делиться — вы чувствуете себя в клетке. Ваша истинная радость — это момент, когда идея, образ или слово рождаются через вас и попадают в сердце другого. Юмор, лёгкость, вдохновение — ваши природные состояния. Берегите их от чужого цинизма.",
-        4:"Внутри вы — строитель и хранитель. Ваша душа нуждается в ощущении порядка, надёжности и результата. Неопределённость и хаос вас изматывают. Ваша истинная радость — это когда вы видите плоды своего труда: выстроенные отношения, завершённый проект, уютный дом. Вы чувствуете себя хорошо, когда знаете: всё на своём месте.",
-        5:"Внутри вы — свободный дух. Ваша душа задыхается без движения, перемен и нового опыта. Рутина — ваш главный враг. Ваша истинная радость — это момент открытия: новое место, новая идея, новый человек. Вы чувствуете себя живым, когда горизонт расширяется. Ваша потребность в свободе — не каприз, а фундаментальная часть вашей природы.",
-        6:"Внутри вы — хранитель тепла. Ваша душа нуждается в любви, близости и красоте. Вы расцветаете, когда вокруг вас гармония: в доме, в отношениях, в пространстве. Одиночество и холодность причиняют вам боль. Ваша истинная радость — это момент, когда вы видите, что ваша забота изменила чью-то жизнь. Но помните: вы тоже заслуживаете заботы.",
-        7:"Внутри вы — искатель истины. Ваша душа нуждается в глубине, смысле и уединении. Поверхностные разговоры и суета вас опустошают. Ваша истинная радость — это момент озарения: когда находите ответ на вопрос, который давно не давал покоя. Вам нужно время наедине с собой — это не эгоизм, а способ оставаться живым.",
-        8:"Внутри вы — человек силы и достижений. Ваша душа нуждается в ощущении, что вы движетесь вперёд, растёте, достигаете. Застой и бессмысленность — ваш главный внутренний ад. Ваша истинная радость — это момент победы: когда цель достигнута, проект завершён, результат виден. Вам важно уважать себя — и чувствовать уважение других.",
-        9:"Внутри вы — мудрец с большим сердцем. Ваша душа нуждается в смысле и возможности служить. Когда жизнь кажется пустой или бессмысленной — вы страдаете сильнее других. Ваша истинная радость — это момент, когда ваш опыт или слово помогло кому-то найти путь. Вы накапливаете огромную мудрость — важно научиться делиться ею, не держась за прошлое."
-      };
-      const soulTip = {
-        1:"Ваша душа восстанавливается через одиночество и самостоятельные решения. Когда вам плохо — дайте себе время побыть наедине с собой и сделать что-то по-своему. Спрашивайте себя: «Чего хочу я, а не то, чего от меня ждут?»",
-        2:"Ваша душа восстанавливается через близость и красоту. Когда вам плохо — позвоните другу, послушайте музыку, побудьте в красивом месте. Вы быстро исцеляетесь через тепло и принятие.",
-        3:"Ваша душа восстанавливается через творчество. Когда вам плохо — рисуйте, пишите, пойте, шутите. Дайте себе выразить то, что внутри — и станет легче. Не держите переживания запертыми.",
-        4:"Ваша душа восстанавливается через порядок и конкретные дела. Когда вам плохо — наведите порядок в комнате, составьте список дел, сделайте что-то руками. Ощущение контроля возвращает вам равновесие.",
-        5:"Ваша душа восстанавливается через движение и смену обстановки. Когда вам плохо — выйдите из дома, смените маршрут, познакомьтесь с кем-то новым. Застывание усиливает боль, движение — лечит.",
-        6:"Ваша душа восстанавливается через тепло и заботу — в обе стороны. Когда вам плохо — позвольте кому-то позаботиться о вас. Примите помощь. Вы так хорошо умеете отдавать — учитесь принимать.",
-        7:"Ваша душа восстанавливается через тишину и уединение. Когда вам плохо — уйдите в природу, в книгу, в размышление. Не заглушайте боль общением и шумом — дайте себе побыть с собой.",
-        8:"Ваша душа восстанавливается через действие и результат. Когда вам плохо — поставьте маленькую цель и достигните её. Любая победа, даже маленькая, возвращает вам ощущение силы.",
-        9:"Ваша душа восстанавливается через отпускание и служение. Когда вам плохо — помогите кому-то или отпустите то, что давно держите. Прощение — ваш главный инструмент исцеления, начните с себя."
-      };
-      return `<b>❤️ Число Души — ${num}</b><br>${soulDesc[num] || getArcanaMeaning(num)}<div class="tip"><b>Как восстановить себя:</b> ${soulTip[num] || 'Прислушивайтесь к себе — ваша душа знает, что вам нужно.'}</div>`;
-    }
-  },
-  {
-    id: 'mission', name: 'Миссия души', fields: ['date'],
-    brief: (v) => { let d = parseDate(v[0]); if (!d) return "Ошибка"; return 'Миссия: ' + reduceToSingle(d.day + d.month); },
-    full: (v) => {
-      let d = parseDate(v[0]); if (!d) return "Ошибка";
-      let num = reduceToSingle(d.day + d.month);
-      const missDesc = {
-        1:"Ваша миссия — научить мир (и себя) самостоятельности. Вы здесь, чтобы показать: каждый человек способен принять ответственность за свою жизнь и идти своим путём. Ваша жизнь — живой пример того, что можно начать с нуля и не сломаться. Вы вдохновляете других одним фактом своего существования — когда не прячетесь.",
-        2:"Ваша миссия — создавать мосты между людьми. Вы здесь, чтобы примирять, объединять и напоминать: все мы разные, и это — сила, а не проблема. Через ваши отношения и союзы в мир приходит больше доверия и понимания. Каждый раз, когда вы находите компромисс или выслушиваете кого-то по-настоящему — вы выполняете свою миссию.",
-        3:"Ваша миссия — нести радость и вдохновение. Вы здесь, чтобы напоминать людям: жизнь может быть лёгкой, красивой и творческой. Через ваше самовыражение — слова, образы, истории — другие обретают смелость тоже проявить себя. Ваш смех, ваш взгляд на вещи, ваш талант — это инструменты миссии.",
-        4:"Ваша миссия — создавать прочные основы. Вы здесь, чтобы строить: семью, дело, традиции, системы. Другие люди опираются на вашу надёжность, даже если не всегда это признают. Каждый раз, когда вы выполняете обещание, доводите дело до конца или создаёте что-то долговечное — вы выполняете свою миссию.",
-        5:"Ваша миссия — расширять горизонты. Вы здесь, чтобы показывать: мир больше, чем кажется, и перемены — не угроза, а подарок. Ваша открытость, любопытство и смелость пробовать новое заразительны. Через вас другие люди разрешают себе выйти за рамки привычного.",
-        6:"Ваша миссия — исцелять через любовь. Вы здесь, чтобы создавать безопасное пространство, где люди могут быть собой. Ваша забота, тепло и умение видеть в другом хорошее — буквально меняют людей. Каждый раз, когда вы любите кого-то таким, какой он есть — вы выполняете свою миссию.",
-        7:"Ваша миссия — хранить и передавать мудрость. Вы здесь, чтобы искать истину и делиться ею. Ваши наблюдения, вопросы и открытия нужны миру. Не держите их только для себя. Каждый раз, когда вы помогаете кому-то увидеть ситуацию глубже или найти нестандартный ответ — вы выполняете свою миссию.",
-        8:"Ваша миссия — управлять ресурсами во благо. Вы здесь, чтобы показать: деньги, влияние и власть могут служить добру. Ваша сила притяжения ресурсов — не случайность. Каждый раз, когда вы используете своё положение или возможности, чтобы помочь другим, — вы выполняете свою миссию.",
-        9:"Ваша миссия — учить прощению и отпусканию. Вы здесь, чтобы завершать старые циклы и помогать другим двигаться вперёд. Ваша мудрость, рождённая через боль и опыт, — настоящая. Каждый раз, когда вы прощаете, отпускаете или помогаете кому-то закрыть старую рану — вы выполняете свою миссию."
-      };
-      const missSign = {
-        1:"Знак того, что вы на своём пути: вы чувствуете прилив энергии, когда действуете самостоятельно. Знак, что сбились: вы постоянно ждёте чьего-то разрешения или одобрения.",
-        2:"Знак того, что вы на своём пути: ваши отношения наполняют, а не истощают. Знак, что сбились: вы соглашаетесь со всем подряд, только бы не было конфликта.",
-        3:"Знак того, что вы на своём пути: вы чувствуете лёгкость и вдохновение. Знак, что сбились: вы молчите там, где хочется высказаться, и прячете своё творческое начало.",
-        4:"Знак того, что вы на своём пути: вы видите результаты своего труда и чувствуете удовлетворение. Знак, что сбились: вы застряли в рутине и боитесь что-то менять.",
-        5:"Знак того, что вы на своём пути: вы чувствуете себя живым и любопытным. Знак, что сбились: вам скучно, вы ощущаете ловушку и хочется всё бросить.",
-        6:"Знак того, что вы на своём пути: вы наполнены и хотите отдавать. Знак, что сбились: вы заботитесь из чувства долга и опустошены.",
-        7:"Знак того, что вы на своём пути: вы чувствуете глубину и смысл в том, чем занимаетесь. Знак, что сбились: вы закрылись и никому ничего не рассказываете.",
-        8:"Знак того, что вы на своём пути: ваши достижения служат не только вам. Знак, что сбились: вы добиваетесь результата любой ценой, не думая о других.",
-        9:"Знак того, что вы на своём пути: вы чувствуете лёгкость и мудрость. Знак, что сбились: вы держитесь за прошлое и накапливаете обиды."
-      };
-      return `<b>🎯 Миссия Души — ${num}</b><br>${missDesc[num] || getArcanaMeaning(num)}<div class="tip"><b>Как понять, что вы на своём пути:</b> ${missSign[num] || 'Когда вы живёте в согласии с миссией — внутри есть тихое ощущение правильности.'}</div>`;
-    }
-  },
-  {
-    id: 'name', name: 'Энергия Имени (ФИО)', fields: ['text'],
-    brief: (v) => { if (!v[0]) return "Введите имя"; return 'Энергия: ' + nameToNumber(v[0]); },
-    full: (v) => {
-      if (!v[0]) return "Ошибка";
-      let num = nameToNumber(v[0]);
-      const nameMeanings = {
-        1: "<b>Энергия 1 — Лидер и Первопроходец</b><br>Ваше имя несёт вибрацию силы, уверенности и самостоятельности. Когда вы представляетесь, люди сразу чувствуют в вас человека, который знает, чего хочет. Это имя хорошо работает в профессиональном контексте: оно внушает доверие и уважение. В личной жизни вибрация единицы может восприниматься как напористость — важно давать другим пространство. Ваш потенциал раскрывается, когда вы возглавляете, инициируете и не боитесь быть первым. Совет: в отношениях добавляйте мягкость — она не ослабляет вас, а делает более объёмным человеком.",
-        2: "<b>Энергия 2 — Дипломат и Хранитель связей</b><br>Ваше имя излучает мягкость, чуткость и надёжность. Люди рядом с вами расслабляются — они чувствуют, что их услышат и поймут. Это имя особенно сильно в сфере отношений: партнёрства, переговоры, семья, помогающие профессии. В профессиональном мире вибрация двойки говорит: «Я здесь, чтобы объединять». Ваша теневая сторона — склонность соглашаться там, где лучше отстоять своё. Совет: добавьте к мягкости вашего имени чёткость позиции — тогда вас будут уважать ещё сильнее.",
-        3: "<b>Энергия 3 — Творец и Вдохновитель</b><br>Ваше имя звучит легко, ярко и запоминается. Люди чувствуют в вас человека с богатым внутренним миром и хорошим чувством слова. Это имя прекрасно работает в творческих, коммуникативных и образовательных сферах. Вибрация тройки — это вдохновение, юмор и способность делать сложное понятным. Ваша теневая сторона — начинать больше, чем завершать. Совет: выбирайте два-три направления и доводите их до результата — тогда ваш потенциал реализуется в полную силу.",
-        4: "<b>Энергия 4 — Строитель и Гарант надёжности</b><br>Ваше имя вызывает доверие с первой секунды. Люди воспринимают вас как человека слова: если сказали — сделаете. Это имя сильно в бизнесе, строительстве, финансах, юриспруденции. Вибрация четвёрки говорит: «Со мной можно строить долгосрочное». Ваша теневая сторона — жёсткость и сопротивление переменам. Совет: помните, что иногда лучший фундамент — тот, который умеет адаптироваться.",
-        5: "<b>Энергия 5 — Исследователь и Энергия перемен</b><br>Ваше имя звучит живо, динамично и вызывает интерес. Люди чувствуют в вас человека открытого и незастывшего — такого, с которым никогда не скучно. Это имя хорошо работает в путешествиях, технологиях, продажах, журналистике. Вибрация пятёрки притягивает новые возможности и неожиданные встречи. Ваша теневая сторона — непостоянство, которое может пугать тех, кто ищет стабильного партнёра или сотрудника. Совет: показывайте и свою надёжную сторону — она у вас есть.",
-        6: "<b>Энергия 6 — Хранитель тепла и Создатель гармонии</b><br>Ваше имя звучит тепло и уютно. Люди рядом с вами чувствуют себя в безопасности. Это имя особенно сильно в сферах красоты, здоровья, воспитания, психологии и дизайна. Вибрация шестёрки говорит: «Со мной хорошо, рядом со мной — лучше». Ваша теневая сторона — чрезмерная забота о других в ущерб себе. Совет: забота о себе — это не эгоизм, это условие, при котором вы можете долго и качественно отдавать другим.",
-        7: "<b>Энергия 7 — Мудрец и Хранитель тайн</b><br>Ваше имя звучит загадочно и притягательно. Люди чувствуют в вас глубину и нечто, что сложно сразу разгадать. Это имя хорошо работает в науке, аналитике, психологии, эзотерике, преподавании. Вибрация семёрки вызывает у других желание «докопаться» до вас — и это ваша сила. Ваша теневая сторона — закрытость, которая может восприниматься как холодность. Совет: позвольте людям иногда видеть вас «без брони» — это укрепляет связи.",
-        8: "<b>Энергия 8 — Управитель и Человек результата</b><br>Ваше имя звучит мощно и уверенно. Люди воспринимают вас как человека, который умеет добиваться своего. Это имя хорошо работает в бизнесе, управлении, финансах, переговорах. Вибрация восьмёрки притягивает ресурсы и возможности. Ваша теневая сторона — жёсткость и ориентация только на результат без учёта людей. Совет: помните, что ваша истинная сила — в умении объединять людей вокруг цели, а не только в достижении её любой ценой.",
-        9: "<b>Энергия 9 — Гуманист и Человек с большим сердцем</b><br>Ваше имя звучит мягко, мудро и вызывает доверие. Люди чувствуют, что перед ними человек, который понимает без слов. Это имя сильно в социальной сфере, медицине, образовании, искусстве, духовных практиках. Вибрация девятки говорит: «Я здесь для других». Ваша теневая сторона — сложность с границами: вы можете отдавать до опустошения. Совет: учитесь принимать столько же, сколько отдаёте — это делает вашу помощь устойчивой.",
-        11: "<b>Энергия 11 — Мастер Вдохновения</b><br>Ваше имя несёт редкую, высокую вибрацию. Люди рядом с вами чувствуют, что в вас есть что-то особенное — интуиция, проницательность, связь с чем-то большим. Это имя особенно мощно в сферах обучения, творчества, коучинга, духовных практик. Вы способны вдохновлять больших людей. Ваша теневая сторона — чувствительность, которая иногда перегружает вас. Совет: заземляйтесь — физическая активность, природа, простые дела возвращают вас в баланс.",
-        22: "<b>Энергия 22 — Мастер Созидания</b><br>Ваше имя имеет одну из самых мощных вибраций. Люди чувствуют в вас масштаб — человека, который думает и действует по-крупному. Это имя предназначено для больших проектов: строительства систем, объединения людей, создания наследия. Ваша теневая сторона — груз ответственности, который иногда парализует. Совет: доверяйте процессу и делегируйте — великое создаётся командой, а не в одиночку.",
-        33: "<b>Энергия 33 — Мастер Любви и Света</b><br>Ваше имя несёт вибрацию безусловной любви — самую высокую из всех. Люди рядом с вами чувствуют принятие и тепло, которое сложно описать словами. Это имя для тех, кто несёт свет: духовные лидеры, целители, учителя, родители. Ваша теневая сторона — опасность потерять себя в других. Совет: ваш свет горит дольше, когда вы защищаете его границами."
-      };
-      return nameMeanings[num] || '<b>Энергия Имени</b><br>Ваше имя несёт уникальную вибрацию.';
-    }
-  },
-  {
-    id: 'compatibility', name: 'Совместимость', fields: ['date','date'],
-    brief: (v) => { let d1=parseDate(v[0]), d2=parseDate(v[1]); if(!d1||!d2) return "Ошибка"; return 'Энергия союза: '+reduceTo22(sumDate(d1)+sumDate(d2)); },
-    full: (v) => {
-      let d1=parseDate(v[0]), d2=parseDate(v[1]); if(!d1||!d2) return "Ошибка";
-      let num = reduceTo22(sumDate(d1)+sumDate(d2));
-      const compatDesc = {
-        1:"Ваш союз — союз двух личностей с сильной волей. Вы оба цените независимость и самостоятельность. Это рождает уважение, но иногда — соперничество. Ваша задача — научиться лидировать вместе, а не бороться за первенство. Когда каждый из вас чувствует свою значимость — пара становится очень мощной командой.",
-        2:"Ваш союз — союз глубокого чувства и партнёрства. Вы созданы, чтобы поддерживать и дополнять друг друга. Ваша сила — в умении слышать и чувствовать партнёра. Главная опасность — накопленные обиды и нежелание говорить о болезненном. Открытый разговор — ваше главное лекарство.",
-        3:"Ваш союз — союз радости и творчества. Вместе вы умеете создавать праздник из обычного дня. Вас объединяет лёгкость, юмор и общее видение красоты. Главный вызов — не уходить от серьёзных разговоров в шутку. Умение говорить о важном так же важно, как умение смеяться вместе.",
-        4:"Ваш союз — союз надёжности и долгосрочного строительства. Вы оба цените стабильность и готовы работать ради общего будущего. Эти отношения — «на века». Главный вызов — не превратить быт в единственное содержание пары. Поддерживайте живость: путешествия, новые впечатления, совместные мечты.",
-        5:"Ваш союз — союз свободы и приключения. Вместе вы никогда не скучаете. Ваша связь держится на общем интересе к жизни. Главный вызов — научиться быть рядом не только в хорошем, но и в рутине. Свобода — ваша ценность, но без корней пара может рассыпаться.",
-        6:"Ваш союз — союз любви и заботы. Вы созданы, чтобы создавать тепло и безопасность друг для друга и для тех, кто рядом. Ваши отношения — настоящий дом. Главный вызов — не терять себя в заботе о партнёре. Любовь к себе делает вашу любовь к другому более здоровой.",
-        7:"Ваш союз — союз двух искателей. Вас объединяет глубина, желание понять мир и друг друга. Ваши разговоры насыщены смыслом. Главный вызов — закрытость: когда один уходит в себя, другой чувствует себя оттолкнутым. Учитесь говорить о своих внутренних состояниях, даже когда трудно.",
-        8:"Ваш союз — союз амбиций и силы. Вместе вы способны на многое — строить, достигать, создавать. Главный вызов — не превратить отношения в соревнование или в инструмент достижения целей. Помните: вы партнёры, а не конкуренты. Умение поддержать друг друга в слабости — ваш главный рост.",
-        9:"Ваш союз — союз мудрости и глубокого понимания. Вы оба прошли через многое и цените настоящее. Ваша связь — это принятие: вы видите друг друга без прикрас. Главный вызов — умение отпускать: старые обиды, прошлые ошибки, ожидания, которые уже не актуальны.",
-        10:"Ваш союз — союз перемен и судьбоносных встреч. Вы оказались вместе не случайно — эти отношения меняют вас обоих. Главный вызов — не сопротивляться трансформации, которую несут эти отношения. Примите: то, каким вы входите в них, и то, каким выходите — разные люди.",
-        11:"Ваш союз — союз двух чувствующих людей. Ваша связь глубокая и иногда сложная: вы оба тонко чувствуете друг друга — и можете как исцелять, так и ранить. Главный вызов — научиться давать друг другу пространство и не требовать совершенства.",
-        12:"Ваш союз учит жертвенной любви. Один из вас (или оба) учится отдавать, не требуя взамен. Главный вызов — не превращать жертву в манипуляцию или в источник обиды. Здоровая жертва — из любви и свободы, а не из чувства долга.",
-        13:"Ваш союз — союз трансформации. Вместе вы проходите через серьёзные изменения. Это не значит, что отношения обречены — это значит, что они настоящие и глубокие. Главный вызов — не пугаться перемен, а смотреть на них как на рост.",
-        14:"Ваш союз — союз, ищущий баланса. Вы учитесь соединять то, что кажется несовместимым: разные темпераменты, разные нужды. Главный вызов — терпение и умение находить середину без того, чтобы кто-то постоянно уступал.",
-        15:"Ваш союз — союз страсти и личной силы. Между вами есть сильное притяжение. Главный вызов — научиться любить осознанно, а не только инстинктивно. Ваши отношения становятся зрелыми, когда вы оба берёте ответственность за свои реакции.",
-        16:"Ваш союз — союз, разрушающий иллюзии. Вместе вы видите друг друга такими, какие есть — без прикрас. Это больно, но честно. Главный вызов — строить на правде, а не бежать от неё. Когда вы принимаете реальность партнёра — рождается настоящая близость.",
-        17:"Ваш союз — союз веры и надежды. Вы поддерживаете оптимизм друг друга и видите лучшее даже в трудные времена. Главный вызов — не избегать реальных проблем за красивой картинкой. Вера должна опираться на честность.",
-        18:"Ваш союз — союз тонкого мира. Вы чувствуете друг друга на уровне, который сложно объяснить словами. Главный вызов — страхи и недопонимание. Когда вы говорите открыто о своих тревогах, а не прячете их — отношения становятся исцеляющими.",
-        19:"Ваш союз — союз света и радости. Вместе вам хорошо: вы заряжаете друг друга. Главный вызов — не избегать трудных разговоров ради сохранения хорошей атмосферы. Настоящее счастье рождается в честности.",
-        20:"Ваш союз связан с родовыми темами. Вы оба несёте что-то из своих семей — паттерны, сценарии, нерешённые вопросы. Ваша задача — осознать это и вместе создать новую семейную историю.",
-        21:"Ваш союз — союз завершения и целостности. Вместе вы становитесь более полными. Ваша связь глубокая и многогранная. Главный вызов — принять все стороны партнёра, а не только удобные.",
-        22:"Ваш союз — союз больших возможностей. Вместе вы можете воплощать то, что по отдельности казалось недостижимым. Главный вызов — не потерять друг друга в масштабе общих проектов. Отношения — не только инструмент, но и цель."
-      };
-      const compatLesson = {
-        1:"Ваш главный урок вместе: научиться лидировать совместно, не борясь за первенство. Договоритесь, кто за что отвечает — и уважайте территорию друг друга.",
-        2:"Ваш главный урок вместе: говорить о боли сразу, а не копить. Маленький разговор сейчас — это предотвращённый большой конфликт потом.",
-        3:"Ваш главный урок вместе: говорить о важном, не только о весёлом. Лёгкость — ваш ресурс, но не убежище от серьёзного.",
-        4:"Ваш главный урок вместе: не позволяйте быту поглотить вас. Планируйте вместе что-то новое — путешествие, проект, мечту.",
-        5:"Ваш главный урок вместе: строить традиции и ритуалы. Свобода не противоречит близости — она требует осознанности.",
-        6:"Ваш главный урок вместе: говорить партнёру о своих нуждах так же открыто, как вы говорите о нуждах других.",
-        7:"Ваш главный урок вместе: говорить о своих внутренних состояниях вслух — даже когда трудно это выразить словами.",
-        8:"Ваш главный урок вместе: праздновать победы друг друга, а не соревноваться. Один сильный партнёр делает вас обоих сильнее.",
-        9:"Ваш главный урок вместе: прощать — искренне, а не для виду. Отпущенное прошлое освобождает пространство для настоящего.",
-        10:"Ваш главный урок вместе: принимать изменения как часть вашего союза, а не сопротивляться им.",
-        11:"Ваш главный урок вместе: давать пространство — и знать, когда быть рядом.",
-        12:"Ваш главный урок вместе: проверяйте мотивы своей жертвы — из любви или из страха потерять?",
-        13:"Ваш главный урок вместе: смотреть на кризисы как на возможность стать ближе, а не отдалиться.",
-        14:"Ваш главный урок вместе: искать «и то, и другое» вместо «или — или».",
-        15:"Ваш главный урок вместе: говорить «я злюсь» вместо «ты виноват». Ответственность за свои реакции — ключ к зрелым отношениям.",
-        16:"Ваш главный урок вместе: строить на честности. Иллюзия комфортнее, но правда — прочнее.",
-        17:"Ваш главный урок вместе: не прятать проблемы за позитивом. Вера должна быть обоснованной.",
-        18:"Ваш главный урок вместе: называть страхи вслух — тогда они теряют власть.",
-        19:"Ваш главный урок вместе: не жертвовать честностью ради хорошей атмосферы.",
-        20:"Ваш главный урок вместе: осознавать родовые паттерны и вместе создавать новые традиции.",
-        21:"Ваш главный урок вместе: принимать партнёра полностью — со всеми гранями.",
-        22:"Ваш главный урок вместе: не забывать про «мы» среди больших планов и проектов."
-      };
-      return `<b>💞 Энергия Союза — ${num}</b><br>${compatDesc[num] || getArcanaMeaning(num)}<div class="tip"><b>Главный урок этого союза:</b> ${compatLesson[num] || 'Действуйте в согласии с этой энергией — она подскажет, что нужно паре для равновесия.'}</div>`;
-    }
-  },
-  {
-    id: 'wealth', name: 'Код богатства', fields: ['date'],
-    brief: (v) => {
-      let d = parseDate(v[0]); if (!d) return "Ошибка";
-      let s = '' + d.day + d.month + d.year;
-      let attract = [], tension = [];
-      for (let ch of s) {
-        let n = parseInt(ch);
-        if ([3,6,8].includes(n)) attract.push(n);
-        if ([1,2,7].includes(n)) tension.push(n);
-      }
-      return 'Притяжение: ' + (attract.length ? attract.join(', ') : 'нет') + ' | Зоны усилий: ' + (tension.length ? tension.join(', ') : 'нет');
+/* ═══════════════════════════════════════════════════════
+   📚 БАЗА ТОЛКОВАНИЙ — по книге А. Капустина «КЕУ ТО»
+   ═══════════════════════════════════════════════════════ */
+const INTERPRETATIONS = {
+  
+  // ── УНИВЕРСАЛЬНЫЕ: Число Действия, Энергия Событий, Личный Код ──
+  universal: {
+    1: {
+      short: "🚀 Лидерство, инициатива, начало",
+      full: "<strong>Число 1 — Энергия начала.</strong><br>• <em>Рекомендуется:</em> принимать решения, начинать проекты, проявлять смелость.<br>• <em>Избегать:</em> пассивности, ожидания указаний, откладывания.<br>• <em>Ключ:</em> действуйте самостоятельно — успех приходит через инициативу."
     },
-    full: (v) => {
-      let d = parseDate(v[0]); if (!d) return "Ошибка";
-      let s = '' + d.day + d.month + d.year;
-      let counts = {};
-      for (let i = 0; i <= 9; i++) counts[i] = 0;
-      for (let ch of s) counts[parseInt(ch)]++;
-
-      // Каналы притяжения денег (3,6,8 = творчество, забота, управление)
-      const attractNums = [3,6,8].filter(n => counts[n] > 0);
-      // Зоны усилий (1,2,7 = воля, чуткость, удача — требуют осознанной работы)
-      const tensionNums = [1,2,7].filter(n => counts[n] > 0);
-      // Нейтральные (4,5,9 = стабильность, свобода, мудрость)
-      const neutralNums = [4,5,9].filter(n => counts[n] > 0);
-
-      const attractMean = {
-        3: "тройка (3) — деньги через творчество и общение. Ваш природный канал — делать то, что нравится, и делиться этим с людьми. Чем больше вы выражаете себя — тем больше к вам приходит: деньги, возможности, нужные знакомства. Блокировка канала: молчите, прячете таланты, не верите, что за творчество можно получать.",
-        6: "шестёрка (6) — деньги через заботу и помогающие профессии. Ваш природный канал — служить людям, создавать уют и красоту. Вы притягиваете ресурсы, когда помогаете от сердца, а не из-за денег. Блокировка канала: помогаете из страха или чувства долга, забываете о собственных нуждах.",
-        8: "восьмёрка (8) — деньги через управление и амбиции. Ваш природный канал — брать ответственность, организовывать, добиваться результатов. Деньги приходят к вам, когда вы не боитесь масштаба. Блокировка канала: страх ответственности, страх быть «жадным», занижение стоимости своих услуг."
-      };
-
-      const tensionMean = {
-        1: "единица (1) — зона усилий: воля и самооценка. Деньги здесь блокируются через неуверенность, ожидание чужого разрешения или страх первым шагом. Что делать: учитесь называть свою цену, не оправдываясь. Начинайте проекты, не дожидаясь «правильного момента».",
-        2: "двойка (2) — зона усилий: отношения с деньгами. Вы часто отдаёте больше, чем получаете — в деньгах, в труде, в отношениях. Блок: убеждение «просить деньги — стыдно» или «мои нужды не важны». Что делать: тренируйте навык принимать — деньги, подарки, помощь. Говорите о своих услугах и ценах уверенно.",
-        7: "семёрка (7) — зона усилий: доверие к потоку. Деньги здесь блокируются через чрезмерный контроль, недоверие и страх потерять. Вы можете много зарабатывать, но не позволять себе тратить. Что делать: практикуйте «разумную лёгкость» с деньгами — доверяйте своей способности заработать снова."
-      };
-
-      const neutralMean = {
-        4: "четвёрка (4) — стабильный, медленный канал. Деньги приходят через труд, последовательность и надёжность. Быстрых схем здесь нет — зато есть фундамент. Ваше богатство строится постепенно, но прочно.",
-        5: "пятёрка (5) — динамичный канал. Деньги приходят через разнообразие, переговоры и новые возможности. Вы зарабатываете больше, когда двигаетесь и пробуете новое, а не сидите на месте.",
-        9: "девятка (9) — канал мудрости. Деньги приходят через опыт и служение другим. Чем больше вы делитесь накопленными знаниями — тем больше к вам возвращается."
-      };
-
-      let html = '<b>💰 Код Богатства</b><br>';
-
-      if (attractNums.length > 0) {
-        html += '<div class="tip"><b>✅ Ваши природные каналы дохода — откуда деньги приходят легче всего:</b><br>';
-        html += attractNums.map(n => attractMean[n]).join('<br>');
-        html += '</div>';
-      }
-
-      if (tensionNums.length > 0) {
-        html += '<div class="tip"><b>⚠️ Зоны, где деньги блокируются — здесь нужна осознанная работа:</b><br>';
-        html += tensionNums.map(n => tensionMean[n]).join('<br>');
-        html += '</div>';
-      }
-
-      if (neutralNums.length > 0) {
-        html += '<div class="tip"><b>🔄 Дополнительные каналы в вашей дате:</b><br>';
-        html += neutralNums.map(n => neutralMean[n]).join('<br>');
-        html += '</div>';
-      }
-
-      const zeroNums = [3,6,8,1,2,7].filter(n => counts[n] === 0);
-      if (zeroNums.length === 6) {
-        html += '<div class="tip">В вашей дате нет ни каналов притяжения, ни зон напряжения в стандартном коде. Ваш путь к богатству — уникальный, он раскрывается через числа 4, 5, 9 — через труд, свободу и мудрость.</div>';
-      }
-
-      html += '<div class="tip"><b>💡 Общий вывод:</b> Богатство — это не только деньги. Это время, здоровье, свобода и возможности. Работайте со своими каналами осознанно: усиливайте то, что идёт легко, и убирайте блоки там, где есть сопротивление.</div>';
-      return html;
+    2: {
+      short: "🤝 Партнёрство, дипломатия, чувства",
+      full: "<strong>Число 2 — Энергия отношений.</strong><br>• <em>Рекомендуется:</em> налаживать контакты, решать конфликты мягко, проявлять эмпатию.<br>• <em>Избегать:</em> конфронтации, холодного расчёта, давления.<br>• <em>Ключ:</em> гармония достигается через диалог и внимание к чувствам."
+    },
+    3: {
+      short: "🎨 Творчество, общение, самовыражение",
+      full: "<strong>Число 3 — Энергия творчества.</strong><br>• <em>Рекомендуется:</em> общаться, создавать контент, использовать юмор, проявляться.<br>• <em>Избегать:</em> изоляции, подавления эмоций, рассеянности.<br>• <em>Ключ:</em> ваша сила — в лёгкости и способности вдохновлять других."
+    },
+    4: {
+      short: "🏗️ Структура, порядок, дисциплина",
+      full: "<strong>Число 4 — Энергия стабильности.</strong><br>• <em>Рекомендуется:</em> выполнять задачи по списку, наводить порядок, завершать дела.<br>• <em>Избегать:</em> хаоса, спешки, отсутствия плана.<br>• <em>Ключ:</em> результат приходит через системность и терпение."
+    },
+    5: {
+      short: "🌀 Перемены, свобода, адаптивность",
+      full: "<strong>Число 5 — Энергия движения.</strong><br>• <em>Рекомендуется:</em> путешествовать, экспериментировать, учиться новому, менять подход.<br>• <em>Избегать:</em> застоя, привязанности к старому, страха перемен.<br>• <em>Ключ:</em> гибкость открывает новые возможности."
+    },
+    6: {
+      short: "❤️ Забота, гармония, семья",
+      full: "<strong>Число 6 — Энергия любви.</strong><br>• <em>Рекомендуется:</em> заботиться о близких, создавать уют, развивать эстетику.<br>• <em>Избегать:</em> самопожертвования, конфликтов в семье, некрасивых поступков.<br>• <em>Ключ:</em> гармония вокруг начинается с гармонии внутри."
+    },
+    7: {
+      short: "🔍 Мудрость, анализ, интуиция",
+      full: "<strong>Число 7 — Энергия глубины.</strong><br>• <em>Рекомендуется:</em> учиться, анализировать, медитировать, искать истину.<br>• <em>Избегать:</em> поверхностности, пустых разговоров, изоляции от мира.<br>• <em>Ключ:</em> доверяйте интуиции, но проверяйте факты."
+    },
+    8: {
+      short: "💰 Сила, результат, материальный успех",
+      full: "<strong>Число 8 — Энергия достижения.</strong><br>• <em>Рекомендуется:</em> управлять финансами, ставить амбициозные цели, вести переговоры.<br>• <em>Избегать:</em> необдуманных трат, жёсткости, злоупотребления властью.<br>• <em>Ключ:</em> этичный успех возвращается в многократном размере."
+    },
+    9: {
+      short: "🕊️ Завершение, мудрость, служение",
+      full: "<strong>Число 9 — Энергия завершения.</strong><br>• <em>Рекомендуется:</em> подводить итоги, помогать другим, отпускать прошлое.<br>• <em>Избегать:</em> начала крупных проектов, удержания обид, драматизации.<br>• <em>Ключ:</em> завершите цикл — и откроется путь к новому."
     }
   },
-  {
-    id: 'year', name: 'Число года', fields: ['date'],
-    brief: (v) => { let d = parseDate(v[0]); if (!d) return "Ошибка"; return 'Число года: '+reduceToSingle(d.day+d.month+new Date().getFullYear()); },
-    full: (v) => {
-      let d = parseDate(v[0]); if (!d) return "Ошибка";
-      let yr = new Date().getFullYear();
-      let num = reduceToSingle(d.day + d.month + yr);
-      const yearDesc = {
-        1:"Год 1 — год новых начал. Это ваш персональный «Новый год» в девятилетнем цикле. Всё, что вы посеете сейчас — будет давать плоды следующие девять лет. Идеальное время для запуска проектов, переезда, смены профессии, начала отношений. Страх и промедление — главные враги этого года. Действуйте смело.",
-        2:"Год 2 — год отношений и терпения. После активного первого года жизнь замедляется и приглашает вас глубже в контакт с людьми. Это не год прорывов — это год укрепления связей, переговоров и тонкой работы. Торопить события не стоит: семена прошлого года прорастают. Уделяйте время близким.",
-        3:"Год 3 — год роста, творчества и общения. Энергия расширяется: появляются новые знакомства, возможности, идеи. Хороший год для обучения, публичности, творческих проектов. Опасность — распыление: всего много, фокус теряется. Выбирайте самое важное и вкладывайтесь в него.",
-        4:"Год 4 — год труда и фундамента. Время строить — карьеру, здоровье, финансовую подушку. Этот год не обещает лёгких побед, но даёт прочный результат тем, кто готов работать системно. Хорошее время для вложений в долгосрочное: образование, недвижимость, здоровье.",
-        5:"Год 5 — год перемен и свободы. Стабильность уходит, жизнь ускоряется. Неожиданные события, новые знакомства, смена планов — это нормально для пятого года. Сопротивляться переменам бессмысленно — лучше научиться серфить на волне. Отличный год для путешествий и смелых экспериментов.",
-        6:"Год 6 — год ответственности и любви. Акцент смещается на семью, дом, отношения и здоровье. Этот год просит вас навести порядок в личной жизни. Хорошее время для свадьбы, рождения детей, ремонта, примирения с близкими. Карьера уходит на второй план — и это нормально.",
-        7:"Год 7 — год уединения и внутреннего поиска. Лучший год для духовной практики, учёбы, анализа и осмысления прожитого. Внешние результаты могут быть скромными — зато внутренние изменения огромны. Слушайте интуицию, избегайте поверхностного общения, инвестируйте в знание.",
-        8:"Год 8 — год силы и урожая. Всё, что строилось последние годы, начинает приносить плоды. Хорошее время для карьерного роста, крупных сделок, финансовых решений. Но и ответственность максимальная: что посеяли — то и пожинаете. Действуйте честно и масштабно.",
-        9:"Год 9 — год завершения и очищения. Последний год цикла просит вас отпустить всё лишнее: старые отношения, работу, убеждения. Это год итогов и прощаний. Не начинайте новых крупных проектов — завершайте начатое. Освободите место для нового цикла, который начнётся в следующем году."
-      };
-      const yearPlan = {
-        1:"Что делать в этом году: начинайте, запускайте, решайте. Январь–март — лучшее время для первого шага. Не ждите идеального момента.",
-        2:"Что делать в этом году: вкладывайтесь в отношения, учитесь слушать, ищите партнёров. Апрель–июнь — пик для переговоров и союзов.",
-        3:"Что делать в этом году: учитесь, создавайте, общайтесь. Заявите о себе — публично выступайте, пишите, делитесь. Лето — самое продуктивное время.",
-        4:"Что делать в этом году: составьте план на год и следуйте ему. Сосредоточьтесь на здоровье и финансах. Осень — лучшее время для вложений.",
-        5:"Что делать в этом году: будьте гибкими и открытыми. Отпустите жёсткие планы. Путешествуйте, знакомьтесь, пробуйте новое. Не держитесь за старое.",
-        6:"Что делать в этом году: уделяйте время близким. Позаботьтесь о доме и здоровье. Примиритесь с теми, с кем в конфликте. Весна — время для семейных решений.",
-        7:"Что делать в этом году: читайте, учитесь, медитируйте. Избегайте лишнего шума. Доверяйте интуиции. Осень–зима — время самых глубоких прозрений.",
-        8:"Что делать в этом году: берите на себя больше ответственности. Не уклоняйтесь от крупных решений. Лето–осень — пик возможностей для карьеры и финансов.",
-        9:"Что делать в этом году: завершайте, прощайте, отпускайте. Разберитесь с незакрытыми делами. Не начинайте нового до следующего года. Зима — время подведения итогов."
-      };
-      return `<b>📅 Ваше Число ${yr} Года — ${num}</b><br>${yearDesc[num] || getArcanaMeaning(num)}<div class="tip"><b>Как использовать энергию этого года:</b> ${yearPlan[num] || 'Следуйте ритму года — и жизнь будет течь легче.'}</div>`;
-    }
+
+  // ── ЧИСЛО СОЗНАНИЯ (характер, мышление) ──
+  consciousness: {
+    1: { short: "Независимый мыслитель", full: "Вы воспринимаете себя как лидера. Цените автономию, действуете по внутреннему импульсу. Сильные стороны: воля, решительность. Зона роста: учиться слышать других." },
+    2: { short: "Чуткий наблюдатель", full: "Ваше самовосприятие строится на эмпатии. Вы тонко чувствуете настроения, умеете сглаживать конфликты. Сильные стороны: дипломатия. Зона роста: устанавливать границы." },
+    3: { short: "Творческий коммуникатор", full: "Вы видите себя через призму общения и самовыражения. Легко генерируете идеи, вдохновляете. Сильные стороны: харизма. Зона роста: доводить начатое до конца." },
+    4: { short: "Системный стратег", full: "Вы мыслите структурно, цените порядок и логику. Надёжны, последовательны. Сильные стороны: дисциплина. Зона роста: быть гибче в нестандартных ситуациях." },
+    5: { short: "Свободный исследователь", full: "Вы воспринимаете себя как человека перемен. Любите новизну, адаптируетесь быстро. Сильные стороны: адаптивность. Зона роста: сохранять фокус на главном." },
+    6: { short: "Заботливый хранитель", full: "Ваша идентичность связана с заботой о близких. Создаёте гармонию вокруг. Сильные стороны: ответственность. Зона роста: не забывать о себе." },
+    7: { short: "Глубокий аналитик", full: "Вы склонны к рефлексии, поиску смысла. Доверяете интуиции. Сильные стороны: мудрость. Зона роста: делиться открытиями с миром." },
+    8: { short: "Стратегический лидер", full: "Вы видите себя через призму силы и результата. Ставите масштабные цели. Сильные стороны: управление. Зона роста: баланс власти и человечности." },
+    9: { short: "Гуманист-наставник", full: "Ваше самоощущение связано с служением и мудростью. Стремитесь помогать. Сильные стороны: сострадание. Зона роста: не растворяться в других." }
   },
-  {
-    id: 'gematria', name: 'Энергия Слова', fields: ['text'],
-    brief: (v) => { if(!v[0]) return "Введите слово"; let s=0, m={'а':1,'б':2,'в':3,'г':4,'д':5,'е':6,'ё':6,'ж':7,'з':8,'и':9,'й':1,'к':2,'л':3,'м':4,'н':5,'о':6,'п':7,'р':8,'с':9,'т':1,'у':2,'ф':3,'х':4,'ц':5,'ч':6,'ш':7,'щ':8,'ъ':9,'ы':1,'ь':2,'э':3,'ю':4,'я':5}; for(let ch of v[0].toLowerCase()) if(m[ch]) s+=m[ch]; return 'Вибрация: '+reduceToSingle(s); },
-    full: (v) => {
-      if(!v[0]) return "Ошибка";
-      let s=0, m={'а':1,'б':2,'в':3,'г':4,'д':5,'е':6,'ё':6,'ж':7,'з':8,'и':9,'й':1,'к':2,'л':3,'м':4,'н':5,'о':6,'п':7,'р':8,'с':9,'т':1,'у':2,'ф':3,'х':4,'ц':5,'ч':6,'ш':7,'щ':8,'ъ':9,'ы':1,'ь':2,'э':3,'ю':4,'я':5};
-      for(let ch of v[0].toLowerCase()) if(m[ch]) s+=m[ch];
-      let num = reduceToSingle(s);
-      const wordMeanings = {
-        1: "<b>Энергия 1 — Лидерство и Первенство</b><br>Это слово несёт энергию начала, силы и уверенности. Оно привлекает внимание и воспринимается как авторитетное. Люди, слыша его, подсознательно ассоциируют его с первенством и инициативой. Идеально подходит для названий компаний, личных брендов, продуктов, которые хотят быть первыми в своей нише. В личном использовании это слово добавляет вам уверенности — используйте его как аффирмацию или ключевое слово для своих целей. Потенциальная слабость: может восприниматься как жёсткое или конкурентное.",
-        2: "<b>Энергия 2 — Гармония и Партнёрство</b><br>Это слово несёт энергию доверия, мягкости и взаимодействия. Оно создаёт ощущение безопасности и располагает к себе. Люди чувствуют, что с этим словом (или брендом) можно выстраивать долгосрочные отношения. Идеально для: психологии, консультирования, партнёрств, медиации, семейных проектов. В личном использовании это слово помогает притягивать нужных людей и выстраивать доверие.",
-        3: "<b>Энергия 3 — Творчество и Радость</b><br>Это слово звучит легко, ярко и запоминается. Оно пробуждает интерес и ощущение чего-то живого. Люди ассоциируют его с вдохновением, весельем и свежим взглядом. Идеально для: творческих студий, образовательных проектов, маркетинга, медиа, детских брендов. В личном использовании — помогает снять внутренние блоки и выйти из серьёзности в лёгкость.",
-        4: "<b>Энергия 4 — Стабильность и Надёжность</b><br>Это слово вызывает доверие и ощущение фундаментальности. Оно не кричит — оно убеждает. Люди воспринимают его как нечто проверенное и прочное. Идеально для: строительства, юриспруденции, финансов, страхования, долгосрочных инвестиций. В личном использовании — это слово помогает удерживать фокус и не сдаваться при трудностях.",
-        5: "<b>Энергия 5 — Свобода и Движение</b><br>Это слово звучит динамично и вызывает желание действовать. Оно притягивает тех, кто не хочет стоять на месте. Люди чувствуют в нём риск, приключение и живость. Идеально для: стартапов, технологий, туризма, спорта, молодёжных брендов. В личном использовании — помогает выйти из застоя и решиться на перемены.",
-        6: "<b>Энергия 6 — Тепло и Забота</b><br>Это слово звучит как объятие. Оно создаёт ощущение безопасности, уюта и заботы. Люди хотят возвращаться к тому, что несёт эту энергию. Идеально для: здравоохранения, красоты, детских и семейных проектов, домашнего бизнеса, психологии. В личном использовании — помогает настроиться на заботу о себе и принятие.",
-        7: "<b>Энергия 7 — Мудрость и Глубина</b><br>Это слово звучит таинственно и серьёзно. Оно привлекает тех, кто ищет суть, а не поверхность. Люди воспринимают его как знак качества и экспертизы. Идеально для: образования, аналитики, психологии, эзотерики, исследований. Потенциальный риск: может казаться закрытым или элитарным — смягчайте подачу, если хотите широкую аудиторию.",
-        8: "<b>Энергия 8 — Успех и Результат</b><br>Это слово звучит мощно и вызывает уважение. Оно ассоциируется с достижениями, деньгами и профессионализмом. Люди чувствуют в нём амбициозность. Идеально для: бизнеса, карьерных проектов, финансовых услуг, управления, коучинга по результатам. В личном использовании — отличная аффирмация для тех, кто хочет выйти на новый уровень.",
-        9: "<b>Энергия 9 — Служение и Мудрость</b><br>Это слово звучит мудро и вдохновляет. Оно несёт ощущение чего-то большего, чем личная выгода. Люди чувствуют в нём смысл и глубину. Идеально для: благотворительности, социальных проектов, экологии, духовных практик, движений с миссией. В личном использовании — помогает переключиться с «я хочу» на «зачем это нужно».",
-        11: "<b>Энергия 11 — Вдохновение и Высокая вибрация</b><br>Это слово несёт особую энергию — тонкую, но мощную. Оно пробуждает что-то глубинное в людях: интуицию, ощущение возможного, желание большего. Идеально для: духовных практик, коучинга, искусства, передовых исследований, обучения. Важно: не перегружайте слово — его сила в лаконичности и чистоте.",
-        22: "<b>Энергия 22 — Созидание и Масштаб</b><br>Это слово несёт энергию большого строительства. Оно воспринимается как нечто серьёзное и долгосрочное. Идеально для крупных проектов, объединения людей, создания систем и структур. Это слово «на вырост» — оно работает тем мощнее, чем больше масштаб вашего намерения.",
-        33: "<b>Энергия 33 — Безусловная Любовь</b><br>Это слово несёт редкую вибрацию принятия и безусловной любви. Оно исцеляет. Люди рядом с ним чувствуют себя принятыми такими, какие есть. Идеально для: целительства, духовного обучения, благотворительности, воспитания, работы с детьми и пожилыми. Используйте его осознанно — оно несёт большую ответственность."
-      };
-      return wordMeanings[num] || '<b>Энергия Слова</b><br>Ваше слово несёт уникальную вибрацию.';
-    }
+
+  // ── ЧИСЛО УДАЧИ (что усиливает человека) ──
+  luck: {
+    1: { short: "Удача через инициативу", full: "Возможности приходят, когда вы действуете первым, берёте ответственность, проявляете смелость." },
+    2: { short: "Удача через отношения", full: "Благоприятные события происходят через партнёрство, дипломатию, эмоциональную гармонию." },
+    3: { short: "Удача через творчество", full: "Успех приходит, когда вы выражаете себя, общаетесь, делитесь идеями с лёгкостью." },
+    4: { short: "Удача через порядок", full: "Возможности открываются при системном подходе, выполнении обязательств, наведении структуры." },
+    5: { short: "Удача через перемены", full: "Благоприятные повороты случаются, когда вы открыты новому, путешествуете, экспериментируете." },
+    6: { short: "Удача через заботу", full: "Успех приходит через создание гармонии, помощь близким, эстетическое оформление жизни." },
+    7: { short: "Удача через мудрость", full: "Возможности появляются после анализа, обучения, доверия интуиции и внутреннего голоса." },
+    8: { short: "Удача через результат", full: "Благоприятные события связаны с финансовыми решениями, стратегией, достижением целей." },
+    9: { short: "Удача через служение", full: "Успех приходит, когда вы помогаете другим, завершаете циклы, действуете из мудрости." }
   },
-  {
-    id: 'pythagoras', name: 'Квадрат Пифагора', fields: ['date'],
-    brief: (v) => { let d = parseDate(v[0]); if (!d) return "Ошибка"; return 'Психоматрица рассчитана'; },
-    full: (v) => {
-      let d = parseDate(v[0]);
-      if (!d) return "Ошибка";
-      let s = '' + d.day + d.month + d.year;
-      let counts = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0};
-      for (let ch of s) {
-        let n = parseInt(ch);
-        if (n >= 1 && n <= 9) counts[n]++;
-      }
 
-      function declOfNum(n, titles) {
-        return titles[(n % 10 === 1 && n % 100 !== 11) ? 0 : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) ? 1 : 2];
-      }
-
-      function getDigitDescription(digit, count) {
-        const descriptions = {
-          1: {
-            0: 'Воля слабая, вы часто идёте на поводу у других. Нужно учиться отстаивать свои границы.',
-            1: 'Характер формируется, вы ищете свой путь. Можете быть неуверенны, но стремитесь к самостоятельности.',
-            2: 'Сильная воля, уверенный человек. Умеете отстаивать своё мнение, но иногда бываете упрямы.',
-            3: 'Очень сильный характер, лидер от природы. Можете подавлять окружающих, учитесь гибкости.'
-          },
-          2: {
-            0: 'Энергии не хватает, вы быстро устаёте. Важно восстанавливать силы через сон, природу, творчество.',
-            1: 'Энергия средняя, вы заряжаетесь от других. Избегайте энергетических вампиров.',
-            2: 'Хороший энергетический потенциал, можете делиться теплом с близкими.',
-            3: 'Мощная энергетика, вы можете заряжать целые группы. Но нужен контроль, чтобы не истощать себя.'
-          },
-          3: {
-            0: 'Гуманитарий по складу ума, точные науки даются с трудом. Учитесь через образы и чувства.',
-            1: 'Способности средние, но при интересе можете достичь успеха.',
-            2: 'Хорошие аналитические способности, подходят технические профессии.',
-            3: 'Выдающийся ум, склонность к исследованиям. Можете стать учёным или изобретателем.'
-          },
-          4: {
-            0: 'Здоровье слабое, требуются регулярные профилактики и забота о теле.',
-            1: 'Здоровье среднее, зависит от образа жизни. Важно соблюдать режим.',
-            2: 'Крепкое здоровье, выносливость. Можете много работать без ущерба.',
-            3: 'Отменное здоровье, долголетие. Но не злоупотребляйте своей силой.'
-          },
-          5: {
-            0: 'Интуиция слабая, больше полагаетесь на факты. Учитесь доверять себе.',
-            1: 'Интуиция развивается, иногда чувствуете подсказки.',
-            2: 'Хорошая интуиция, логика и чувства работают в паре.',
-            3: 'Ясновидение, тонкое чутьё. Можете предвидеть события.'
-          },
-          6: {
-            0: 'Физический труд даётся тяжело, вы больше умственный работник.',
-            1: 'Можете работать руками, но предпочитаете интеллектуальный труд.',
-            2: 'Золотые руки, цените качество. Хороший мастер в своём деле.',
-            3: 'Мастер высшего уровня, способны создавать произведения искусства.'
-          },
-          7: {
-            0: 'Удачу нужно привлекать действиями, не ждите подарков судьбы.',
-            1: 'Иногда везёт, но полагаться только на случай не стоит.',
-            2: 'Везёт в жизни, часто оказываетесь в нужное время в нужном месте.',
-            3: 'Судьба балует, вы настоящий любимчик фортуны. Но не теряйте бдительность.'
-          },
-          8: {
-            0: 'Можете быть нетерпимы к чужим ошибкам. Учитесь прощать.',
-            1: 'Доброта проявляется избирательно, вы умеете сочувствовать, но не в ущерб себе.',
-            2: 'Добрый, отзывчивый человек, на вас можно положиться.',
-            3: 'Ангельское терпение, готовы помогать всем. Важно не забывать о себе.'
-          },
-          9: {
-            0: 'Память слабая, нужно постоянно записывать и повторять.',
-            1: 'Память средняя, интересное запоминается легко.',
-            2: 'Хорошая память, способны к изучению языков и больших объёмов информации.',
-            3: 'Феноменальная память, можете удерживать множество деталей.'
-          }
-        };
-        let key = count >= 3 ? 3 : count;
-        return descriptions[digit][key];
-      }
-
-      let gridHtml = `<div class="pythagoras-grid">`;
-      for (let i = 1; i <= 9; i++) {
-        gridHtml += `<div class="pythagoras-cell">
-                        <span class="pythagoras-num">${i}</span>
-                        <span class="pythagoras-count">${counts[i]} ${declOfNum(counts[i], ['раз', 'раза', 'раз'])}</span>
-                      </div>`;
-      }
-      gridHtml += `</div>`;
-
-      let descriptionsHtml = '';
-      const names = ['Характер', 'Энергия', 'Точные науки', 'Здоровье', 'Интуиция', 'Мастерство', 'Удача', 'Доброта', 'Память'];
-      for (let i = 1; i <= 9; i++) {
-        descriptionsHtml += `<div class="tip"><b>${i} — ${names[i-1]}</b> — ${getDigitDescription(i, counts[i])}</div>`;
-      }
-
-      // Анализ линий квадрата Пифагора
-      // Горизонтальные строки (по рядам сетки 1-2-3 / 4-5-6 / 7-8-9)
-      const lineH1 = counts[1] + counts[2] + counts[3]; // ряд 1: дух, самосознание
-      const lineH2 = counts[4] + counts[5] + counts[6]; // ряд 2: земля, тело
-      const lineH3 = counts[7] + counts[8] + counts[9]; // ряд 3: талант, призвание
-      // Вертикальные столбцы
-      const lineV1 = counts[1] + counts[4] + counts[7]; // целеустремлённость
-      const lineV2 = counts[2] + counts[5] + counts[8]; // семья / чувства
-      const lineV3 = counts[3] + counts[6] + counts[9]; // стабильность / творчество
-      // Диагонали
-      const lineDiag1 = counts[1] + counts[5] + counts[9]; // духовность
-      const lineDiag2 = counts[3] + counts[5] + counts[7]; // золотая середина
-
-      function lineStrength(val) {
-        if (val === 0) return 'отсутствует';
-        if (val <= 2) return 'слабая';
-        if (val <= 4) return 'средняя';
-        return 'сильная';
-      }
-
-      let lineAnalysis = '';
-
-      // Горизонталь 1: 1-2-3 — Духовный мир
-      lineAnalysis += `<div class="tip"><b>↔ Строка 1–2–3 — Духовный мир (ваши данные: ${counts[1]}, ${counts[2]}, ${counts[3]}) — сила: ${lineStrength(lineH1)}</b> — `;
-      if (lineH1 === 0) lineAnalysis += 'Духовная сфера почти не выражена. Вам сложно опираться на интуицию и внутренние ориентиры — важно развивать связь с собой.</div>';
-      else if (lineH1 <= 2) lineAnalysis += 'Духовный потенциал есть, но он в развитии. Вы ищете смыслы, иногда сомневаетесь в своём пути — и это честно.</div>';
-      else if (lineH1 <= 4) lineAnalysis += 'Хороший баланс между интуицией и разумом. Вы чувствуете мир глубже, чем кажется окружающим.</div>';
-      else lineAnalysis += 'Мощный духовный потенциал. Вы живёте смыслами, тонко чувствуете людей и ситуации, склонны к философскому взгляду на жизнь.</div>';
-
-      // Горизонталь 2: 4-5-6 — Земная жизнь
-      lineAnalysis += `<div class="tip"><b>↔ Строка 4–5–6 — Земная жизнь (ваши данные: ${counts[4]}, ${counts[5]}, ${counts[6]}) — сила: ${lineStrength(lineH2)}</b> — `;
-      if (lineH2 === 0) lineAnalysis += 'Земная сфера почти пуста. Бытовые и материальные вопросы требуют от вас больших усилий — стоит уделять телу и практической стороне жизни больше внимания.</div>';
-      else if (lineH2 <= 2) lineAnalysis += 'Приземлённость развита умеренно. Вы справляетесь с бытом, но он не ваша сильная сторона. Тело и здоровье требуют сознательной заботы.</div>';
-      else if (lineH2 <= 4) lineAnalysis += 'Хорошая связь с реальным миром. Вы умеете заботиться о себе, выстраивать быт и работать с материальным.</div>';
-      else lineAnalysis += 'Очень сильная земная энергия. Вы практичны, ориентированы на результат и комфорт. Риск — уйти в материализм и забыть о внутреннем.</div>';
-
-      // Горизонталь 3: 7-8-9 — Талант и призвание
-      lineAnalysis += `<div class="tip"><b>↔ Строка 7–8–9 — Талант и призвание (ваши данные: ${counts[7]}, ${counts[8]}, ${counts[9]}) — сила: ${lineStrength(lineH3)}</b> — `;
-      if (lineH3 === 0) lineAnalysis += 'Линия таланта пуста. Призвание ещё не раскрыто — вам предстоит намеренно искать и пробовать себя в разных направлениях.</div>';
-      else if (lineH3 <= 2) lineAnalysis += 'Талант есть, но проявляется непостоянно. Часто вы сами не верите в свои способности — хотя окружающие их замечают.</div>';
-      else if (lineH3 <= 4) lineAnalysis += 'Выраженные таланты и чёткое ощущение своего призвания. Вы знаете, что вам интересно, и умеете это развивать.</div>';
-      else lineAnalysis += 'Исключительно сильная линия таланта. У вас редкий дар — важно не распыляться, а выбрать одно направление и идти в глубину.</div>';
-
-      // Вертикаль 1: 1-4-7 — Целеустремлённость
-      lineAnalysis += `<div class="tip"><b>↕ Столбец 1–4–7 — Целеустремлённость (ваши данные: ${counts[1]}, ${counts[4]}, ${counts[7]}) — сила: ${lineStrength(lineV1)}</b> — `;
-      if (lineV1 === 0) lineAnalysis += 'Целеустремлённость практически отсутствует. Сложно доводить дела до конца. Помогут чёткие списки задач и маленькие ежедневные шаги.</div>';
-      else if (lineV1 <= 2) lineAnalysis += 'Воля формируется. Вы ставите цели, но иногда сворачиваете с пути при первых трудностях. Важно учиться держать фокус.</div>';
-      else if (lineV1 <= 4) lineAnalysis += 'Хорошая целеустремлённость. Вы умеете двигаться к цели, не теряя нити даже при препятствиях.</div>';
-      else lineAnalysis += 'Железная воля и целеустремлённость. Вы идёте к своему, несмотря ни на что. Следите, чтобы это не переходило в упрямство.</div>';
-
-      // Вертикаль 2: 2-5-8 — Семья и чувства
-      lineAnalysis += `<div class="tip"><b>↕ Столбец 2–5–8 — Семья и чувства (ваши данные: ${counts[2]}, ${counts[5]}, ${counts[8]}) — сила: ${lineStrength(lineV2)}</b> — `;
-      if (lineV2 === 0) lineAnalysis += 'Семейная сфера почти не выражена. Вам комфортнее в одиночестве или в небольшом кругу. Близкие отношения требуют от вас усилий.</div>';
-      else if (lineV2 <= 2) lineAnalysis += 'Семья важна, но вы цените личное пространство. Баланс между близостью и свободой — ваша ключевая задача в отношениях.</div>';
-      else if (lineV2 <= 4) lineAnalysis += 'Гармоничное отношение к семье и близким. Вы умеете любить и принимать, не теряя себя.</div>';
-      else lineAnalysis += 'Семья — ваш главный приоритет. Вы живёте ради близких и черпаете в них силу. Важно не забывать о собственных нуждах.</div>';
-
-      // Вертикаль 3: 3-6-9 — Стабильность и творчество
-      lineAnalysis += `<div class="tip"><b>↕ Столбец 3–6–9 — Стабильность и творчество (ваши данные: ${counts[3]}, ${counts[6]}, ${counts[9]}) — сила: ${lineStrength(lineV3)}</b> — `;
-      if (lineV3 === 0) lineAnalysis += 'Стабильность и творчество требуют развития. Вам сложно удерживать постоянство, но перемены тоже пугают. Найдите свой ритм.</div>';
-      else if (lineV3 <= 2) lineAnalysis += 'Умеренная стабильность. Вы способны на постоянство, когда это важно, но любите иногда менять обстановку.</div>';
-      else if (lineV3 <= 4) lineAnalysis += 'Хороший баланс стабильности и творческого поиска. Вы надёжны и при этом не боитесь нового.</div>';
-      else lineAnalysis += 'Очень высокая стабильность. Вы — якорь для окружающих. Творчество может быть приглушено — давайте ему больше пространства.</div>';
-
-      // Диагональ 1-5-9 — Духовность
-      lineAnalysis += `<div class="tip"><b>⤡ Диагональ 1–5–9 — Духовность (ваши данные: ${counts[1]}, ${counts[5]}, ${counts[9]}) — сила: ${lineStrength(lineDiag1)}</b> — `;
-      if (lineDiag1 === 0) lineAnalysis += 'Духовная ось пуста. Вопросы смысла жизни пока не в фокусе. Это может меняться с возрастом и опытом.</div>';
-      else if (lineDiag1 <= 2) lineAnalysis += 'Духовность пробуждается. Вы задаёте себе глубокие вопросы, но ещё ищете ответы.</div>';
-      else if (lineDiag1 <= 4) lineAnalysis += 'Развитая духовность. Вы чувствуете связь с чем-то большим и умеете черпать из этого силу.</div>';
-      else lineAnalysis += 'Исключительно сильная духовная ось. Вы — человек с философской глубиной, способный видеть смысл там, где другие видят хаос.</div>';
-
-      // Диагональ 3-5-7 — Золотая середина
-      lineAnalysis += `<div class="tip"><b>⤢ Диагональ 3–5–7 — Золотая середина (ваши данные: ${counts[3]}, ${counts[5]}, ${counts[7]}) — сила: ${lineStrength(lineDiag2)}</b> — `;
-      if (lineDiag2 === 0) lineAnalysis += 'Трудно находить баланс. Вы часто бросаетесь в крайности — либо всё, либо ничего. Учитесь останавливаться и находить середину.</div>';
-      else if (lineDiag2 <= 2) lineAnalysis += 'Баланс развивается. Вы стремитесь к гармонии, но иногда всё же перегибаете в одну сторону.</div>';
-      else if (lineDiag2 <= 4) lineAnalysis += 'Хорошее чувство меры. Вы умеете находить компромисс, не жертвуя главным.</div>';
-      else lineAnalysis += 'Отличное внутреннее равновесие. Вы редко впадаете в крайности и умеете объединять противоположности.</div>';
-
-      return `<b>🔢 Квадрат Пифагора (психоматрица)</b><br>${gridHtml}
-              <div style="margin: 8px 0 4px 0;"><i>Каждая цифра показывает количество повторений в дате рождения. Чем больше цифр, тем сильнее качество.</i></div>
-              ${descriptionsHtml}
-              <div style="margin-top: 10px;"><b>📊 Анализ линий квадрата:</b><br><i style="font-size:13px;color:#9a7a70">Квадрат читается по строкам (↔), столбцам (↕) и диагоналям (⤡⤢). Каждая линия — отдельное качество личности.</i></div>
-              ${lineAnalysis}
-              <br><i>Психоматрица — это карта ваших врождённых качеств. Работая над «слабыми» ячейками, вы можете развить недостающие способности.</i>`;
-    }
+  // ── ЧИСЛО МИССИИ (предназначение) ──
+  mission: {
+    1: { short: "Миссия: быть первопроходцем", full: "Ваша задача — создавать новое, вдохновлять на действие, брать ответственность за начало." },
+    2: { short: "Миссия: объединять людей", full: "Ваш путь — через диалог, эмпатию, создание гармоничных связей между людьми." },
+    3: { short: "Миссия: вдохновлять творчеством", full: "Вам предназначено передавать идеи, радовать мир, раскрывать таланты — свой и чужие." },
+    4: { short: "Миссия: создавать основу", full: "Ваша роль — строить фундамент: системы, традиции, надёжные структуры для других." },
+    5: { short: "Миссия: нести свободу", full: "Ваш путь — показывать, как меняться, адаптироваться, жить в движении без потери себя." },
+    6: { short: "Миссия: заботиться и гармонизировать", full: "Вам дано создавать пространство любви, где растут люди, отношения, проекты." },
+    7: { short: "Миссия: искать истину", full: "Ваша задача — углубляться в смыслы, делиться мудростью, помогать другим находить свой путь." },
+    8: { short: "Миссия: управлять ресурсами", full: "Вам предназначено достигать материального успеха и использовать его во благо." },
+    9: { short: "Миссия: служить миру", full: "Ваш путь — помогать, исцелять, завершать циклы и открывать двери к новому этапу." }
   },
-  {
-    id: 'matrix', name: 'Матрица судьбы', fields: ['date'],
-    brief: (v) => { let d = parseDate(v[0]); if (!d) return "Ошибка"; let p1=reduceTo22(d.day), p2=reduceTo22(d.month), p3=reduceTo22(d.year), p4=reduceTo22(p1+p2), p10=reduceTo22(p1+p2+p3+p4); return 'Матрица: центр '+p10; },
-    full: (v) => {
-      let d = parseDate(v[0]); if (!d) return "Ошибка";
-      let p1=reduceTo22(d.day), p2=reduceTo22(d.month), p3=reduceTo22(d.year), p4=reduceTo22(p1+p2), p10=reduceTo22(p1+p2+p3+p4);
 
-      const centerDesc = {
-        1:"Ваше предназначение — быть первопроходцем. Вы пришли, чтобы начинать, вести, создавать новое там, где другие ещё боятся. Ваша миссия раскрывается через самостоятельность и смелость принимать решения. Чем больше вы доверяете себе — тем точнее попадаете в своё предназначение. Лидерство для вас — не про власть, а про ответственность за свой путь.",
-        2:"Ваше предназначение — быть мостом между людьми. Вы пришли создавать гармонию, объединять, примирять. В партнёрстве и сотрудничестве ваш потенциал раскрывается полностью. Вы тонко чувствуете нужды других и умеете найти слова, которые исцеляют. Ваша миссия — научить мир слушать друг друга.",
-        3:"Ваше предназначение — нести радость и красоту. Вы пришли творить: словом, образом, идеей. Через самовыражение вы не просто реализуетесь сами — вы зажигаете других. Ваша миссия раскрывается, когда вы перестаёте прятать таланты и позволяете себе быть заметным. Мир ждёт вашего голоса.",
-        4:"Ваше предназначение — строить прочные основы. Вы пришли создавать то, что будет служить людям долго: системы, структуры, надёжные отношения. Ваша миссия — превращать хаос в порядок, идеи — в реальность. Через труд и последовательность вы становитесь опорой для тех, кто рядом.",
-        5:"Ваше предназначение — быть проводником перемен. Вы пришли исследовать, пробовать, открывать новые горизонты. Ваша свобода — не каприз, а инструмент миссии: увидев мир с разных сторон, вы помогаете другим расширять границы. Через принятие изменений вы становитесь воплощением живой, гибкой мудрости.",
-        6:"Ваше предназначение — исцелять через любовь. Вы пришли создавать тепло и безопасность — в семье, в отношениях, в профессии. Ваша миссия раскрывается, когда вы учитесь любить, не растворяясь. Красота, забота, гармония — это не слабость, это ваша сила и инструмент преображения мира вокруг.",
-        7:"Ваше предназначение — хранить и передавать мудрость. Вы пришли искать истину — в науке, в духовном опыте, в глубоком анализе жизни. Ваша миссия — не просто знать, но делиться знанием так, чтобы оно меняло людей. Уединение и размышление для вас не бегство, а источник силы.",
-        8:"Ваше предназначение — управлять ресурсами во благо. Вы пришли строить, достигать, брать на себя большую ответственность. Ваша сила — в умении организовывать и воплощать. Миссия раскрывается, когда успех служит не только вам, но и тем, кто рядом. Деньги, власть, влияние — в ваших руках это инструменты, а не цель.",
-        9:"Ваше предназначение — служить и завершать циклы. Вы пришли отпускать старое, прощать, помогать другим двигаться вперёд. Ваша мудрость рождается через боль и опыт — и именно поэтому она настоящая. Миссия раскрывается, когда вы перестаёте цепляться и начинаете отдавать то, что накоплено.",
-        10:"Ваше предназначение — идти в потоке судьбы. Колесо Фортуны в центре матрицы говорит: ваша жизнь полна поворотных моментов, и каждый из них — не случайность, а приглашение. Ваша миссия — научиться доверять жизни, замечать знаки и действовать в нужный момент. Удача приходит к тем, кто не сопротивляется своему пути.",
-        11:"Ваше предназначение — вдохновлять и пробуждать. Вы пришли с редкой способностью видеть то, что ещё не стало реальностью, — идеи, образы, возможности. Вы опережаете время, и ваша миссия — не бояться этого. Через творчество, слово или личный пример вы способны менять сознание людей. Важно заземляться и не теряться в высоких вибрациях.",
-        12:"Ваше предназначение — научиться отдавать мудро. Вы пришли через жертву — но не жертву из страха, а осознанный выбор служить. Ваша миссия раскрывается, когда вы понимаете: помогать другим — ваша сила, а не слабость. Важно научиться отдавать, не теряя себя, и принимать так же легко, как дарить.",
-        13:"Ваше предназначение — трансформация. Вы пришли через кризисы — и каждый из них делает вас сильнее. Ваша миссия — показывать другим, что через разрушение старого рождается нечто лучшее. Вы — живое доказательство того, что из пепла можно подняться. Принятие перемен — ваш главный ресурс.",
-        14:"Ваше предназначение — найти золотую середину. Вы пришли учиться балансу: между чувствами и разумом, свободой и ответственностью, духовным и материальным. Ваша миссия — не выбирать крайности, а соединять противоположности. Исцеление через умеренность — ваш главный урок и ваш дар для других.",
-        15:"Ваше предназначение — обрести истинную свободу через осознанность. Вы пришли с мощной личной силой и притяжением. Искушения, страсти, зависимости — это ваши учителя, а не враги. Миссия раскрывается, когда вы выбираете осознанно, а не под влиянием инстинктов. Ваша сила — в умении превращать энергию желания в энергию созидания.",
-        16:"Ваше предназначение — строить на прочном фундаменте. Вы пришли разрушать иллюзии — свои и чужие. То, что казалось незыблемым и рушится в вашей жизни, — это не катастрофа, а расчистка пути. Ваша миссия — помогать людям видеть правду и строить нечто настоящее вместо красивых, но пустых конструкций.",
-        17:"Ваше предназначение — нести надежду. Вы пришли напоминать людям, что даже в темноте есть свет. Ваш талант, вдохновение и вера в лучшее — это не наивность, а сила. Миссия раскрывается, когда вы перестаёте прятать своё сияние и позволяете себе быть маяком для других.",
-        18:"Ваше предназначение — познать глубины подсознания. Вы пришли работать с тем, что скрыто: страхами, иллюзиями, тайными мотивами — своими и чужими. Ваша интуиция — мощный инструмент миссии. Когда вы доверяете внутреннему голосу и не боитесь тьмы, вы становитесь проводником для тех, кто заблудился.",
-        19:"Ваше предназначение — излучать свет и жизнерадостность. Вы пришли быть солнцем для окружающих. Ваша успешность, открытость и умение радоваться жизни — это не поверхностность, а настоящий дар. Миссия раскрывается, когда вы живёте в полную силу и не стесняетесь своего счастья.",
-        20:"Ваше предназначение — исцелять родовые паттерны. Вы пришли с глубокой связью с предками и родом. Ваша миссия — осознать родовые сценарии, взять из них мудрость и освободить следующие поколения от повторяющихся ошибок. Через принятие своих корней вы обретаете силу строить новое.",
-        21:"Ваше предназначение — воплощать целостность. Вы пришли объединять — людей, идеи, миры. Ваша миссия раскрывается, когда вы принимаете себя полностью — со всеми противоречиями — и создаёте нечто завершённое и прекрасное. Вы способны синтезировать опыт и преподносить его в форме, понятной каждому.",
-        22:"Ваше предназначение — строить мир вокруг себя заново. Вы пришли с огромным потенциалом созидания. Ваши идеи масштабны, а способность воплощать их — редкая. Миссия раскрывается, когда вы доверяете жизни и отпускаете контроль: именно тогда через вас реализуются проекты, меняющие реальность многих людей.",
-        33:"Ваше предназначение — нести безусловную любовь. Вы пришли учить мир любить — не за что-то, а просто так. Ваша миссия — быть живым примером принятия, сострадания и единства. Это редкое и тяжёлое предназначение: вам важно оставаться человеком, заботясь о своих границах и не растворяясь в других."
-      };
-
-      const topDesc = {
-        1:"Окружающие видят в вас уверенного, самостоятельного человека, способного принимать решения. Вас воспринимают как лидера — даже если вы сами этого не замечаете. Люди тянутся к вашей определённости и смелости. Важно: ваша внешняя уверенность может скрывать от других вашу внутреннюю чувствительность.",
-        2:"Окружающие видят в вас чуткого, мягкого и надёжного человека. Вас воспринимают как того, к кому можно прийти за советом или поддержкой. Люди ощущают рядом с вами безопасность. Важно: ваша мягкость — сила, а не слабость, но учитесь не брать на себя чужую боль.",
-        3:"Окружающие видят в вас яркую, творческую личность. Вы производите впечатление человека с богатым внутренним миром, лёгкостью и хорошим чувством юмора. Люди рядом с вами оживают. Важно: не прячьте своё творческое начало — именно оно делает вас запоминающимся.",
-        4:"Окружающие воспринимают вас как надёжного и основательного человека. Вы производите впечатление того, на кого можно положиться. Люди чувствуют вашу устойчивость и стабильность. Важно: позвольте себе иногда быть гибким — это не разрушит ваш образ, а обогатит его.",
-        5:"Окружающие видят в вас свободного, живого и непредсказуемого человека. Вы производите впечатление того, кто не боится перемен. Люди восхищаются вашей лёгкостью на подъём. Важно: ваша непосредственность притягивает, но иногда стоит показывать и глубину.",
-        6:"Окружающие воспринимают вас как заботливого и тёплого человека. Рядом с вами люди расслабляются и чувствуют себя принятыми. Вас видят как создателя уюта и гармонии. Важно: следите, чтобы забота о других не становилась способом избежать собственных потребностей.",
-        7:"Окружающие видят в вас загадочного, глубокого и вдумчивого человека. Вас воспринимают как того, кто знает больше, чем говорит. Люди чувствуют вашу глубину, даже если вы молчите. Важно: открывайтесь дозированно — ваша закрытость интригует, но иногда отталкивает тех, кто хочет сблизиться.",
-        8:"Окружающие видят в вас сильного, уверенного и результативного человека. Вас воспринимают как того, кто умеет достигать своего. Люди уважают вашу энергию и деловую хватку. Важно: покажите и человеческую сторону — это не ослабит ваш образ, а сделает его живым.",
-        9:"Окружающие видят в вас мудрого, сострадательного человека с большим сердцем. Вас воспринимают как того, кто понимает без слов. Люди чувствуют вашу принимающую энергию. Важно: ваше стремление помочь всем может истощать — учитесь говорить «нет» с любовью.",
-        10:"Окружающие видят в вас человека удачливого, который словно всегда оказывается в нужном месте. Вас воспринимают как баловня судьбы — и отчасти это правда. Важно: используйте везение осознанно, а не как повод не прикладывать усилий.",
-        11:"Окружающие чувствуют в вас особую энергию — вдохновляющую, немного загадочную. Вас воспринимают как человека не от мира сего в лучшем смысле: вы видите то, что другие не замечают. Важно: не все готовы к вашим идеям сразу — давайте людям время.",
-        12:"Окружающие видят в вас самоотверженного, жертвенного человека. Вас воспринимают как того, кто всегда готов помочь. Важно: следите, чтобы этот образ не превращался в ловушку — вы имеете право на собственные нужды и границы.",
-        13:"Окружающие видят в вас человека, прошедшего через многое. Вас воспринимают как сильного и преобразившегося. Люди чувствуют вашу глубину, рождённую из опыта. Важно: ваша трансформация вдохновляет — позвольте себе говорить о ней открыто.",
-        14:"Окружающие воспринимают вас как уравновешенного и разумного человека. Вас видят как того, кто умеет находить компромисс. Люди ценят вашу мудрость и умение не впадать в крайности. Важно: за внешним спокойствием скрывается богатый внутренний мир — доверяйте его другим.",
-        15:"Окружающие чувствуют вашу харизму и магнетизм. Вас воспринимают как сильного, притягательного человека с мощной энергией. Люди запоминают вас с первого взгляда. Важно: ваша сила притяжения — ответственность. Используйте её созидательно.",
-        16:"Окружающие видят в вас человека, меняющегося и обновляющегося. Вас воспринимают как непредсказуемого, но честного. Люди чувствуют, что рядом с вами что-то меняется — в хорошем смысле. Важно: ваша способность разрушать иллюзии ценна, но подавайте её бережно.",
-        17:"Окружающие видят в вас светлого, вдохновляющего человека. Вас воспринимают как того, кто верит в лучшее даже тогда, когда другие сомневаются. Люди заряжаются от вашего оптимизма. Важно: ваша вера — ресурс, берегите её.",
-        18:"Окружающие чувствуют в вас загадочность и глубину. Вас воспринимают как интуитивного, тонко чувствующего человека. Люди иногда не понимают вас до конца — и это притягивает. Важно: доверяйте своей интуиции публично — это ваш дар, а не странность.",
-        19:"Окружающие видят в вас солнечного, успешного и жизнерадостного человека. Вас воспринимают как того, у кого всё получается. Люди тянутся к вашей энергии и свету. Важно: позвольте себе иногда быть уязвимым — это сделает вас ещё ближе к людям.",
-        20:"Окружающие воспринимают вас как человека с глубокими корнями и внутренней мудростью. Вас видят как связующее звено между поколениями. Люди чувствуют в вас особую теплоту и родовую силу. Важно: ваша связь с прошлым — ресурс, а не груз.",
-        21:"Окружающие видят в вас гармоничного, целостного человека. Вас воспринимают как того, кто умеет объединять и завершать. Люди чувствуют в вас завершённость и внутреннее равновесие. Важно: ваша целостность — пример для других.",
-        22:"Окружающие видят в вас человека с особым масштабом. Вас воспринимают как творца, строителя, человека больших идей. Люди чувствуют, что за вами стоит что-то большое. Важно: доверяйте своему видению — оно реальнее, чем кажется.",
-        33:"Окружающие чувствуют в вас безусловную любовь и принятие. Вас воспринимают как духовного человека с огромным сердцем. Люди рядом с вами ощущают, что их принимают такими, какие они есть. Важно: сохраняйте границы — даже самое большое сердце нуждается в защите."
-      };
-
-      const bottomDesc = {
-        1:"Ваша главная жизненная задача — научиться быть собой без оглядки на чужое мнение. Вы пришли освоить самостоятельность: принимать решения, нести за них ответственность и не искать постоянного одобрения. Каждый раз, когда вы делаете выбор из внутренней силы, а не из страха — вы выполняете свою задачу.",
-        2:"Ваша главная задача — научиться строить гармоничные отношения без потери себя. Вы пришли освоить баланс между близостью и личными границами, между отдачей и получением. Через партнёрство — в дружбе, любви, бизнесе — вы раскрываете свой потенциал и проходите главные уроки жизни.",
-        3:"Ваша главная задача — раскрыть и выразить своё творческое начало. Вы пришли не молчать, а говорить, создавать, делиться. Страх быть непонятым или отвергнутым — ваш главный внутренний барьер. Каждый раз, когда вы решаетесь проявиться, вы движетесь к своей истинной реализации.",
-        4:"Ваша главная задача — создать прочную, стабильную жизнь через труд и последовательность. Вы пришли строить: карьеру, семью, внутренний фундамент. Избегание ответственности или поиск лёгких путей будет уводить вас от цели. Через дисциплину и верность себе вы обретаете то, что останется надолго.",
-        5:"Ваша главная задача — обрести внутреннюю свободу через принятие изменений. Вы пришли научиться не цепляться — ни за людей, ни за обстоятельства, ни за прошлое. Ваш рост происходит через движение, эксперимент и готовность отпускать. Стабильность для вас — не внешняя, а внутренняя.",
-        6:"Ваша главная задача — научиться любить, не теряя себя. Вы пришли освоить зрелую любовь: ту, которая не требует жертв и не порождает зависимости. Через отношения с близкими вы проходите свои главные уроки. Когда вы заботитесь о себе так же, как о других, — ваши отношения расцветают.",
-        7:"Ваша главная задача — найти и принять свою внутреннюю истину. Вы пришли искать смыслы — не те, что навязаны обществом, а те, что рождаются в тишине и размышлении. Ваша задача — доверять внутреннему знанию и не бояться идти по пути, который не всем понятен.",
-        8:"Ваша главная задача — научиться управлять силой и ресурсами ответственно. Вы пришли освоить власть в её истинном смысле: не над другими, а над собственной жизнью. Деньги, влияние, статус — всё это придёт, когда вы ставите служение выше личной выгоды.",
-        9:"Ваша главная задача — научиться завершать и отпускать. Вы пришли освоить прощение — себя и других. Накопленная обида, нежелание закрывать старые главы — это то, что держит вас на месте. Каждое отпускание освобождает место для нового и лучшего.",
-        10:"Ваша главная задача — научиться работать с переменами судьбы осознанно. Колесо крутится — и ваша задача не сопротивляться, а понять, куда оно ведёт. Умение замечать поворотные моменты и действовать в них — ваш главный навык в этой жизни.",
-        11:"Ваша главная задача — научиться воплощать свои высокие идеи в реальность. Вы видите многое — теперь важно научиться приземлять это. Вдохновение без действия остаётся мечтой. Ваша задача — стать мостом между миром идей и миром людей.",
-        12:"Ваша главная задача — освоить мудрую жертву. Вы пришли учиться отдавать осознанно — не из чувства долга или вины, а из любви. Когда вы понимаете разницу между жертвенностью и самоотречением — ваша жизнь наполняется смыслом и благодарностью.",
-        13:"Ваша главная задача — принять трансформацию как благо. Вы пришли проходить через кризисы — и выходить из них обновлённым. Сопротивление переменам — ваш главный барьер. Когда вы перестаёте держаться за старое, жизнь открывает перед вами новые, лучшие двери.",
-        14:"Ваша главная задача — найти и удержать внутренний баланс. Вы пришли учиться умеренности: не слишком много, не слишком мало. Ваш рост происходит в моменты, когда вы соединяете противоположности — чувства и разум, духовное и материальное, своё и чужое.",
-        15:"Ваша главная задача — превратить силу желания в силу созидания. Вы пришли с мощной энергией, которая может как разрушать, так и строить. Ваша задача — осознать свои страсти и не дать им управлять вами. Через осознанный выбор вы обретаете истинную свободу.",
-        16:"Ваша главная задача — строить на честном фундаменте. Вы пришли разрушать то, что не настоящее — в себе и вокруг. Это болезненно, но необходимо. Ваша задача — не бояться правды и создавать жизнь, в которой нет места иллюзиям.",
-        17:"Ваша главная задача — сохранять веру даже в самые тёмные моменты. Вы пришли быть светом — для себя и других. Когда вы позволяете себе надеяться и вдохновлять, вы выполняете свою задачу. Ваша уязвимость — это и есть ваша сила.",
-        18:"Ваша главная задача — научиться доверять своей интуиции. Вы пришли работать с тонким миром: снами, предчувствиями, подсознательными сигналами. Страх перед собственной глубиной — ваш главный барьер. Когда вы принимаете свою чувствительность как дар, жизнь становится богаче.",
-        19:"Ваша главная задача — жить в полную силу, не стесняясь своего света. Вы пришли быть счастливым — и этим разрешать другим тоже быть счастливыми. Ваша задача — не скрывать свой успех и радость, а делиться ими, зная, что это вдохновляет.",
-        20:"Ваша главная задача — исцелить и переосмыслить родовые сценарии. Вы пришли завершить то, что не завершили ваши предки. Через принятие своей семейной истории — без осуждения — вы освобождаете себя и следующие поколения.",
-        21:"Ваша главная задача — достичь внутренней целостности. Вы пришли соединить все части себя: принять свои противоречия, объединить прошлое и будущее. Когда вы целостны внутри — ваши отношения, работа и жизнь становятся гармоничными снаружи.",
-        22:"Ваша главная задача — научиться воплощать масштабные идеи, не ломаясь под их тяжестью. Вы пришли строить большое — и ваша задача не испугаться этого масштаба. Доверие жизни и умение делегировать — ключи к реализации вашего огромного потенциала.",
-        33:"Ваша главная задача — научиться любить безусловно, оставаясь собой. Вы пришли с самой высокой вибрацией любви — и ваша задача воплощать её в реальной жизни, а не только в идеале. Границы, забота о себе и честность — это не противоречие любви, а её основа."
-      };
-
-      const leftDesc = {
-        1:"Ваша опора — личная сила и уверенность в себе. В трудные моменты вас держит способность принять решение и действовать. Вы не нуждаетесь в чужом разрешении, чтобы двигаться вперёд — это ваш главный внутренний ресурс. Когда вы верите себе, всё остальное выстраивается.",
-        2:"Ваша опора — чуткость и умение выстраивать связи. В трудные моменты вас держат отношения: близкие, партнёры, те, кому вы доверяете. Вы черпаете силу в диалоге и сотрудничестве. Не бойтесь просить поддержки — это не слабость, а мудрость.",
-        3:"Ваша опора — творчество и способность радоваться. В трудные моменты вас держит умение находить красоту и выражать себя. Творческий процесс — ваша медитация и исцеление. Когда вы создаёте — вы восстанавливаетесь.",
-        4:"Ваша опора — труд, порядок и последовательность. В трудные моменты вас держит способность сосредоточиться на конкретных шагах. Вы восстанавливаетесь через дело, через создание чего-то ощутимого. Структура — ваш якорь.",
-        5:"Ваша опора — гибкость и способность адаптироваться. В трудные моменты вас держит умение не застревать. Вы восстанавливаетесь через движение, смену обстановки, новый опыт. Ваша сила — в том, что вы не цепляетесь.",
-        6:"Ваша опора — любовь и забота. В трудные моменты вас держат близкие и ощущение нужности. Вы восстанавливаетесь, когда помогаете другим или принимаете заботу сами. Дом и семья — ваш ресурс.",
-        7:"Ваша опора — внутреннее знание и уединение. В трудные моменты вас держит способность уйти в себя и найти ответ. Тишина, размышление, природа — ваши источники силы. Доверяйте своей интуиции.",
-        8:"Ваша опора — сила воли и ориентация на результат. В трудные моменты вас держит умение сосредоточиться на цели и идти к ней. Вы восстанавливаетесь через достижения и через ощущение контроля над ситуацией.",
-        9:"Ваша опора — мудрость и способность прощать. В трудные моменты вас держит умение смотреть на ситуацию широко и отпускать то, что не изменить. Ваша сострадательность — сила, а не уязвимость.",
-        10:"Ваша опора — доверие к жизни и умение видеть знаки. В трудные моменты вас держит вера в то, что всё идёт как надо. Ваша интуиция и способность действовать в момент возможности — главный ресурс.",
-        11:"Ваша опора — вдохновение и видение. В трудные моменты вас держит способность видеть смысл за пределами очевидного. Ваши идеи и творческий порыв — источник восстановления. Когда вы вдохновлены — вы непобедимы.",
-        12:"Ваша опора — способность отдавать и служить. В трудные моменты вас держит ощущение нужности и смысла. Вы восстанавливаетесь, когда помогаете другим из любви, а не из обязанности.",
-        13:"Ваша опора — способность к трансформации. В трудные моменты вас держит знание, что вы уже проходили через худшее — и выжили. Ваша устойчивость рождается из пережитого опыта.",
-        14:"Ваша опора — внутреннее равновесие и умение находить середину. В трудные моменты вас держит способность не паниковать и видеть обе стороны. Вы восстанавливаетесь через гармонизацию — тела, мыслей, отношений.",
-        15:"Ваша опора — личная сила и страсть к жизни. В трудные моменты вас держит мощная витальная энергия. Вы восстанавливаетесь через движение, через яркие переживания, через ощущение своей силы.",
-        16:"Ваша опора — честность и способность начинать заново. В трудные моменты вас держит умение признать правду и двигаться дальше. Вы восстанавливаетесь не через отрицание, а через принятие.",
-        17:"Ваша опора — вера и оптимизм. В трудные моменты вас держит способность видеть свет в конце тоннеля. Ваш оптимизм — не наивность, а осознанный выбор. Он и есть ваш главный ресурс.",
-        18:"Ваша опора — интуиция и связь с подсознанием. В трудные моменты вас держит внутренний голос — тихий, но точный. Сны, предчувствия, образы — ваши союзники. Доверяйте им.",
-        19:"Ваша опора — жизнерадостность и вера в себя. В трудные моменты вас держит способность находить радость даже в малом. Ваш внутренний свет — неиссякаемый ресурс. Позвольте ему гореть.",
-        20:"Ваша опора — связь с родом и семейной мудростью. В трудные моменты вас держит ощущение, что за вами стоят предки. Обращение к корням, традициям, семейным ценностям даёт вам силу двигаться вперёд.",
-        21:"Ваша опора — целостность и внутренняя гармония. В трудные моменты вас держит ощущение, что всё в вас на месте. Вы восстанавливаетесь через принятие себя и через создание красоты вокруг.",
-        22:"Ваша опора — масштаб видения и способность созидать. В трудные моменты вас держит понимание большой картины. Когда вы видите смысл — вы способны на многое. Доверяйте своему масштабу.",
-        33:"Ваша опора — безусловная любовь и духовная связь. В трудные моменты вас держит ощущение единства с миром. Ваша способность любить — не иссякает. Это ваш вечный источник."
-      };
-
-      const rightDesc = {
-        1:"Ваш род передал вам силу воли и лидерский дух. По линии предков в вашей семье были люди, которые прокладывали путь первыми — и эта энергия живёт в вас. Ваша задача — принять это наследие и использовать его осознанно, а не бороться с ним.",
-        2:"Ваш род передал вам чуткость и дипломатичность. В вашей семейной системе особую роль играли отношения, союзы, договорённости. Вы унаследовали умение выстраивать мосты между людьми. Примите этот дар — и он станет вашей силой.",
-        3:"Ваш род передал вам творческий дар и способность к самовыражению. В вашей семейной системе были люди искусства, слова или красоты — явно или скрыто. Ваш талант — это продолжение их нереализованного потенциала. Дайте ему жизнь.",
-        4:"Ваш род передал вам трудолюбие и умение строить. В вашей семейной системе ценился труд, порядок и надёжность. Вы унаследовали способность создавать прочные основы. Это ценнейшее наследие — пользуйтесь им мудро.",
-        5:"Ваш род передал вам жажду свободы и перемен. В вашей семейной системе были те, кто стремился к новому — или, напротив, был лишён этой возможности. Ваша свобода — это и ваш дар, и ваша ответственность перед родом.",
-        6:"Ваш род передал вам способность любить и заботиться. В вашей семейной системе любовь была центральной ценностью. Вы унаследовали умение создавать тепло и безопасность. Важно: несите эту любовь дальше, но не в ущерб себе.",
-        7:"Ваш род передал вам мудрость и склонность к поиску истины. В вашей семейной системе были мыслители, исследователи, люди с особым знанием. Вы несёте эту традицию. Ваш интеллект и интуиция — родовой дар.",
-        8:"Ваш род передал вам силу и деловую хватку. В вашей семейной системе были люди, умевшие управлять ресурсами — или стремившиеся к этому. Вы унаследовали потенциал к достижениям. Используйте его этично.",
-        9:"Ваш род передал вам мудрость и сострадание. В вашей семейной системе были люди с большим сердцем, служившие другим. Вы несёте эту энергию. Ваша задача — продолжить эту традицию, не забывая о себе.",
-        10:"Ваш род передал вам удачливость и способность к переменам. В вашей семейной системе были люди, умевшие ловить момент. Ваша интуиция и везение — родовое наследие. Доверяйте ему.",
-        11:"Ваш род передал вам особую чувствительность и способность видеть скрытое. В вашей семейной системе были люди с даром — возможно, нераскрытым. Вы пришли воплотить то, что они не успели. Ваша уникальность — родовой дар.",
-        12:"Ваш род передал вам способность к самоотдаче. В вашей семейной системе служение и забота о других были важнейшими ценностями. Вы несёте этот дар. Важно: научитесь отдавать из полноты, а не из пустоты.",
-        13:"Ваш род передал вам силу трансформации. В вашей семейной системе были кризисы и возрождения. Вы пришли завершить эти циклы. Ваша способность меняться — это родовой ресурс, а не бремя.",
-        14:"Ваш род передал вам способность к равновесию и гармонии. В вашей семейной системе ценились мудрость и умеренность. Вы унаследовали этот баланс. Опирайтесь на него в моменты выбора.",
-        15:"Ваш род передал вам мощную жизненную силу и страстность. В вашей семейной системе были люди с яркими желаниями — реализованными или подавленными. Вы пришли осознать эту силу и направить её созидательно.",
-        16:"Ваш род передал вам способность к обновлению. В вашей семейной системе были разрывы, потери и новые начала. Вы пришли завершить эти циклы и научить род строить на честном фундаменте.",
-        17:"Ваш род передал вам веру и оптимизм. В вашей семейной системе были люди, не терявшие надежды даже в тяжёлые времена. Вы несёте эту светлую энергию. Она — ваш родовой ресурс.",
-        18:"Ваш род передал вам тонкую чувствительность и интуицию. В вашей семейной системе были люди, связанные с миром снов, предчувствий и тайн. Вы несёте эту способность. Доверяйте ей.",
-        19:"Ваш род передал вам жизнерадостность и успешность. В вашей семейной системе были люди, умевшие радоваться и достигать. Вы несёте эту солнечную энергию. Позвольте ей светить в полную силу.",
-        20:"Ваш род передал вам глубокую связь с семейной историей. В вашей семейной системе огромную роль играли традиции, память предков, родовые сценарии. Вы пришли осознать их и дать роду новое направление.",
-        21:"Ваш род передал вам стремление к целостности и гармонии. В вашей семейной системе ценились красота, завершённость, объединение. Вы несёте этот потенциал — и можете воплотить его в своей жизни.",
-        22:"Ваш род передал вам масштаб и потенциал созидания. В вашей семейной системе были люди с большими идеями — воплощёнными или нет. Вы пришли реализовать этот потенциал в полную силу.",
-        33:"Ваш род передал вам высочайшую любовь и духовность. В вашей семейной системе были люди с особой миссией служения и любви. Вы несёте этот редкий дар. Ваша задача — воплотить его в земной, реальной жизни."
-      };
-
-      let chart = `<div class="matrix-chart">
-        <div class="matrix-cell top"><span class="matrix-num">${p3}</span><span class="matrix-label">Верх</span></div>
-        <div class="matrix-cell left"><span class="matrix-num">${p1}</span><span class="matrix-label">Лево</span></div>
-        <div class="matrix-cell center"><span class="matrix-num">${p10}</span><span class="matrix-label">Центр</span></div>
-        <div class="matrix-cell right"><span class="matrix-num">${p2}</span><span class="matrix-label">Право</span></div>
-        <div class="matrix-cell bottom"><span class="matrix-num">${p4}</span><span class="matrix-label">Низ</span></div>
-      </div>`;
-      return `<b>🗺 Матрица Судьбы</b><br>${chart}
-      <div class="tip"><b>Центр (${p10}) — Предназначение:</b> ${centerDesc[p10] || getArcanaMeaning(p10)}</div>
-      <div class="tip"><b>Верх (${p3}) — Как вас видят окружающие:</b> ${topDesc[p3] || getArcanaMeaning(p3)}</div>
-      <div class="tip"><b>Низ (${p4}) — Ваша главная жизненная задача:</b> ${bottomDesc[p4] || getArcanaMeaning(p4)}</div>
-      <div class="tip"><b>Лево (${p1}) — Ваша внутренняя опора:</b> ${leftDesc[p1] || getArcanaMeaning(p1)}</div>
-      <div class="tip"><b>Право (${p2}) — Наследие рода:</b> ${rightDesc[p2] || getArcanaMeaning(p2)}</div>
-      <br><i>Матрица — карта, а не приговор. Выбор за вами.</i>`;
-    }
+  // ── ЧИСЛО РЕАЛИЗАЦИИ (как воплощать) ──
+  realization: {
+    1: { short: "Реализация через лидерство", full: "Вы раскрываетесь, когда действуете смело, берёте инициативу, ведёте за собой." },
+    2: { short: "Реализация через отношения", full: "Ваш успех строится на партнёрстве, умении слушать, создавать доверие." },
+    3: { short: "Реализация через самовыражение", full: "Вы достигаете целей, когда творите, общаетесь, делитесь идеями с миром." },
+    4: { short: "Реализация через структуру", full: "Ваш путь — через порядок, планирование, последовательное движение к цели." },
+    5: { short: "Реализация через перемены", full: "Вы раскрываетесь в движении: новые места, идеи, подходы ведут к успеху." },
+    6: { short: "Реализация через заботу", full: "Ваша сила — в создании гармонии: семья, проекты, пространство, где всем хорошо." },
+    7: { short: "Реализация через мудрость", full: "Вы достигаете целей через анализ, обучение, доверие внутреннему знанию." },
+    8: { short: "Реализация через результат", full: "Ваш успех — в постановке амбициозных целей и их достижении с этикой." },
+    9: { short: "Реализация через служение", full: "Вы раскрываетесь, когда помогаете другим, завершаете важное, действуете из мудрости." }
   },
-  {
-    id: 'talent', name: 'Код таланта', fields: ['date'],
-    brief: (v) => { let d = parseDate(v[0]); if (!d) return "Ошибка"; return 'Код: '+reduceToSingle(d.day)+'-'+reduceToSingle(d.month)+'-'+reduceToSingle(d.year); },
-    full: (v) => {
-      let d = parseDate(v[0]); if (!d) return "Ошибка";
-      let n1=reduceToSingle(d.day), n2=reduceToSingle(d.month), n3=reduceToSingle(d.year), n4=reduceToSingle(sumDate(d));
 
-      // 1-я цифра: КАК ВЫ ЛУЧШЕ ВСЕГО УЧИТЕСЬ И РАЗВИВАЕТЕСЬ
-      const learn = {
-        1:"Вы лучше всего учитесь через действие — «делай и смотри, что получится». Теория без практики вас быстро утомляет. Вам нужно пробовать самому, совершать ошибки и сразу их исправлять. Лучший учитель для вас — собственный опыт и личная инициатива.",
-        2:"Вы лучше всего учитесь через наблюдение и общение. Вы тонко считываете других людей — их опыт, реакции, знания. Вам подходит обучение в паре или маленькой группе, где можно задавать вопросы и обсуждать. Изоляция и самообучение без обратной связи вас тормозят.",
-        3:"Вы лучше всего учитесь через творческое освоение материала. Скучные таблицы и сухие правила не для вас — вам нужны образы, истории, примеры из жизни. Вы запоминаете через эмоцию и вдохновение. Рисуйте схемы, придумывайте ассоциации, рассказывайте другим — это ваш метод.",
-        4:"Вы лучше всего учитесь через систему и повторение. Вам важно понять структуру, а потом закрепить её через практику. Вы не торопитесь, но зато знаете основательно. Лучший формат — последовательные шаги, конспекты и регулярные упражнения.",
-        5:"Вы лучше всего учитесь через разнообразие и эксперименты. Вам скучно долго изучать одно и то же. Вы хватаете суть быстро и двигаетесь дальше. Вам нужны интерактив, смена форматов, нестандартные задачи. Монотонные курсы вас убивают — ищите живые, динамичные форматы.",
-        6:"Вы лучше всего учитесь, когда видите, как знание применяется для помощи людям. Абстрактная теория вас не вдохновляет — зато конкретный пример из жизни попадает сразу. Вы хорошо обучаетесь в атмосфере поддержки и доверия.",
-        7:"Вы лучше всего учитесь через глубокое погружение и самостоятельное исследование. Вам важно понять суть, а не просто запомнить факты. Вы читаете, анализируете, задаёте «неудобные» вопросы. Поверхностные курсы вас раздражают — ищите экспертов и серьёзные источники.",
-        8:"Вы лучше всего учитесь, когда понимаете, зачем это нужно и какой будет результат. Обучение ради обучения — не для вас. Вам важна прикладная ценность знания. Вы хорошо усваиваете через кейсы, бизнес-примеры и наставников-практиков.",
-        9:"Вы лучше всего учитесь через переосмысление и интеграцию. Вам важно не только получить знание, но и понять, как оно вписывается в вашу картину мира. Вы часто учитесь через жизненный опыт — и это делает ваше знание особенно ценным."
-      };
+  // ── СОВМЕСТИМОСТЬ ПАРЫ ──
+  compatibility_consciousness: {
+    1: { short: "Союз лидеров", full: "Много инициативы и страсти. Вы можете усилить друг друга, но важно не бороться за власть. Учитесь делегировать и уважать автономию партнёра." },
+    2: { short: "Эмоциональный союз", full: "Отношения полны чувств. Вы учитесь понимать друг друга глубже. Важно говорить мягко, избегать обид и манипуляций." },
+    3: { short: "Лёгкий творческий союз", full: "Вам вместе весело, вы вдохновляете друг друга. Берегите фокус: энергия может рассеиваться, если нет общей цели." },
+    4: { short: "Стабильный практичный союз", full: "Вы строите прочный фундамент: дом, быт, общие дела. Важно не застрять в рутине и сохранять романтику." },
+    5: { short: "Динамичный свободный союз", full: "Много перемен, путешествий, идей. Договаривайтесь о границах свободы, чтобы не потерять связь." },
+    6: { short: "Тёплый семейный союз", full: "Вы создаёте уют и безопасность. Помните: забота о партнёре не должна заменять заботу о себе." },
+    7: { short: "Глубокий духовный союз", full: "Вы растете через осмысление жизни. Уважайте потребность друг друга в уединении и тишине." },
+    8: { short: "Амбициозный союз", full: "Вы достигаете вместе больших целей. Важно не превратить отношения в бизнес-проект и сохранять человечность." },
+    9: { short: "Мудрый гуманистичный союз", full: "Ваши отношения имеют высокий смысл. Вы вдохновляете других, но не забывайте о простых радостях вдвоём." }
+  },
+  compatibility_mission: {
+    1: { short: "Цель: начать новое вместе", full: "Вы даны друг другу, чтобы выйти из застоя, действовать смело, создавать проекты, которые изменят вашу жизнь." },
+    2: { short: "Цель: исцелить отношения", full: "Ваш союз учит доверию, эмпатии, умению договариваться. Через партнёра вы закрываете старые раны." },
+    3: { short: "Цель: делиться радостью", full: "Вы вместе, чтобы вдохновлять мир, творить, жить легко и передавать эту лёгкость другим." },
+    4: { short: "Цель: создать основу", full: "Ваша задача — построить что-то долговечное: семью, бизнес, традиции, которые останутся после вас." },
+    5: { short: "Цель: расти через перемены", full: "Вы даны друг другу, чтобы учиться свободе, адаптироваться, расширять горизонты — не теряя связи." },
+    6: { short: "Цель: научиться заботе", full: "Ваш союз — школа ответственности и верности. Вы создаёте пространство, где могут расти дети и идеи." },
+    7: { short: "Цель: духовный рост", full: "Вы встретились, чтобы искать истину, исцелять прошлое, становиться мудрее через отношения." },
+    8: { short: "Цель: достичь вместе", full: "Ваша миссия — использовать силу, ресурсы, влияние во благо. Учитесь управлять, не подавляя." },
+    9: { short: "Цель: служить миру", full: "Вы даны друг другу, чтобы через свой союз вдохновлять, помогать, менять окружение к лучшему." }
+  },
+  compatibility_realization: {
+    1: { short: "Стратегия: баланс власти", full: "Успех приходит, когда вы делегируете, уважаете инициативу друг друга и избегаете борьбы за лидерство." },
+    2: { short: "Стратегия: эмоциональный диалог", full: "Гармония строится на открытом выражении чувств, умении слушать и разрешать конфликты без обид." },
+    3: { short: "Стратегия: совместное творчество", full: "Укрепляйте связь через общие проекты, общение, социальную активность и лёгкость в отношениях." },
+    4: { short: "Стратегия: структура и план", full: "Создавайте режим, правила, распределяйте обязанности — это основа устойчивого союза." },
+    5: { short: "Стратегия: гибкость в рамках", full: "Сохраняйте свободу, но договоритесь о главных правилах. Двигайтесь вперёд, не теряя ядра отношений." },
+    6: { short: "Стратегия: забота и уют", full: "Вкладывайтесь в создание гармоничного пространства, воспитание, быт — это укрепляет вашу связь." },
+    7: { short: "Стратегия: уважение к пространству", full: "Давайте друг другу время на уединение, практикуйте глубокие разговоры и духовные практики вместе." },
+    8: { short: "Стратегия: честность в целях", full: "Открыто обсуждайте финансы, амбиции, власть. Совместные достижения укрепляют партнёрство." },
+    9: { short: "Стратегия: высокие смыслы", full: "Не зацикливайтесь на быте. Сохраняйте видение миссии — это питает ваши отношения на глубинном уровне." }
+  },
 
-      // 2-я цифра: КАК РАСКРЫВАЕТСЯ ВАШ ТАЛАНТ
-      const manifest = {
-        1:"Ваш талант раскрывается через лидерство и первопроходство. Вы наиболее ярко проявляете себя, когда берёте ответственность и ведёте за собой — в профессии, в идеях, в жизни. Ваш талант расцветает в условиях самостоятельности. Чужие ограничения и мелкие задачи его гасят.",
-        2:"Ваш талант раскрывается через партнёрство и тонкое взаимодействие. Рядом с правильным человеком вы делаете невозможное. Ваш дар — чувствовать нужды другого и создавать синергию. В одиночестве ваш потенциал раскрывается хуже — вам нужен тот, кто будет рядом.",
-        3:"Ваш талант раскрывается через самовыражение. Когда вы говорите, создаёте, делитесь — происходит что-то особенное. Люди чувствуют вашу энергию и вдохновляются. Ваш дар требует аудитории и пространства для проявления. Прячьте себя — и талант засыпает.",
-        4:"Ваш талант раскрывается через труд и мастерство. Вы один из тех, кто становится по-настоящему хорошим в своём деле — через годы практики и самодисциплину. Ваш дар — не вспышка, а постоянство. В долгосрочных проектах вы превосходите тех, кто ярче горит в начале.",
-        5:"Ваш талант раскрывается через многообразие и нестандартные ситуации. Вы лучше всего думаете и действуете там, где нет готовых решений. Ваш дар — адаптивность и умение находить выход там, где другие теряются. Рутинные задачи его не раскрывают.",
-        6:"Ваш талант раскрывается через заботу и создание гармонии. Вы делаете пространство — физическое, эмоциональное, профессиональное — лучше одним своим присутствием. Ваш дар работает, когда вы чувствуете, что нужны и что отдаёте из любви, а не из обязанности.",
-        7:"Ваш талант раскрывается через глубину и анализ. Вы видите то, что другие пропускают. Ваш дар — в умении задавать правильные вопросы и находить неочевидные ответы. Он раскрывается в тишине, в сложных задачах, в исследовании. Поверхностные темы его не задействуют.",
-        8:"Ваш талант раскрывается через управление и достижение результатов. Когда перед вами стоит серьёзная цель и реальная ответственность — вы преображаетесь. Ваш дар — организовывать, мотивировать и доводить до конца. В маленьких задачах он не виден.",
-        9:"Ваш талант раскрывается через служение и передачу мудрости. Чем больше вы отдаёте — опыт, знания, поддержку — тем сильнее проявляется ваш дар. Ваш талант не для сцены — он для тихих, но меняющих жизни разговоров и поступков."
-      };
-
-      // 3-я цифра: КАК ВЫ ВОПЛОЩАЕТЕ СВОИ ИДЕИ В РЕАЛЬНОСТЬ
-      const realize = {
-        1:"Вы воплощаете идеи через личную инициативу и смелость действовать первым. Ваш способ — принять решение и начать, даже если план ещё не полный. Вы быстро стартуете, но иногда теряете запал на середине. Лайфхак: разделите большой проект на независимые этапы — тогда каждый из них даёт вам свежее начало.",
-        2:"Вы воплощаете идеи через сотрудничество и поддержку нужных людей. В одиночку вы можете топтаться на месте, но найдите партнёра — и дело сдвинется. Ваш способ — договариваться, объединять усилия, использовать чужие сильные стороны. Выбирайте партнёров тщательно: они сильно влияют на ваш результат.",
-        3:"Вы воплощаете идеи через слово, образ и вдохновение других. Ваш способ — рассказывать о своей идее так ярко, что люди сами хотят помочь её воплотить. Вы умеете создавать buzz вокруг проекта. Ваша слабость — доведение до конца: ищите тех, кто дополняет вас в деталях и реализации.",
-        4:"Вы воплощаете идеи через план и систематический труд. Ваш способ — разбить большую цель на конкретные шаги и идти по ним методично. Вы не самый быстрый, но зато надёжный. Ваша сила — в том, что вы действительно доходите до конца.",
-        5:"Вы воплощаете идеи через гибкость и поиск нестандартных путей. Если один способ не работает — вы без сожалений пробуете другой. Ваш способ — итерации, эксперименты, быстрые пробы. Вы хорошо работаете в условиях неопределённости, где нужно быстро адаптироваться.",
-        6:"Вы воплощаете идеи через создание команды и атмосферы. Ваш способ — объединить людей, создать пространство, где каждый хочет вносить вклад. Вы хорошо мотивируете через заботу и доверие. Ваша слабость — трудно принимать жёсткие решения, когда это необходимо.",
-        7:"Вы воплощаете идеи через тщательное исследование и выверенный план. Ваш способ — сначала разобраться досконально, потом действовать. Вы медленнее стартуете, но реже совершаете дорогостоящие ошибки. Ваша опасность — перфекционизм и бесконечная подготовка вместо действия.",
-        8:"Вы воплощаете идеи через организацию ресурсов и людей. Ваш способ — выстроить систему, делегировать и контролировать ключевые точки. Вы думаете масштабно и не боитесь брать большое. Ваша слабость — иногда трудно отпустить контроль там, где это было бы эффективнее.",
-        9:"Вы воплощаете идеи через накопленный опыт и мудрость. Ваш способ — не торопиться, дать идее созреть и воплотить её тогда, когда время пришло. Вы чувствуете правильный момент лучше других. Ваша слабость — иногда ждёте слишком долго."
-      };
-
-      // 4-я цифра: ВАША ПРОФЕССИОНАЛЬНАЯ МИССИЯ
-      const mission = {
-        1:"Ваша профессиональная миссия — быть первым и вести за собой. Вы пришли открывать новые пути в своей сфере. Лучшие роли: основатель, руководитель, пионер направления. Главный вопрос вашей карьеры: «Где я могу начать что-то своё или возглавить?»",
-        2:"Ваша профессиональная миссия — создавать гармонию и партнёрства. Вы пришли объединять людей и делать команды эффективными. Лучшие роли: партнёр, HR, посредник, советник, коуч. Главный вопрос вашей карьеры: «С кем мне по-настоящему хочется работать?»",
-        3:"Ваша профессиональная миссия — вдохновлять и обучать. Вы пришли зажигать других своим примером и словом. Лучшие роли: преподаватель, спикер, контент-мейкер, маркетолог, художник. Главный вопрос вашей карьеры: «Как я могу выражать себя и при этом помогать другим?»",
-        4:"Ваша профессиональная миссия — строить прочные системы. Вы пришли создавать то, что будет работать долго. Лучшие роли: инженер, менеджер, архитектор процессов, строитель в широком смысле. Главный вопрос вашей карьеры: «Что я создаю, что переживёт меня?»",
-        5:"Ваша профессиональная миссия — открывать новое и помогать другим расширять горизонты. Вы пришли двигать сферу вперёд. Лучшие роли: предприниматель, исследователь, путешественник, журналист, продавец. Главный вопрос вашей карьеры: «Где я ещё не был и что ещё не пробовал?»",
-        6:"Ваша профессиональная миссия — исцелять и заботиться. Вы пришли делать жизнь людей лучше через прямую помощь и красоту. Лучшие роли: врач, психолог, дизайнер, воспитатель, социальный работник. Главный вопрос вашей карьеры: «Кому я помогаю, и наполняет ли меня это?»",
-        7:"Ваша профессиональная миссия — искать и хранить истину. Вы пришли углублять знание в своей области. Лучшие роли: учёный, аналитик, консультант, эксперт, духовный наставник. Главный вопрос вашей карьеры: «В чём я могу стать по-настоящему глубоким экспертом?»",
-        8:"Ваша профессиональная миссия — достигать и управлять ресурсами во благо. Вы пришли строить большое. Лучшие роли: CEO, предприниматель, финансист, менеджер крупных проектов. Главный вопрос вашей карьеры: «Какой масштаб я могу взять на себя?»",
-        9:"Ваша профессиональная миссия — служить и передавать мудрость. Вы пришли помогать другим завершать циклы и двигаться вперёд. Лучшие роли: терапевт, наставник, духовный практик, волонтёр, руководитель НКО. Главный вопрос вашей карьеры: «Как мой опыт может помочь другим не повторять мои ошибки?»"
-      };
-
-      return `<b>✨ Код Таланта: ${n1}-${n2}-${n3}-${n4}</b><br><div class="tip"><b>Как вы лучше всего учитесь и развиваетесь (цифра ${n1}):</b> ${learn[n1] || 'Через собственный опыт.'}</div><div class="tip"><b>Как раскрывается ваш природный талант (цифра ${n2}):</b> ${manifest[n2] || 'Через проявление себя.'}</div><div class="tip"><b>Как вы воплощаете идеи в реальность (цифра ${n3}):</b> ${realize[n3] || 'Через последовательные шаги.'}</div><div class="tip"><b>Ваша профессиональная миссия (цифра ${n4}):</b> ${mission[n4] || 'Служить своему делу с полной отдачей.'}</div><br><i>Живите в согласии с талантом — и работа станет радостью, а не обязанностью.</i>`;
+  // ── ЭНЕРГИЯ ДОГОВОРА (1-9, 11, 22) ──
+  contract: {
+    1: {
+      short: "📜 Договор с лидерством",
+      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> быть сильным, принимать решения, вести, брать ответственность.<br>❌ <em>Не делать:</em> прятаться, ждать спасения, выбирать слабость.<br>🎁 <em>Награда:</em> успех, прорывы, власть, защита.<br>⚠️ <em>Цена нарушения:</em> потери, одиночество, бессилие."
+    },
+    2: {
+      short: "📜 Договор с добротой",
+      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> объединять, мирить, проявлять душевность.<br>❌ <em>Не делать:</em> быть холодным, жить с токсичными людьми, причинять боль.<br>🎁 <em>Награда:</em> забота других, хорошие отношения, защита.<br>⚠️ <em>Цена нарушения:</em> эмоциональная боль, одиночество."
+    },
+    3: {
+      short: "📜 Договор с творчеством",
+      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> проявляться, говорить, вдохновлять.<br>❌ <em>Не делать:</em> молчать, жить в тени, стесняться себя.<br>🎁 <em>Награда:</em> популярность, лёгкость, удача.<br>⚠️ <em>Цена нарушения:</em> апатия, чувство ненужности."
+    },
+    4: {
+      short: "📜 Договор с дисциплиной",
+      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> создавать порядок, трудиться, держать стабильность.<br>❌ <em>Не делать:</em> хаос, лень, бесструктурная жизнь.<br>🎁 <em>Награда:</em> прочность, здоровье, стабильный доход.<br>⚠️ <em>Цена нарушения:</em> болезни, долги, разрушение быта."
+    },
+    5: {
+      short: "📜 Договор со свободой",
+      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> путешествовать, менять, общаться, учиться.<br>❌ <em>Не делать:</em> сидеть на месте, зависеть от людей.<br>🎁 <em>Награда:</em> возможности, богатые связи, удача в дороге.<br>⚠️ <em>Цена нарушения:</em> застой, страхи, потери."
+    },
+    6: {
+      short: "📜 Договор с любовью",
+      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> создавать красоту, заботиться, строить уют.<br>❌ <em>Не делать:</em> жертвовать собой, жить в некрасивом.<br>🎁 <em>Награда:</em> любовь, благодарность, гармония.<br>⚠️ <em>Цена нарушения:</em> обида, слёзы, усталость."
+    },
+    7: {
+      short: "📜 Договор с мудростью",
+      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> учить, передавать знания, искать истину.<br>❌ <em>Не делать:</em> молчать, жить поверхностно.<br>🎁 <em>Награда:</em> прозрение, интуиция, глубокие люди рядом.<br>⚠️ <em>Цена нарушения:</em> одиночество, отрыв от мира."
+    },
+    8: {
+      short: "📜 Договор с силой и деньгами",
+      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> управлять, брать ответственность, масштабироваться.<br>❌ <em>Не делать:</em> жить «маленько», бояться денег, быть ведомым.<br>🎁 <em>Награда:</em> высокий доход, власть, достижения.<br>⚠️ <em>Цена нарушения:</em> долги, враги, давление судьбы."
+    },
+    9: {
+      short: "📜 Договор со служением",
+      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> помогать, быть примером, делать добро.<br>❌ <em>Не делать:</em> делать зло, жить эгоистично.<br>🎁 <em>Награда:</em> защита рода, поддержка мира, уважение.<br>⚠️ <em>Цена нарушения:</em> потери, кармическое возмездие."
+    },
+    11: {
+      short: "📜 Договор с пробуждением",
+      full: "<strong>Мастер-число 11:</strong><br>✅ <em>Делать:</em> говорить правду, вдохновлять, менять сознание.<br>❌ <em>Не делать:</em> предавать видение, молчать, жить фальшиво.<br>🎁 <em>Награда:</em> влияние, харизма, предназначение лидера.<br>⚠️ <em>Цена нарушения:</em> пустота, психоэмоциональные падения."
+    },
+    22: {
+      short: "📜 Договор со строением миров",
+      full: "<strong>Мастер-число 22:</strong><br>✅ <em>Делать:</em> строить большое, создавать системы, помогать через структуру.<br>❌ <em>Не делать:</em> бояться масштаба, жить мелко, оставаться в одиночку.<br>🎁 <em>Награда:</em> деньги, команда, признание.<br>⚠️ <em>Цена нарушения:</em> разрушение проектов, потеря смысла."
     }
   }
-];
-
-// ===================== UI логика =====================
-let currentType = types[0];
-let currentInputs = [];
-
-function renderTypeSelector() {
-  const container = document.getElementById('typeSelector');
-  container.innerHTML = '';
-  types.forEach(t => {
-    const btn = document.createElement('button');
-    btn.className = 'type-btn' + (t === currentType ? ' active' : '');
-    btn.textContent = t.name;
-    btn.onclick = () => {
-      currentType = t;
-      renderTypeSelector();
-      renderInputFields();
-      document.getElementById('resultArea').innerHTML = 'Введите данные и нажмите «Получи ответ»';
-      setTimeout(() => {
-        const firstInput = document.querySelector('#inputField input');
-        if (firstInput) { firstInput.focus(); firstInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-      }, 100);
-    };
-    container.appendChild(btn);
-  });
-}
-
-function renderInputFields() {
-  const container = document.getElementById('inputField');
-  container.innerHTML = '';
-  currentInputs = [];
-  currentType.fields.forEach((type, i) => {
-    const div = document.createElement('div');
-    div.style.marginBottom = '16px';
-    const label = document.createElement('label');
-    label.textContent = currentType.id === 'compatibility' ? (i === 0 ? 'Дата 1' : 'Дата 2') : (type === 'date' ? 'Дата рождения' : 'Слово / имя');
-    const inp = document.createElement('input');
-    inp.type = 'text';
-    inp.placeholder = type === 'date' ? 'ДД.ММ.ГГГГ' : 'текст';
-    inp.id = 'input-' + i;
-    if (type === 'date') addAutoDot(inp);
-    div.appendChild(label);
-    div.appendChild(inp);
-    container.appendChild(div);
-    currentInputs.push(inp);
-  });
-}
-
-function addAutoDot(inp) {
-  let isDel = false;
-  inp.addEventListener('keydown', (e) => { isDel = (e.key === 'Backspace' || e.key === 'Delete'); });
-  inp.addEventListener('input', (e) => {
-    if (isDel) return;
-    let v = inp.value.replace(/[^0-9]/g, '');
-    let o = '';
-    if (v.length > 0) o = v.slice(0,2);
-    if (v.length > 2) o += '.' + v.slice(2,4);
-    if (v.length > 4) o += '.' + v.slice(4,8);
-    inp.value = o;
-  });
-}
-
-function getValues() {
-  return currentInputs.map(i => i.value);
-}
-
-function validate(vals) {
-  for (let i = 0; i < currentType.fields.length; i++) {
-    if (currentType.fields[i] === 'date') {
-      if (!parseDate(vals[i])) return false;
-    } else {
-      if (!vals[i] || !vals[i].trim()) return false;
-    }
-  }
-  return true;
-}
-
-document.getElementById('getAnswerBtn').onclick = () => {
-  const vals = getValues();
-  if (!validate(vals)) {
-    document.getElementById('resultArea').innerHTML = '❌ Проверьте данные. Дата в формате ДД.ММ.ГГГГ, имя/слово не пустое.';
-    return;
-  }
-  const resultDiv = document.getElementById('resultArea');
-  resultDiv.innerHTML = currentType.full(vals);
-  resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 };
 
-renderTypeSelector();
-renderInputFields();
+// 🔍 Вспомогательная функция: получить описание
+function getInterp(type, num) {
+  return INTERPRETATIONS[type]?.[num] || INTERPRETATIONS.universal[num] || { 
+    short: "Описание готовится", 
+    full: "Толкование для этого числа будет добавлено позже." 
+  };
+}
+
+// ─── УТИЛИТЫ ─────────────────────────────────────────────
+function parseDate(s) {
+  if (!s) return null;
+  const p = s.split(/[.\/-]/);
+  if (p.length !== 3) return null;
+  const [d, m, y] = p.map(Number);
+  if (isNaN(d)||isNaN(m)||isNaN(y)||d<1||d>31||m<1||m>12||y<1000) return null;
+  return {d, m, y};
+}
+
+// Сумма цифр числа (один проход)
+function dsum(n) {
+  return String(Math.abs(n)).split('').reduce((a,c)=>a+parseInt(c),0);
+}
+
+// Привести к одной цифре (повторяя суммирование)
+function reduce(n) {
+  while (n > 9) n = dsum(n);
+  return n;
+}
+
+// Промежуточный шаг (только один)
+function dsum1(n) { return dsum(n); }
+
+// Показ цепочки вычислений
+function chain(n) {
+  let steps = [n];
+  let cur = n;
+  while (cur > 9) { cur = dsum(cur); steps.push(cur); }
+  return steps.join(' → ');
+}
+
+// Сумма всех цифр даты
+function dateAllDigits(d, m, y) {
+  return dsum(d) + dsum(m) + dsum(y);
+}
+
+// Строка цифр даты для показа шагов
+function dateDigitStr(d, m, y) {
+  const dy = String(d).split('').join('+');
+  const dm = String(m).padStart(2,'0').split('').join('+');
+  const dy2 = String(y).split('').join('+');
+  const total = dsum(d)+dsum(m)+dsum(y);
+  return `${dy} + ${dm} + ${dy2} = ${total}`;
+}
+
+// 🔹 ОБНОВЛЁННАЯ ФУНКЦИЯ rBlock С ПОДДЕРЖКОЙ ТОЛКОВАНИЙ
+function rBlock(label, val, steps, note, interpretType = null, number = null) {
+  const interp = (interpretType && number) ? getInterp(interpretType, number) : null;
+  
+  return `<div class="r-block">
+    <div class="r-label">${label}</div>
+    <div class="r-val">${val}</div>
+    ${steps ? `<div class="r-steps">${steps}</div>` : ''}
+    ${note ? `<div class="r-note">${note}</div>` : ''}
+    
+    ${interp ? `
+    <div class="interp-block">
+      <div style="font-size:14px;color:var(--title);margin-bottom:8px;font-weight:500">
+        ✦ ${interp.short}
+      </div>
+      <div class="interp-full">${interp.full}</div>
+      <button class="interp-toggle" onclick="toggleInterp(this)">
+        📖 Показать полное толкование
+      </button>
+    </div>` : ''}
+  </div>`;
+}
+
+// 🔄 Функция переключения полного текста
+function toggleInterp(btn) {
+  const full = btn.previousElementSibling;
+  const isHidden = full.style.display === 'none' || full.style.display === '';
+  full.style.display = isHidden ? 'block' : 'none';
+  btn.textContent = isHidden ? '📕 Скрыть толкование' : '📖 Показать полное толкование';
+  btn.style.background = isHidden ? 'var(--accent2)' : 'var(--accent)';
+}
+
+function showPanel(i) {
+  document.querySelectorAll('.panel').forEach((p,j)=>{
+    p.classList.toggle('active', j===i);
+  });
+  document.querySelectorAll('.tab').forEach((t,j)=>{
+    t.classList.toggle('active', j===i);
+  });
+}
+
+// Автодот для дат
+document.querySelectorAll('input[placeholder="ДД.ММ.ГГГГ"]').forEach(inp=>{
+  let isDel=false;
+  inp.addEventListener('keydown',e=>{isDel=(e.key==='Backspace'||e.key==='Delete');});
+  inp.addEventListener('input',()=>{
+    if(isDel)return;
+    let v=inp.value.replace(/\D/g,'');
+    let o='';
+    if(v.length>0)o=v.slice(0,2);
+    if(v.length>2)o+='.'+v.slice(2,4);
+    if(v.length>4)o+='.'+v.slice(4,8);
+    inp.value=o;
+  });
+});
+
+function showResult(id, html) {
+  const el = document.getElementById(id);
+  el.classList.add('show');
+  el.style.display = 'block';
+  const body = el.querySelector('[id$="_body"]');
+  if(body) body.innerHTML = html;
+}
+
+// ─── 1 · ЧИСЛО ДЕЙСТВИЯ ──────────────────────────────────
+function calc1() {
+  const dt = parseDate(document.getElementById('t1_date').value);
+  if (!dt) { alert('Введите дату в формате ДД.ММ.ГГГГ'); return; }
+  const {d, m, y} = dt;
+  const total = dateAllDigits(d, m, y);
+  const result = reduce(total);
+  document.getElementById('r1_title').textContent = `Дата ${d}.${String(m).padStart(2,'0')}.${y}`;
+  const html = `<div class="r-grid" style="grid-template-columns:1fr">
+    ${rBlock('Сумма всех цифр даты', total, dateDigitStr(d,m,y))}
+    ${rBlock('Число Действия', result, chain(total), 'Результат — ваше ключевое число действия', 'universal', result)}
+  </div>`;
+  showResult('r1', html);
+}
+
+// ─── 2 · ЛИЧНЫЙ КАЛЕНДАРЬ ────────────────────────────────
+function calc2() {
+  const dt = parseDate(document.getElementById('t2_birth').value);
+  const yr = parseInt(document.getElementById('t2_year').value);
+  const mo = parseInt(document.getElementById('t2_month').value);
+  const dy = parseInt(document.getElementById('t2_day').value);
+  if (!dt) { alert('Введите дату рождения'); return; }
+  if (isNaN(yr)||yr<2000||yr>2099) { alert('Введите корректный год (2000–2099)'); return; }
+  if (isNaN(mo)||mo<1||mo>12) { alert('Введите номер месяца (1–12)'); return; }
+  if (isNaN(dy)||dy<1||dy>31) { alert('Введите номер дня (1–31)'); return; }
+
+  const {d, m, y} = dt;
+  const action = reduce(dateAllDigits(d,m,y));
+  const yrDigits = dsum(yr);
+  const persYear = reduce(action + yrDigits);
+  const persMonth = reduce(persYear + mo);
+  const persDay = reduce(persMonth + dy);
+
+  const html = `
+    ${rBlock('Число Действия (база)', action, chain(dateAllDigits(d,m,y)), 'Ваше базовое число', 'universal', action)}
+    <div class="r-grid3">
+      ${rBlock('Личное Число Года ' + yr, persYear, `${action} + ${yrDigits}(год) = ${action+yrDigits} → ${chain(action+yrDigits)}`, 'Общая тема года', 'universal', persYear)}
+      ${rBlock('Личное Число Месяца ' + mo, persMonth, `${persYear} + ${mo} = ${persYear+mo} → ${chain(persYear+mo)}`, 'Фокус месяца', 'universal', persMonth)}
+      ${rBlock('Личное Число Дня ' + dy, persDay, `${persMonth} + ${dy} = ${persMonth+dy} → ${chain(persMonth+dy)}`, 'Энергия дня', 'universal', persDay)}
+    </div>`;
+  document.getElementById('r2_title').textContent = `Личный Календарь`;
+  showResult('r2', html);
+}
+
+// ─── 3 · ЭНЕРГИЯ СОБЫТИЙ ─────────────────────────────────
+function calc3() {
+  const dt = parseDate(document.getElementById('t3_date').value);
+  if (!dt) { alert('Введите дату события'); return; }
+  const {d, m, y} = dt;
+  const total = dateAllDigits(d,m,y);
+  const result = reduce(total);
+  const html = `
+    ${rBlock('Сумма цифр даты события', total, dateDigitStr(d,m,y))}
+    ${rBlock('Энергия Событий', result, chain(total), 'Вибрационный код этой даты', 'universal', result)}`;
+  document.getElementById('r3_title').textContent = `Дата ${d}.${String(m).padStart(2,'0')}.${y}`;
+  showResult('r3', html);
+}
+
+// ─── 4 · ЕЖЕДНЕВНЫЙ ПРОГНОЗ ──────────────────────────────
+function calc4() {
+  const birth = parseDate(document.getElementById('t4_birth').value);
+  const target = parseDate(document.getElementById('t4_target').value);
+  if (!birth) { alert('Введите дату рождения'); return; }
+  if (!target) { alert('Введите дату прогноза'); return; }
+
+  const {d:bd, m:bm, y:by} = birth;
+  const {d:td, m:tm, y:ty} = target;
+
+  const fonTotal = dateAllDigits(td,tm,ty);
+  const fon = reduce(fonTotal);
+  const action = reduce(dateAllDigits(bd,bm,by));
+  const tyrDigits = dsum(ty);
+  const persYear = reduce(action + tyrDigits);
+  const persMonth = reduce(persYear + tm);
+  const persDay = reduce(persMonth + td);
+  const prognoz = reduce(fon + persDay);
+
+  const html = `
+    <div class="r-grid">
+      ${rBlock('Фон Дня (общая энергия)', fon, dateDigitStr(td,tm,ty) + ' → ' + fonTotal + ' → ' + chain(fonTotal), 'Общая вибрация даты', 'universal', fon)}
+      ${rBlock('Число Действия человека', action, chain(dateAllDigits(bd,bm,by)), 'Ваше базовое число', 'universal', action)}
+      ${rBlock('Личное Число Года ' + ty, persYear, `${action} + ${tyrDigits} = ${action+tyrDigits} → ${chain(action+tyrDigits)}`, 'Тема года', 'universal', persYear)}
+      ${rBlock('Личное Число Месяца ' + tm, persMonth, `${persYear} + ${tm} = ${persYear+tm} → ${chain(persYear+tm)}`, 'Фокус месяца', 'universal', persMonth)}
+      ${rBlock('Личное Число Дня ' + td, persDay, `${persMonth} + ${td} = ${persMonth+td} → ${chain(persMonth+td)}`, 'Энергия дня', 'universal', persDay)}
+    </div>
+    <div style="margin-top:10px">
+      ${rBlock('Итог: Число Прогноза', prognoz, `Фон(${fon}) + Личный день(${persDay}) = ${fon+persDay} → ${chain(fon+persDay)}`, 'Суммарная энергия дня для вас', 'universal', prognoz)}
+    </div>`;
+  document.getElementById('r4_title').textContent = `Прогноз на ${td}.${String(tm).padStart(2,'0')}.${ty}`;
+  showResult('r4', html);
+}
+
+// ─── 5 · ЛИЧНЫЙ РАЗБОР ───────────────────────────────────
+function calc5() {
+  const dt = parseDate(document.getElementById('t5_date').value);
+  if (!dt) { alert('Введите дату рождения'); return; }
+  const {d, m, y} = dt;
+
+  const soznanie = reduce(d);
+  const dayFirstSum = dsum(d);
+  const monFirstSum = dsum(m);
+  const udachaRaw = dayFirstSum + monFirstSum;
+  const udacha = reduce(udachaRaw);
+  const yearFirstSum = dsum(y);
+  const missiyaRaw = monFirstSum + yearFirstSum;
+  const missiya = reduce(missiyaRaw);
+  const allSum = dateAllDigits(d,m,y);
+  const realizaciya = reduce(allSum);
+
+  const html = `
+    <div class="r-grid">
+      ${rBlock('Число Сознания', soznanie, `День ${d} → ${chain(d)}`, 'Ваша ключевая черта характера', 'consciousness', soznanie)}
+      ${rBlock('Число Удачи', udacha, `${dayFirstSum}(день) + ${monFirstSum}(мес) = ${udachaRaw} → ${chain(udachaRaw)}`, 'Канал притяжения удачи', 'luck', udacha)}
+      ${rBlock('Число Миссии', missiya, `${monFirstSum}(мес) + ${yearFirstSum}(год) = ${missiyaRaw} → ${chain(missiyaRaw)}`, 'Ваша жизненная задача', 'mission', missiya)}
+      ${rBlock('Число Реализации', realizaciya, dateDigitStr(d,m,y) + ' → ' + allSum + ' → ' + chain(allSum), 'Как вы воплощаете себя', 'realization', realizaciya)}
+    </div>`;
+  document.getElementById('r5_title').textContent = `Личный Разбор · ${d}.${String(m).padStart(2,'0')}.${y}`;
+  showResult('r5', html);
+}
+
+// ─── 6 · СОВМЕСТИМОСТЬ ───────────────────────────────────
+function calc6() {
+  const b1 = parseDate(document.getElementById('t6_b1').value);
+  const b2 = parseDate(document.getElementById('t6_b2').value);
+  if (!b1) { alert('Введите первую дату рождения'); return; }
+  if (!b2) { alert('Введите вторую дату рождения'); return; }
+
+  function personNums(dt) {
+    const {d,m,y} = dt;
+    const soz = reduce(d);
+    const mis = reduce(dsum(m) + dsum(y));
+    const real = reduce(dateAllDigits(d,m,y));
+    return {soz, mis, real, d, m, y};
+  }
+
+  const p1 = personNums(b1);
+  const p2 = personNums(b2);
+
+  const pairSoz = reduce(p1.soz + p2.soz);
+  const pairMis = reduce(p1.mis + p2.mis);
+  const pairReal = reduce(p1.real + p2.real);
+
+  function personBlock(p, n) {
+    return `<div style="margin-bottom:12px">
+      <div class="pair-title">Человек ${n} · ${p.d}.${String(p.m).padStart(2,'0')}.${p.y}</div>
+      <div class="r-grid3">
+        ${rBlock('Число Сознания', p.soz, `День ${p.d} → ${chain(p.d)}`, '', 'consciousness', p.soz)}
+        ${rBlock('Число Миссии', p.mis, `${dsum(p.m)}+${dsum(p.y)}=${dsum(p.m)+dsum(p.y)} → ${chain(dsum(p.m)+dsum(p.y))}`, '', 'mission', p.mis)}
+        ${rBlock('Число Реализации', p.real, chain(dateAllDigits(p.d,p.m,p.y)), '', 'realization', p.real)}
+      </div>
+    </div>`;
+  }
+
+  const html = `
+    ${personBlock(p1,1)}
+    ${personBlock(p2,2)}
+    <div class="pair-section">
+      <div class="pair-title">Итоговые числа пары</div>
+      <div class="r-grid3">
+        ${rBlock('Общее Сознание Пары', pairSoz, `${p1.soz}+${p2.soz}=${p1.soz+p2.soz} → ${chain(p1.soz+p2.soz)}`, 'Как пара воспринимает себя', 'compatibility_consciousness', pairSoz)}
+        ${rBlock('Общая Миссия Пары', pairMis, `${p1.mis}+${p2.mis}=${p1.mis+p2.mis} → ${chain(p1.mis+p2.mis)}`, 'Совместное предназначение', 'compatibility_mission', pairMis)}
+        ${rBlock('Общая Реализация Пары', pairReal, `${p1.real}+${p2.real}=${p1.real+p2.real} → ${chain(p1.real+p2.real)}`, 'К чему приведут взаимоотношения', 'compatibility_realization', pairReal)}
+      </div>
+    </div>`;
+  document.getElementById('r6_title').textContent = `Совместимость пары`;
+  showResult('r6', html);
+}
+
+// ─── 7 · ДОГОВОР ─────────────────────────────────────────
+function calc7() {
+  const dt = parseDate(document.getElementById('t7_date').value);
+  if (!dt) { alert('Введите дату рождения'); return; }
+  const {d, m, y} = dt;
+
+  const uma = reduce(d);
+  const deystvie = reduce(dateAllDigits(d,m,y));
+  const realizaciya = reduce(uma + deystvie);
+  
+  // Для мастер-чисел 11 и 22 не сворачиваем
+  const contractSum = uma + realizaciya;
+  const dogovor = (contractSum === 11 || contractSum === 22) ? contractSum : reduce(contractSum);
+
+  const html = `
+    <div class="r-grid">
+      ${rBlock('Число Ума', uma, `День ${d} → ${chain(d)}`, 'Интеллектуальная составляющая', 'consciousness', uma)}
+      ${rBlock('Число Действия', deystvie, chain(dateAllDigits(d,m,y)), 'Общая сила действия', 'universal', deystvie)}
+      ${rBlock('Число Реализации', realizaciya, `${uma}+${deystvie}=${uma+deystvie} → ${chain(uma+deystvie)}`, 'Способность воплощать', 'realization', realizaciya)}
+      ${rBlock('Энергия Договора', dogovor, `${uma}+${realizaciya}=${contractSum} → ${dogovor}`, 'Итоговая энергия договора', 'contract', dogovor)}
+    </div>`;
+  document.getElementById('r7_title').textContent = `Договор · ${d}.${String(m).padStart(2,'0')}.${y}`;
+  showResult('r7', html);
+}
 </script>
 </body>
 </html>
