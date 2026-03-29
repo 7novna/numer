@@ -57,7 +57,7 @@
             <button class="tab-btn" onclick="show('t8')">8. Итоговое Число</button>
         </div>
 
-        <!-- ТАБЛИЦА 1 -->
+        <!-- ТАБЛИЦА 1: ЧИСЛО МИССИИ -->
         <div id="t1" class="tab-content active">
             <h2>📊 1. Число Миссии</h2>
             <div class="desc">Число Миссии = сумма всей даты рождения (11, 22, 33 — мастер-числа, не сводятся)</div>
@@ -74,7 +74,7 @@
             </div>
         </div>
 
-        <!-- ТАБЛИЦА 2 -->
+        <!-- ТАБЛИЦА 2: ЕЖЕДНЕВНЫЙ ПРОГНОЗ -->
         <div id="t2" class="tab-content">
             <h2>📅 2. Ежедневный Прогноз</h2>
             <div class="desc">Прогноз на основе Числа Миссии и выбранной даты</div>
@@ -97,7 +97,7 @@
             </div>
         </div>
 
-        <!-- ТАБЛИЦА 3 -->
+        <!-- ТАБЛИЦА 3: ЭНЕРГИЯ СОБЫТИЙ -->
         <div id="t3" class="tab-content">
             <h2>🎯 3. Энергия Событий</h2>
             <div class="desc">Энергия важной даты (свадьба, запуск, переезд)</div>
@@ -113,14 +113,15 @@
             </div>
         </div>
 
-        <!-- ТАБЛИЦА 5 -->
+        <!-- ТАБЛИЦА 5: РАЗБОР ЛИЧНОСТИ -->
         <div id="t5" class="tab-content">
             <h2>🔍 5. Разбор личности</h2>
             <div class="desc">
-                Ум = День рождения<br>
+                Ум = День рождения → цифра<br>
+                Месяц = Месяц → цифра | Год = Год → цифра<br>
                 Миссия = Ум + Месяц + Год (11, 22, 33 НЕ сводятся)<br>
-                Реализация = Ум + Миссия<br>
-                Код = Ум-Миссия-Реализация-Итог
+                Реализация = Ум + Миссия | Итог = Ум + Миссия + Реализация<br>
+                Код = Ум-Миссия-Реализация-Итог (4 цифры)
             </div>
             <div class="form-group">
                 <label>Дата рождения (ДД.ММ.ГГГГ):</label>
@@ -134,6 +135,7 @@
                     <div class="step" id="step5b"></div>
                     <div class="step" id="step5c"></div>
                     <div class="step" id="step5d"></div>
+                    <div class="step" id="step5e"></div>
                 </div>
                 <div class="grid-4">
                     <div class="card"><h4>🧠 Ум:</h4><span id="v5a"></span><p id="d5a"></p></div>
@@ -148,13 +150,11 @@
             </div>
         </div>
 
-        <!-- ТАБЛИЦА 6 -->
+        <!-- ТАБЛИЦА 6: СОВМЕСТИМОСТЬ -->
         <div id="t6" class="tab-content">
             <h2>💕 6. Совместимость</h2>
             <div class="desc">
-                Сознание пары = День1 + День2<br>
-                Миссия пары = Миссия1 + Миссия2 (сводится)<br>
-                Реализация пары = Реализация1 + Реализация2
+                Сознание = День1 + День2 → цифра | Миссия = (Ум+Месяц+Год)1 + (Ум+Месяц+Год)2 → цифра | Реализация = Реализация1 + Реализация2 → цифра
             </div>
             <div class="grid-2">
                 <div>
@@ -183,7 +183,7 @@
             </div>
         </div>
 
-        <!-- ТАБЛИЦА 7 -->
+        <!-- ТАБЛИЦА 7: ДОГОВОР -->
         <div id="t7" class="tab-content">
             <h2>📜 7. Договор</h2>
             <div class="desc">Энергия Договора = Ум + Реализация (11, 22 не сводятся)</div>
@@ -199,7 +199,7 @@
             </div>
         </div>
 
-        <!-- ТАБЛИЦА 8 -->
+        <!-- ТАБЛИЦА 8: ИТОГОВОЕ ЧИСЛО -->
         <div id="t8" class="tab-content">
             <h2>🎯 8. Итоговое Число</h2>
             <div class="desc">Итог = Действие + Ум + Реализация</div>
@@ -324,55 +324,44 @@
             document.getElementById('d5d').innerHTML=numDesc[itog];
             
             document.getElementById('step5a').innerHTML=`<strong>Ум:</strong> ${d.day} → ${sum(d.day)} → ${um}`;
-            document.getElementById('step5b').innerHTML=`<strong>Миссия:</strong> ${um}+${month}+${year} = ${um+month+year} → ${mission}${mission===11||mission===22||mission===33?' ⭐':''}`;
-            document.getElementById('step5c').innerHTML=`<strong>Реализация:</strong> ${um}+${mission} = ${um+mission} → ${realiz}`;
-            document.getElementById('step5d').innerHTML=`<strong>Итог:</strong> ${um}+${mission}+${realiz} = ${um+mission+realiz} → ${itog}`;
+            document.getElementById('step5b').innerHTML=`<strong>Месяц:</strong> ${d.month} → ${sum(d.month)} → ${month} | Год: ${d.year} → ${sum(d.year)} → ${year}`;
+            document.getElementById('step5c').innerHTML=`<strong>Миссия:</strong> ${um}+${month}+${year} = ${um+month+year} → ${mission}${mission===11||mission===22||mission===33?' ⭐':''}`;
+            document.getElementById('step5d').innerHTML=`<strong>Реализация:</strong> ${um}+${mission} = ${um+mission} → ${realiz}`;
+            document.getElementById('step5e').innerHTML=`<strong>Итог:</strong> ${um}+${mission}+${realiz} = ${um+mission+realiz} → ${itog}`;
             
             document.getElementById('code5').textContent=code;
             document.getElementById('r5').style.display='block';
         }
 
         function calc6(){
-    const d1=parseDate(document.getElementById('d6a').value),d2=parseDate(document.getElementById('d6b').value);
-    if(!d1||!d2)return alert('Введите даты (ДД.ММ.ГГГГ)');
-    
-    // === ПАРТНЁР 1 ===
-    const c1=reduce(sum(d1.day)); // Сознание = День
-    const month1=reduce(sum(d1.month));
-    const year1=reduce(sum(d1.year));
-    const m1=reduce(c1+month1+year1); // ⚠️ Миссия = Ум + Месяц + Год (11,22,33 не сводятся)
-    const code1=reduce(sum(d1.day)+sum(d1.month)+sum(d1.year));
-    const r1=reduce(c1+m1); // Реализация = Ум + Миссия
-    
-    // === ПАРТНЁР 2 ===
-    const c2=reduce(sum(d2.day));
-    const month2=reduce(sum(d2.month));
-    const year2=reduce(sum(d2.year));
-    const m2=reduce(c2+month2+year2); // ⚠️ Миссия = Ум + Месяц + Год
-    const code2=reduce(sum(d2.day)+sum(d2.month)+sum(d2.year));
-    const r2=reduce(c2+m2);
-    
-    // === ПАРА ===
-    const pc=reduce(c1+c2); // Сознание пары
-    const pm=reduce(m1+m2); // Миссия пары
-    const pr=reduce(r1+r2); // Реализация пары
-    
-    // === ОТОБРАЖЕНИЕ ===
-    document.getElementById('v6a').textContent=pc;
-    document.getElementById('v6b').textContent=pm;
-    document.getElementById('v6c').textContent=pr;
-    
-    document.getElementById('step6a').innerHTML=`<strong>Партнёр 1:</strong> Ум ${c1}, Миссия ${m1}${m1===11||m1===22||m1===33?' ⭐':''}, Реализация ${r1}`;
-    document.getElementById('step6b').innerHTML=`<strong>Партнёр 2:</strong> Ум ${c2}, Миссия ${m2}${m2===11||m2===22||m2===33?' ⭐':''}, Реализация ${r2}`;
-    document.getElementById('step6c').innerHTML=`<strong>Пара:</strong> ${c1}+${c2}=${c1+c2}→${pc} | ${m1}+${m2}=${m1+m2}→${pm} | ${r1}+${r2}=${r1+r2}→${pr}`;
-    
-    document.getElementById('t6a').textContent='К чему приведут';
-    document.getElementById('t6b').textContent='Для чего даны';
-    document.getElementById('t6c').textContent='Как выстроить';
-    
-    document.getElementById('t6_desc').innerHTML=`<p><strong>Сознание (${pc}):</strong> ${numDesc[pc].split('. ').slice(1).join('. ')}</p><p><strong>Миссия (${pm}):</strong> ${numDesc[pm].split('. ').slice(1).join('. ')}</p><p><strong>Реализация (${pr}):</strong> ${numDesc[pr].split('. ').slice(1).join('. ')}</p>`;
-    document.getElementById('r6').style.display='block';
-}
+            const d1=parseDate(document.getElementById('d6a').value),d2=parseDate(document.getElementById('d6b').value);
+            if(!d1||!d2)return alert('Введите даты');
+            
+            const c1=reduce(sum(d1.day)),c2=reduce(sum(d2.day));
+            const um1=reduce(sum(d1.day)),um2=reduce(sum(d2.day));
+            const m1_month=reduce(sum(d1.month)),m2_month=reduce(sum(d2.month));
+            const y1=reduce(sum(d1.year)),y2=reduce(sum(d2.year));
+            const mis1=reduce(um1+m1_month+y1),mis2=reduce(um2+m2_month+y2);
+            const r1=reduce(um1+mis1),r2=reduce(um2+mis2);
+            
+            const pc=reduce(c1+c2),pm=reduce(mis1+mis2),pr=reduce(r1+r2);
+            
+            document.getElementById('v6a').textContent=pc;
+            document.getElementById('v6b').textContent=pm;
+            document.getElementById('v6c').textContent=pr;
+            
+            document.getElementById('step6a').innerHTML=`<strong>Партнёр 1:</strong> Ум ${um1}, Миссия ${mis1}${mis1===11||mis1===22||mis1===33?' ⭐':''}, Реализация ${r1}`;
+            document.getElementById('step6b').innerHTML=`<strong>Партнёр 2:</strong> Ум ${um2}, Миссия ${mis2}${mis2===11||mis2===22||mis2===33?' ⭐':''}, Реализация ${r2}`;
+            document.getElementById('step6c').innerHTML=`<strong>Пара:</strong> Сознание ${c1}+${c2}=${c1+c2}→${pc} | Миссия ${mis1}+${mis2}=${mis1+mis2}→${pm} | Реализация ${r1}+${r2}=${r1+r2}→${pr}`;
+            
+            document.getElementById('t6a').textContent='К чему приведут';
+            document.getElementById('t6b').textContent='Для чего даны';
+            document.getElementById('t6c').textContent='Как выстроить';
+            
+            document.getElementById('t6_desc').innerHTML=`<p><strong>Сознание (${pc}):</strong> ${numDesc[pc].split('. ').slice(1).join('. ')}</p><p><strong>Миссия (${pm}):</strong> ${numDesc[pm].split('. ').slice(1).join('. ')}</p><p><strong>Реализация (${pr}):</strong> ${numDesc[pr].split('. ').slice(1).join('. ')}</p>`;
+            document.getElementById('r6').style.display='block';
+        }
+
         function calc7(){
             const d=parseDate(document.getElementById('d7').value);
             if(!d)return alert('Введите дату');
