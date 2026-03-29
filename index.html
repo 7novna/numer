@@ -1,684 +1,1100 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>КЕУ — Калькулятор нумерологии</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#f0e8e4;--card:#f5eeea;--border:#e0c8c0;--accent:#c9a8a0;--accent2:#b8918a;
-  --text:#3a2820;--muted:#9a7a70;--title:#6b4c3b;--result:#fef6ef;
-}
-body{background:var(--bg);color:var(--text);font-family:'EB Garamond',serif;line-height:1.5;min-height:100vh}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Нумерологический Калькулятор КЕУ ТО</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* HEADER */
-.header{text-align:center;padding:28px 20px 16px;background:linear-gradient(160deg,#f5ede8,#ede0d8);border-bottom:1px solid var(--border)}
-.header h1{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--title);letter-spacing:0.05em}
-.header p{color:var(--muted);font-size:17px;margin-top:4px;font-style:italic}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #d4a5a5 0%, #c9b1b1 50%, #b8a9a9 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
 
-/* TABS */
-.tabs{display:flex;flex-wrap:wrap;gap:6px;padding:16px 20px;max-width:900px;margin:0 auto;justify-content:center}
-.tab{background:var(--card);border:1px solid var(--border);padding:7px 14px;border-radius:20px;font-size:15px;font-family:'Cormorant Garamond',serif;font-weight:500;cursor:pointer;transition:.2s;color:var(--title)}
-.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.tab:hover:not(.active){background:var(--border)}
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-/* PANELS */
-.panels{max-width:720px;margin:0 auto;padding:0 16px 48px}
-.panel{display:none}
-.panel.active{display:block;animation:fadeIn .3s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
 
-.panel-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--title);margin-bottom:6px;margin-top:8px}
-.panel-desc{color:var(--muted);font-size:15px;margin-bottom:20px;font-style:italic}
+        h1 {
+            color: #8b6f6f;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-/* FORM */
-.field{margin-bottom:16px}
-.field label{display:block;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.field input{width:100%;padding:11px 16px;font-family:'EB Garamond',serif;font-size:18px;border:1px solid var(--border);border-radius:40px;background:#fff;outline:none;transition:border-color .3s;color:var(--text)}
-.field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(201,168,160,.18)}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        .subtitle {
+            color: #a89090;
+            font-size: 1.3em;
+        }
 
-.btn{display:inline-block;padding:11px 32px;font-size:19px;border-radius:40px;cursor:pointer;font-family:'Cormorant Garamond',serif;font-weight:500;border:none;transition:all .3s;background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);margin:8px auto;display:block}
-.btn:hover{background:var(--accent2);transform:translateY(-1px)}
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
 
-/* RESULT */
-.result{background:var(--result);border-left:4px solid var(--accent);border-radius:16px;padding:18px;margin-top:16px;display:none}
-.result.show{display:block;animation:fadeIn .4s}
-.result-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--title);font-weight:500;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+        .tab-button {
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #c9b1b1;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1em;
+            color: #8b6f6f;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
 
-.r-block{background:var(--card);border-radius:10px;padding:12px 14px;margin:8px 0;border-left:3px solid var(--accent)}
-.r-block .r-label{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
-.r-block .r-val{font-size:28px;font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--title)}
-.r-block .r-steps{font-size:13px;color:var(--muted);margin-top:2px}
-.r-block .r-note{font-size:15px;color:var(--text);margin-top:4px}
+        .tab-button:hover {
+            background: #d4a5a5;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
 
-.r-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.r-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+        .tab-button.active {
+            background: #b89898;
+            color: white;
+            border-color: #a88080;
+        }
 
-.pair-section{margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)}
-.pair-title{font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+        .tab-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease;
+        }
 
-.step-chain{font-size:13px;color:var(--muted);font-style:italic;margin-top:2px}
+        .tab-content.active {
+            display: block;
+        }
 
-/* ИНТЕРПРЕТАЦИИ */
-.interp-block{margin-top:12px;padding-top:10px;border-top:1px dashed var(--border)}
-.interp-full{display:none;font-size:14px;color:var(--text);line-height:1.6;margin-top:8px}
-.interp-toggle{margin-top:8px;padding:5px 14px;font-size:12px;background:var(--accent);color:#fff;border:none;border-radius:20px;cursor:pointer;transition:.2s;font-family:'Cormorant Garamond',serif}
-.interp-toggle:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.12)}
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-@media(max-width:600px){
-  .header h1{font-size:30px}
-  .r-grid,.r-grid3{grid-template-columns:1fr 1fr}
-  .field-row{grid-template-columns:1fr}
-}
-</style>
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #8b6f6f;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #d4c4c4;
+            border-radius: 10px;
+            font-size: 1em;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #b89898;
+            box-shadow: 0 0 10px rgba(184, 152, 152, 0.3);
+        }
+
+        .button {
+            background: linear-gradient(135deg, #b89898 0%, #a88080 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(168, 128, 128, 0.4);
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #f5e6e6 0%, #ebe0e0 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border-left: 5px solid #b89898;
+        }
+
+        .result-title {
+            color: #8b6f6f;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .result-value {
+            font-size: 3em;
+            color: #a88080;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-text {
+            color: #6b5555;
+            line-height: 1.8;
+            font-size: 1.1em;
+            white-space: pre-line;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .tab-content {
+                padding: 25px;
+            }
+        }
+
+        .info-box {
+            background: rgba(212, 165, 165, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #b89898;
+        }
+
+        .info-box h3 {
+            color: #8b6f6f;
+            margin-bottom: 10px;
+        }
+
+        .number-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 2px solid #e8d8d8;
+        }
+
+        .number-card h4 {
+            color: #a88080;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #d4a5a5 0%, #d4a5a5 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+            padding: 0 5px;
+            font-weight: 600;
+        }
+
+        .master-number {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #8b6f6f;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        h2 {
+            color: #8b6f6f;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #d4a5a5;
+            padding-bottom: 10px;
+        }
+
+        .formula-box {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            border: 1px dashed #b89898;
+        }
+
+        .calculation-steps {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .calculation-steps h4 {
+            color: #8b6f6f;
+            margin-bottom: 15px;
+        }
+
+        .step {
+            padding: 10px;
+            margin: 10px 0;
+            background: rgba(212, 165, 165, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #b89898;
+        }
+
+        .personal-code-box {
+            background: linear-gradient(135deg, #d4a5a5, #b89898);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .personal-code-box .code {
+            font-size: 3em;
+            font-weight: bold;
+            letter-spacing: 15px;
+            margin: 20px 0;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>🔮 Нумерологический Калькулятор КЕУ ТО</h1>
+            <p class="subtitle">Все 8 таблиц расчётов из Excel-файла</p>
+        </header>
 
-<div class="header">
-  <h1>КЕУ — Калькулятор</h1>
-  <p>Нумерологические расчёты · 7 таблиц</p>
-</div>
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('action')">1. Число Действия</button>
+            <button class="tab-button" onclick="showTab('calendar')">2. Личный Календарь</button>
+            <button class="tab-button" onclick="showTab('event')">3. Энергия События</button>
+            <button class="tab-button" onclick="showTab('daily')">4. Ежедневный Прогноз</button>
+            <button class="tab-button" onclick="showTab('personal')">5. Личный Разбор</button>
+            <button class="tab-button" onclick="showTab('compatibility')">6. Совместимость</button>
+            <button class="tab-button" onclick="showTab('contract')">7. Энергия Договора</button>
+            <button class="tab-button" onclick="showTab('final')">8. Итоговое Число</button>
+        </div>
 
-<div class="tabs">
-  <button class="tab active" onclick="showPanel(0)">1 · Число Действия</button>
-  <button class="tab" onclick="showPanel(1)">2 · Личный Календарь</button>
-  <button class="tab" onclick="showPanel(2)">3 · Энергия Событий</button>
-  <button class="tab" onclick="showPanel(3)">4 · Ежедневный Прогноз</button>
-  <button class="tab" onclick="showPanel(4)">5 · Личный Разбор</button>
-  <button class="tab" onclick="showPanel(5)">6 · Совместимость</button>
-  <button class="tab" onclick="showPanel(6)">7 · Договор</button>
-</div>
+        <!-- ТАБЛИЦА 1: ЧИСЛО ДЕЙСТВИЯ -->
+        <div id="action" class="tab-content active">
+            <h2>📊 Таблица 1: Расчёт Числа Действия</h2>
+            <div class="info-box">
+                <h3>📌 Формула расчёта:</h3>
+                <p><strong>Число Действия</strong> = сумма всей даты рождения (день + месяц + год), сведённая к одной цифре</p>
+                <div class="formula-box">
+                    Пример: 28.10.1999 → 2+8+1+0+1+9+9+9 = 39 → 3+9 = 12 → 1+2 = <span class="highlight">3</span>
+                </div>
+                <p><strong>Исключения:</strong> 11, 22 — мастер-числа (не сводятся)</p>
+            </div>
 
-<div class="panels">
+            <div class="form-group">
+                <label>📅 Дата рождения:</label>
+                <input type="date" id="birthDateAction">
+            </div>
 
-  <!-- ========== 1 · ЧИСЛО ДЕЙСТВИЯ ========== -->
-  <div class="panel active" id="p0">
-    <div class="panel-title">№ 1 · Расчёт Числа Действия</div>
-    <div class="panel-desc">Число Действия — сумма всех цифр даты рождения, сведённая к одной цифре</div>
-    <div class="field"><label>Дата рождения</label><input id="t1_date" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
-    <button class="btn" onclick="calc1()">Рассчитать</button>
-    <div class="result" id="r1">
-      <div class="result-title" id="r1_title"></div>
-      <div class="r-grid" id="r1_body"></div>
+            <button class="button" onclick="calculateActionNumber()">Рассчитать Число Действия</button>
+
+            <div id="actionResult" class="result-box" style="display: none;">
+                <div class="result-title">Ваше Число Действия:</div>
+                <div class="result-value" id="actionNumberValue"></div>
+                <div class="result-text" id="actionNumberText"></div>
+            </div>
+        </div>
+
+        <!-- ТАБЛИЦА 2: ЛИЧНЫЙ КАЛЕНДАРЬ -->
+        <div id="calendar" class="tab-content">
+            <h2>📅 Таблица 2: Личный Календарь</h2>
+            <div class="info-box">
+                <h3>📌 Формула расчёта:</h3>
+                <p><strong>Шаг 1:</strong> Число Действия + Год = Личное число года</p>
+                <p><strong>Шаг 2:</strong> Личное число года + Месяц = Личное число месяца</p>
+                <p><strong>Шаг 3:</strong> Личное число месяца + День = Личное число дня</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>📅 Дата рождения:</label>
+                    <input type="date" id="birthDateCalendar">
+                </div>
+                <div class="form-group">
+                    <label>🎯 Интересующая дата:</label>
+                    <input type="date" id="targetDate">
+                </div>
+            </div>
+
+            <button class="button" onclick="calculatePersonalCalendar()">Рассчитать Календарь</button>
+
+            <div id="calendarResult" class="result-box" style="display: none;">
+                <div class="grid-3">
+                    <div class="number-card">
+                        <h4>🗓️ Личный год: <span id="personalYear"></span></h4>
+                        <p id="yearText"></p>
+                    </div>
+                    <div class="number-card">
+                        <h4>📆 Личный месяц: <span id="personalMonth"></span></h4>
+                        <p id="monthText"></p>
+                    </div>
+                    <div class="number-card">
+                        <h4>☀️ Личный день: <span id="personalDay"></span></h4>
+                        <p id="dayText"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ТАБЛИЦА 3: ЭНЕРГИЯ СОБЫТИЯ -->
+        <div id="event" class="tab-content">
+            <h2>🎯 Таблица 3: Энергия События</h2>
+            <div class="info-box">
+                <h3>📌 Формула расчёта:</h3>
+                <p><strong>Энергия события</strong> = дата события (день + месяц + год), сведённая к одной цифре</p>
+                <div class="formula-box">
+                    Пример: 15.03.2025 → 1+5+0+3+2+0+2+5 = 18 → 1+8 = <span class="highlight">9</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>📅 Дата события:</label>
+                <input type="date" id="eventDate">
+            </div>
+
+            <button class="button" onclick="calculateEventEnergy()">Рассчитать Энергию</button>
+
+            <div id="eventResult" class="result-box" style="display: none;">
+                <div class="result-title">Энергия события:</div>
+                <div class="result-value" id="eventEnergyValue"></div>
+                <div class="result-text" id="eventEnergyText"></div>
+            </div>
+        </div>
+
+        <!-- ТАБЛИЦА 4: ЕЖЕДНЕВНЫЙ ПРОГНОЗ -->
+        <div id="daily" class="tab-content">
+            <h2>📆 Таблица 4: Ежедневный Прогноз</h2>
+            <div class="info-box">
+                <h3>📌 Формула расчёта:</h3>
+                <p><strong>Общее число дня</strong> = сумма всех цифр даты</p>
+                <p><strong>Личное число дня</strong> = как в Личном Календаре</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>📅 Дата рождения:</label>
+                    <input type="date" id="birthDateDaily">
+                </div>
+                <div class="form-group">
+                    <label>🎯 Дата прогноза:</label>
+                    <input type="date" id="forecastDate">
+                </div>
+            </div>
+
+            <button class="button" onclick="calculateDailyForecast()">Получить Прогноз</button>
+
+            <div id="dailyResult" class="result-box" style="display: none;">
+                <div class="grid-2">
+                    <div class="number-card">
+                        <h4>🌍 Общая энергия дня: <span id="generalDayEnergy"></span></h4>
+                        <p id="generalDayText"></p>
+                    </div>
+                    <div class="number-card">
+                        <h4>👤 Личное число дня: <span id="personalDayEnergy"></span></h4>
+                        <p id="personalDayForecastText"></p>
+                    </div>
+                </div>
+                <div class="number-card" style="margin-top: 20px;">
+                    <h4>💡 Рекомендации:</h4>
+                    <p id="dayRecommendations"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ТАБЛИЦА 5: ЛИЧНЫЙ РАЗБОР -->
+        <div id="personal" class="tab-content">
+            <h2>🔍 Таблица 5: Личный Разбор</h2>
+            <div class="info-box">
+                <h3>📌 Формулы расчёта (согласно Excel):</h3>
+                <div class="formula-box">
+                    <strong>Число Ума/Сознания:</strong> День рождения → свести к цифре<br>
+                    Пример: 15 → 1+5 = <span class="highlight">6</span>
+                </div>
+                <div class="formula-box">
+                    <strong>Число Месяца:</strong> Месяц → свести к цифре<br>
+                    Пример: 03 → 0+3 = <span class="highlight">3</span>
+                </div>
+                <div class="formula-box">
+                    <strong>Число Года:</strong> Год → свести к цифре<br>
+                    Пример: 1973 → 1+9+7+3=20 → 2+0 = <span class="highlight">2</span>
+                </div>
+                <div class="formula-box">
+                    <strong>Число Действия/Миссии:</strong> Ум + Месяц + Год<br>
+                    Пример: 6+3+2 = 11 → 1+1 = <span class="highlight">2</span>
+                </div>
+                <div class="formula-box">
+                    <strong>Число Реализации:</strong> Ум + Действие<br>
+                    Пример: 6+2 = <span class="highlight">8</span>
+                </div>
+                <div class="formula-box">
+                    <strong>Итоговое число:</strong> Ум + Действие + Реализация<br>
+                    Пример: 6+2+8 = 16 → 1+6 = <span class="highlight">7</span>
+                </div>
+                <div class="formula-box" style="background: linear-gradient(135deg, #d4a5a5, #b89898); color: white;">
+                    <strong>🔑 КОД ЛИЧНОСТИ (4 цифры):</strong> Ум — Действие — Реализация — Итог<br>
+                    Пример: <span class="highlight" style="color: white;">6287</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>📅 Дата рождения:</label>
+                <input type="date" id="birthDatePersonal">
+            </div>
+
+            <button class="button" onclick="calculatePersonalAnalysis()">Получить Разбор</button>
+
+            <div id="personalResult" class="result-box" style="display: none;">
+                <div class="calculation-steps">
+                    <h4>📊 Пошаговый расчёт:</h4>
+                    <div class="step" id="stepConsciousness"></div>
+                    <div class="step" id="stepMonth"></div>
+                    <div class="step" id="stepYear"></div>
+                    <div class="step" id="stepAction"></div>
+                    <div class="step" id="stepRealization"></div>
+                    <div class="step" id="stepFinal"></div>
+                </div>
+
+                <div class="grid-4">
+                    <div class="number-card">
+                        <h4>🧠 Число Ума: <span id="consciousness"></span></h4>
+                        <p>Как вы мыслите</p>
+                    </div>
+                    <div class="number-card">
+                        <h4>🎭 Число Действия: <span id="actionNumber"></span></h4>
+                        <p>Ваш стиль действий</p>
+                    </div>
+                    <div class="number-card">
+                        <h4>✨ Число Реализации: <span id="realization"></span></h4>
+                        <p>Как реализовать потенциал</p>
+                    </div>
+                    <div class="number-card">
+                        <h4>🏆 Итоговое число: <span id="finalSum"></span></h4>
+                        <p>Общая энергия</p>
+                    </div>
+                </div>
+                
+                <div class="personal-code-box">
+                    <h4>🔑 ВАШ КОД ЛИЧНОСТИ:</h4>
+                    <div class="code" id="personalCode"></div>
+                    <p>Формула: Ум — Действие — Реализация — Итог</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ТАБЛИЦА 6: СОВМЕСТИМОСТЬ -->
+        <div id="compatibility" class="tab-content">
+            <h2>💕 Таблица 6: Совместимость Пары</h2>
+            <div class="info-box">
+                <h3>📌 Формулы расчёта:</h3>
+                <p><strong>Общее число сознания пары</strong> = День1 + День2</p>
+                <p><strong>Общее число миссии пары</strong> = Миссия1 + Миссия2</p>
+                <p><strong>Общее число реализации пары</strong> = Реализация1 + Реализация2</p>
+            </div>
+
+            <div class="grid-2">
+                <div>
+                    <h3 style="color: #8b6f6f; margin-bottom: 15px;">👤 Партнёр 1</h3>
+                    <div class="form-group">
+                        <label>Имя:</label>
+                        <input type="text" id="partner1Name" placeholder="Введите имя">
+                    </div>
+                    <div class="form-group">
+                        <label>Дата рождения:</label>
+                        <input type="date" id="partner1Date">
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color: #8b6f6f; margin-bottom: 15px;">👤 Партнёр 2</h3>
+                    <div class="form-group">
+                        <label>Имя:</label>
+                        <input type="text" id="partner2Name" placeholder="Введите имя">
+                    </div>
+                    <div class="form-group">
+                        <label>Дата рождения:</label>
+                        <input type="date" id="partner2Date">
+                    </div>
+                </div>
+            </div>
+
+            <button class="button" onclick="calculateCompatibility()">Рассчитать Совместимость</button>
+
+            <div id="compatibilityResult" class="result-box" style="display: none;">
+                <div class="grid-3">
+                    <div class="number-card">
+                        <h4>💭 Сознание пары: <span id="pairConsciousness"></span></h4>
+                        <p id="pairConsciousnessText">К чему приведут взаимоотношения</p>
+                    </div>
+                    <div class="number-card">
+                        <h4>🎯 Миссия пары: <span id="pairMission"></span></h4>
+                        <p id="pairMissionText">Для чего вы даны друг другу</p>
+                    </div>
+                    <div class="number-card">
+                        <h4>🏗️ Реализация пары: <span id="pairRealization"></span></h4>
+                        <p id="pairRealizationText">Как правильно выстроить отношения</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ТАБЛИЦА 7: ЭНЕРГИЯ ДОГОВОРА -->
+        <div id="contract" class="tab-content">
+            <h2>📜 Таблица 7: Энергия Договора</h2>
+            <div class="info-box">
+                <h3>📌 Формула расчёта:</h3>
+                <p><strong>Энергия Договора</strong> = Число Ума + Число Реализации</p>
+                <p><strong>Важно:</strong> Мастер-числа 11 и 22 НЕ сводятся!</p>
+                <div class="formula-box">
+                    Пример: 28.10.1999<br>
+                    Число Ума: 2+8 = 10 → 1+0 = 1<br>
+                    Число Реализации: 4<br>
+                    Энергия Договора: 1+4 = 5
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>📅 Дата рождения:</label>
+                <input type="date" id="birthDateContract">
+            </div>
+
+            <button class="button" onclick="calculateContractEnergy()">Рассчитать Договор</button>
+
+            <div id="contractResult" class="result-box" style="display: none;">
+                <div class="result-title">Ваша Энергия Договора:</div>
+                <div class="result-value" id="contractEnergyValue"></div>
+                <div class="result-text" id="contractEnergyText"></div>
+            </div>
+        </div>
+
+        <!-- ТАБЛИЦА 8: ИТОГОВОЕ ЧИСЛО -->
+        <div id="final" class="tab-content">
+            <h2>🎯 Таблица 8: Итоговое Число</h2>
+            <div class="info-box">
+                <h3>📌 Формула расчёта:</h3>
+                <p><strong>Итоговое число</strong> = Число Действия + Число Ума + Число Реализации</p>
+                <div class="formula-box">
+                    Пример: 28.10.1999<br>
+                    Число Действия: 3<br>
+                    Число Ума: 1<br>
+                    Число Реализации: 4<br>
+                    Итог: 3+1+4 = 8
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>📅 Дата рождения:</label>
+                <input type="date" id="birthDateFinal">
+            </div>
+
+            <button class="button" onclick="calculateFinalNumber()">Рассчитать Итог</button>
+
+            <div id="finalResult" class="result-box" style="display: none;">
+                <div class="grid-3">
+                    <div class="number-card">
+                        <h4>🎯 Число Действия: <span id="finalAction"></span></h4>
+                    </div>
+                    <div class="number-card">
+                        <h4>🧠 Число Ума: <span id="finalMind"></span></h4>
+                    </div>
+                    <div class="number-card">
+                        <h4>✨ Число Реализации: <span id="finalRealization"></span></h4>
+                    </div>
+                </div>
+                <div class="number-card" style="margin-top: 20px; background: linear-gradient(135deg, #d4a5a5, #b89898); color: white;">
+                    <h4>🏆 ИТОГОВОЕ ЧИСЛО: <span id="finalTotal"></span></h4>
+                    <p id="finalText"></p>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- ========== 2 · ЛИЧНЫЙ КАЛЕНДАРЬ ========== -->
-  <div class="panel" id="p1">
-    <div class="panel-title">№ 2 · Личный Календарь</div>
-    <div class="panel-desc">Личные числа года, месяца и дня для любой даты на основе даты рождения</div>
-    <div class="field"><label>Дата рождения</label><input id="t2_birth" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
-    <div class="field-row">
-      <div class="field"><label>Год (интересует)</label><input id="t2_year" type="text" placeholder="ГГГГ" maxlength="4"></div>
-      <div class="field"><label>Месяц (1–12)</label><input id="t2_month" type="text" placeholder="Номер месяца" maxlength="2"></div>
-    </div>
-    <div class="field"><label>День (1–31)</label><input id="t2_day" type="text" placeholder="Номер дня" maxlength="2"></div>
-    <button class="btn" onclick="calc2()">Рассчитать</button>
-    <div class="result" id="r2">
-      <div class="result-title" id="r2_title"></div>
-      <div id="r2_body"></div>
-    </div>
-  </div>
+    <script>
+        // Переключение вкладок
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
 
-  <!-- ========== 3 · ЭНЕРГИЯ СОБЫТИЙ ========== -->
-  <div class="panel" id="p2">
-    <div class="panel-title">№ 3 · Энергия Событий</div>
-    <div class="panel-desc">Энергетический код любой даты — встречи, события, сделки, поездки</div>
-    <div class="field"><label>Дата события</label><input id="t3_date" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
-    <button class="btn" onclick="calc3()">Рассчитать</button>
-    <div class="result" id="r3">
-      <div class="result-title" id="r3_title"></div>
-      <div id="r3_body"></div>
-    </div>
-  </div>
+        // Сведение числа к одной цифре (с учётом мастер-чисел)
+        function reduceToSingle(num, keepMaster = true) {
+            if (keepMaster && (num === 11 || num === 22 || num === 33)) return num;
+            
+            while (num > 9) {
+                let sum = 0;
+                let tempNum = num;
+                while (tempNum > 0) {
+                    sum += tempNum % 10;
+                    tempNum = Math.floor(tempNum / 10);
+                }
+                num = sum;
+                if (keepMaster && (num === 11 || num === 22 || num === 33)) break;
+            }
+            return num;
+        }
 
-  <!-- ========== 4 · ЕЖЕДНЕВНЫЙ ПРОГНОЗ ========== -->
-  <div class="panel" id="p3">
-    <div class="panel-title">№ 4 · Ежедневный Прогноз</div>
-    <div class="panel-desc">Фон дня + личные числа дня, месяца и года для конкретной даты</div>
-    <div class="field"><label>Дата рождения</label><input id="t4_birth" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
-    <div class="field"><label>Дата прогноза</label><input id="t4_target" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
-    <button class="btn" onclick="calc4()">Рассчитать</button>
-    <div class="result" id="r4">
-      <div class="result-title" id="r4_title"></div>
-      <div id="r4_body"></div>
-    </div>
-  </div>
+        // Сумма цифр числа
+        function sumDigits(num) {
+            return String(num).split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+        }
 
-  <!-- ========== 5 · ЛИЧНЫЙ РАЗБОР ========== -->
-  <div class="panel" id="p4">
-    <div class="panel-title">№ 5 · Личный Разбор</div>
-    <div class="panel-desc">Число Сознания, Удачи, Миссии, Личный Код и Число Реализации по дате рождения</div>
-    <div class="field"><label>Дата рождения</label><input id="t5_date" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
-    <button class="btn" onclick="calc5()">Рассчитать</button>
-    <div class="result" id="r5">
-      <div class="result-title" id="r5_title"></div>
-      <div id="r5_body"></div>
-    </div>
-  </div>
+        // Получение даты из input
+        function getDateFromInput(inputId) {
+            const input = document.getElementById(inputId);
+            if (!input.value) return null;
+            return new Date(input.value);
+        }
 
-  <!-- ========== 6 · СОВМЕСТИМОСТЬ ========== -->
-  <div class="panel" id="p5">
-    <div class="panel-title">№ 6 · Совместимость</div>
-    <div class="panel-desc">Числа Сознания, Миссии и Реализации для пары — и итоговые числа совместимости</div>
-    <div class="field"><label>Дата рождения № 1 (мужчина)</label><input id="t6_b1" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
-    <div class="field"><label>Дата рождения № 2 (женщина)</label><input id="t6_b2" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
-    <button class="btn" onclick="calc6()">Рассчитать</button>
-    <div class="result" id="r6">
-      <div class="result-title" id="r6_title"></div>
-      <div id="r6_body"></div>
-    </div>
-  </div>
+        // ==================== ТАБЛИЦА 1: ЧИСЛО ДЕЙСТВИЯ ====================
+        function calculateActionNumber() {
+            const date = getDateFromInput('birthDateAction');
+            if (!date) {
+                alert('Пожалуйста, выберите дату рождения');
+                return;
+            }
 
-  <!-- ========== 7 · ДОГОВОР ========== -->
-  <div class="panel" id="p6">
-    <div class="panel-title">№ 7 · Договор</div>
-    <div class="panel-desc">Число Ума, Число Действия и Энергия Договора по дате рождения человека</div>
-    <div class="field"><label>Дата рождения</label><input id="t7_date" type="text" placeholder="ДД.ММ.ГГГГ" maxlength="10"></div>
-    <button class="btn" onclick="calc7()">Рассчитать</button>
-    <div class="result" id="r7">
-      <div class="result-title" id="r7_title"></div>
-      <div id="r7_body"></div>
-    </div>
-  </div>
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
 
-</div>
+            const totalSum = sumDigits(day) + sumDigits(month) + sumDigits(year);
+            const actionNumber = reduceToSingle(totalSum);
 
-<script>
-/* ═══════════════════════════════════════════════════════
-   📚 БАЗА ТОЛКОВАНИЙ — по книге А. Капустина «КЕУ ТО»
-   ═══════════════════════════════════════════════════════ */
-const INTERPRETATIONS = {
-  
-  // ── УНИВЕРСАЛЬНЫЕ: Число Действия, Энергия Событий, Личный Код ──
-  universal: {
-    1: {
-      short: "🚀 Лидерство, инициатива, начало",
-      full: "<strong>Число 1 — Энергия начала.</strong><br>• <em>Рекомендуется:</em> принимать решения, начинать проекты, проявлять смелость.<br>• <em>Избегать:</em> пассивности, ожидания указаний, откладывания.<br>• <em>Ключ:</em> действуйте самостоятельно — успех приходит через инициативу."
-    },
-    2: {
-      short: "🤝 Партнёрство, дипломатия, чувства",
-      full: "<strong>Число 2 — Энергия отношений.</strong><br>• <em>Рекомендуется:</em> налаживать контакты, решать конфликты мягко, проявлять эмпатию.<br>• <em>Избегать:</em> конфронтации, холодного расчёта, давления.<br>• <em>Ключ:</em> гармония достигается через диалог и внимание к чувствам."
-    },
-    3: {
-      short: "🎨 Творчество, общение, самовыражение",
-      full: "<strong>Число 3 — Энергия творчества.</strong><br>• <em>Рекомендуется:</em> общаться, создавать контент, использовать юмор, проявляться.<br>• <em>Избегать:</em> изоляции, подавления эмоций, рассеянности.<br>• <em>Ключ:</em> ваша сила — в лёгкости и способности вдохновлять других."
-    },
-    4: {
-      short: "🏗️ Структура, порядок, дисциплина",
-      full: "<strong>Число 4 — Энергия стабильности.</strong><br>• <em>Рекомендуется:</em> выполнять задачи по списку, наводить порядок, завершать дела.<br>• <em>Избегать:</em> хаоса, спешки, отсутствия плана.<br>• <em>Ключ:</em> результат приходит через системность и терпение."
-    },
-    5: {
-      short: "🌀 Перемены, свобода, адаптивность",
-      full: "<strong>Число 5 — Энергия движения.</strong><br>• <em>Рекомендуется:</em> путешествовать, экспериментировать, учиться новому, менять подход.<br>• <em>Избегать:</em> застоя, привязанности к старому, страха перемен.<br>• <em>Ключ:</em> гибкость открывает новые возможности."
-    },
-    6: {
-      short: "❤️ Забота, гармония, семья",
-      full: "<strong>Число 6 — Энергия любви.</strong><br>• <em>Рекомендуется:</em> заботиться о близких, создавать уют, развивать эстетику.<br>• <em>Избегать:</em> самопожертвования, конфликтов в семье, некрасивых поступков.<br>• <em>Ключ:</em> гармония вокруг начинается с гармонии внутри."
-    },
-    7: {
-      short: "🔍 Мудрость, анализ, интуиция",
-      full: "<strong>Число 7 — Энергия глубины.</strong><br>• <em>Рекомендуется:</em> учиться, анализировать, медитировать, искать истину.<br>• <em>Избегать:</em> поверхностности, пустых разговоров, изоляции от мира.<br>• <em>Ключ:</em> доверяйте интуиции, но проверяйте факты."
-    },
-    8: {
-      short: "💰 Сила, результат, материальный успех",
-      full: "<strong>Число 8 — Энергия достижения.</strong><br>• <em>Рекомендуется:</em> управлять финансами, ставить амбициозные цели, вести переговоры.<br>• <em>Избегать:</em> необдуманных трат, жёсткости, злоупотребления властью.<br>• <em>Ключ:</em> этичный успех возвращается в многократном размере."
-    },
-    9: {
-      short: "🕊️ Завершение, мудрость, служение",
-      full: "<strong>Число 9 — Энергия завершения.</strong><br>• <em>Рекомендуется:</em> подводить итоги, помогать другим, отпускать прошлое.<br>• <em>Избегать:</em> начала крупных проектов, удержания обид, драматизации.<br>• <em>Ключ:</em> завершите цикл — и откроется путь к новому."
-    }
-  },
+            document.getElementById('actionNumberValue').textContent = actionNumber;
+            document.getElementById('actionNumberText').textContent = getActionNumberMeaning(actionNumber);
+            document.getElementById('actionResult').style.display = 'block';
+        }
 
-  // ── ЧИСЛО СОЗНАНИЯ (характер, мышление) ──
-  consciousness: {
-    1: { short: "Независимый мыслитель", full: "Вы воспринимаете себя как лидера. Цените автономию, действуете по внутреннему импульсу. Сильные стороны: воля, решительность. Зона роста: учиться слышать других." },
-    2: { short: "Чуткий наблюдатель", full: "Ваше самовосприятие строится на эмпатии. Вы тонко чувствуете настроения, умеете сглаживать конфликты. Сильные стороны: дипломатия. Зона роста: устанавливать границы." },
-    3: { short: "Творческий коммуникатор", full: "Вы видите себя через призму общения и самовыражения. Легко генерируете идеи, вдохновляете. Сильные стороны: харизма. Зона роста: доводить начатое до конца." },
-    4: { short: "Системный стратег", full: "Вы мыслите структурно, цените порядок и логику. Надёжны, последовательны. Сильные стороны: дисциплина. Зона роста: быть гибче в нестандартных ситуациях." },
-    5: { short: "Свободный исследователь", full: "Вы воспринимаете себя как человека перемен. Любите новизну, адаптируетесь быстро. Сильные стороны: адаптивность. Зона роста: сохранять фокус на главном." },
-    6: { short: "Заботливый хранитель", full: "Ваша идентичность связана с заботой о близких. Создаёте гармонию вокруг. Сильные стороны: ответственность. Зона роста: не забывать о себе." },
-    7: { short: "Глубокий аналитик", full: "Вы склонны к рефлексии, поиску смысла. Доверяете интуиции. Сильные стороны: мудрость. Зона роста: делиться открытиями с миром." },
-    8: { short: "Стратегический лидер", full: "Вы видите себя через призму силы и результата. Ставите масштабные цели. Сильные стороны: управление. Зона роста: баланс власти и человечности." },
-    9: { short: "Гуманист-наставник", full: "Ваше самоощущение связано с служением и мудростью. Стремитесь помогать. Сильные стороны: сострадание. Зона роста: не растворяться в других." }
-  },
+        function getActionNumberMeaning(num) {
+            const meanings = {
+                1: "ЛИДЕР И НОВАТОР. Вам подходят действия, связанные с инициативой, запуском новых проектов, принятием решений.",
+                2: "ДИПЛОМАТ И ПОСРЕДНИК. Ваш успех в партнёрстве, сотрудничестве, работе с людьми.",
+                3: "ТВОРЕЦ И КОММУНИКАТОР. Вам подходят творческие профессии, общение, самовыражение.",
+                4: "СТРОИТЕЛЬ И ОРГАНИЗАТОР. Ваш путь через дисциплину, порядок, системную работу.",
+                5: "ИССЛЕДОВАТЕЛЬ И ПУТЕШЕСТВЕННИК. Вам подходят перемены, свобода, разнообразие.",
+                6: "НАСТАВНИК И ЗАЩИТНИК. Ваш успех в заботе о других, семье, творчестве.",
+                7: "МЫСЛИТЕЛЬ И АНАЛИТИК. Вам подходят исследования, духовный поиск, уединение.",
+                8: "УПРАВЛЕНЕЦ И БИЗНЕСМЕН. Ваш путь через материальные достижения, власть, масштаб.",
+                9: "ГУМАНИСТ И ФИЛАНТРОП. Вам подходят служение людям, творчество, завершение дел.",
+                11: "⭐ МАСТЕР-ЧИСЛО: ДУХОВНЫЙ ЛИДЕР. Ваша миссия — вдохновлять и просвещать других.",
+                22: "⭐ МАСТЕР-ЧИСЛО: СТРОИТЕЛЬ МИРОВ. Ваш потенциал — создавать масштабные проекты.",
+                33: "⭐ МАСТЕР-ЧИСЛО: УЧИТЕЛЬ ЧЕЛОВЕЧЕСТВА. Ваша миссия — нести любовь и исцеление."
+            };
+            return meanings[num] || "";
+        }
 
-  // ── ЧИСЛО УДАЧИ (что усиливает человека) ──
-  luck: {
-    1: { short: "Удача через инициативу", full: "Возможности приходят, когда вы действуете первым, берёте ответственность, проявляете смелость." },
-    2: { short: "Удача через отношения", full: "Благоприятные события происходят через партнёрство, дипломатию, эмоциональную гармонию." },
-    3: { short: "Удача через творчество", full: "Успех приходит, когда вы выражаете себя, общаетесь, делитесь идеями с лёгкостью." },
-    4: { short: "Удача через порядок", full: "Возможности открываются при системном подходе, выполнении обязательств, наведении структуры." },
-    5: { short: "Удача через перемены", full: "Благоприятные повороты случаются, когда вы открыты новому, путешествуете, экспериментируете." },
-    6: { short: "Удача через заботу", full: "Успех приходит через создание гармонии, помощь близким, эстетическое оформление жизни." },
-    7: { short: "Удача через мудрость", full: "Возможности появляются после анализа, обучения, доверия интуиции и внутреннего голоса." },
-    8: { short: "Удача через результат", full: "Благоприятные события связаны с финансовыми решениями, стратегией, достижением целей." },
-    9: { short: "Удача через служение", full: "Успех приходит, когда вы помогаете другим, завершаете циклы, действуете из мудрости." }
-  },
+        // ==================== ТАБЛИЦА 2: ЛИЧНЫЙ КАЛЕНДАРЬ ====================
+        function calculatePersonalCalendar() {
+            const birthDate = getDateFromInput('birthDateCalendar');
+            const targetDate = getDateFromInput('targetDate');
 
-  // ── ЧИСЛО МИССИИ (предназначение) ──
-  mission: {
-    1: { short: "Миссия: быть первопроходцем", full: "Ваша задача — создавать новое, вдохновлять на действие, брать ответственность за начало." },
-    2: { short: "Миссия: объединять людей", full: "Ваш путь — через диалог, эмпатию, создание гармоничных связей между людьми." },
-    3: { short: "Миссия: вдохновлять творчеством", full: "Вам предназначено передавать идеи, радовать мир, раскрывать таланты — свой и чужие." },
-    4: { short: "Миссия: создавать основу", full: "Ваша роль — строить фундамент: системы, традиции, надёжные структуры для других." },
-    5: { short: "Миссия: нести свободу", full: "Ваш путь — показывать, как меняться, адаптироваться, жить в движении без потери себя." },
-    6: { short: "Миссия: заботиться и гармонизировать", full: "Вам дано создавать пространство любви, где растут люди, отношения, проекты." },
-    7: { short: "Миссия: искать истину", full: "Ваша задача — углубляться в смыслы, делиться мудростью, помогать другим находить свой путь." },
-    8: { short: "Миссия: управлять ресурсами", full: "Вам предназначено достигать материального успеха и использовать его во благо." },
-    9: { short: "Миссия: служить миру", full: "Ваш путь — помогать, исцелять, завершать циклы и открывать двери к новому этапу." }
-  },
+            if (!birthDate || !targetDate) {
+                alert('Пожалуйста, заполните обе даты');
+                return;
+            }
 
-  // ── ЧИСЛО РЕАЛИЗАЦИИ (как воплощать) ──
-  realization: {
-    1: { short: "Реализация через лидерство", full: "Вы раскрываетесь, когда действуете смело, берёте инициативу, ведёте за собой." },
-    2: { short: "Реализация через отношения", full: "Ваш успех строится на партнёрстве, умении слушать, создавать доверие." },
-    3: { short: "Реализация через самовыражение", full: "Вы достигаете целей, когда творите, общаетесь, делитесь идеями с миром." },
-    4: { short: "Реализация через структуру", full: "Ваш путь — через порядок, планирование, последовательное движение к цели." },
-    5: { short: "Реализация через перемены", full: "Вы раскрываетесь в движении: новые места, идеи, подходы ведут к успеху." },
-    6: { short: "Реализация через заботу", full: "Ваша сила — в создании гармонии: семья, проекты, пространство, где всем хорошо." },
-    7: { short: "Реализация через мудрость", full: "Вы достигаете целей через анализ, обучение, доверие внутреннему знанию." },
-    8: { short: "Реализация через результат", full: "Ваш успех — в постановке амбициозных целей и их достижении с этикой." },
-    9: { short: "Реализация через служение", full: "Вы раскрываетесь, когда помогаете другим, завершаете важное, действуете из мудрости." }
-  },
+            const actionNum = reduceToSingle(sumDigits(birthDate.getDate()) + sumDigits(birthDate.getMonth() + 1) + sumDigits(birthDate.getFullYear()));
+            const yearNum = reduceToSingle(sumDigits(targetDate.getFullYear()));
+            const personalYear = reduceToSingle(actionNum + yearNum);
+            const personalMonth = reduceToSingle(personalYear + (targetDate.getMonth() + 1));
+            const personalDay = reduceToSingle(personalMonth + sumDigits(targetDate.getDate()));
 
-  // ── СОВМЕСТИМОСТЬ ПАРЫ ──
-  compatibility_consciousness: {
-    1: { short: "Союз лидеров", full: "Много инициативы и страсти. Вы можете усилить друг друга, но важно не бороться за власть. Учитесь делегировать и уважать автономию партнёра." },
-    2: { short: "Эмоциональный союз", full: "Отношения полны чувств. Вы учитесь понимать друг друга глубже. Важно говорить мягко, избегать обид и манипуляций." },
-    3: { short: "Лёгкий творческий союз", full: "Вам вместе весело, вы вдохновляете друг друга. Берегите фокус: энергия может рассеиваться, если нет общей цели." },
-    4: { short: "Стабильный практичный союз", full: "Вы строите прочный фундамент: дом, быт, общие дела. Важно не застрять в рутине и сохранять романтику." },
-    5: { short: "Динамичный свободный союз", full: "Много перемен, путешествий, идей. Договаривайтесь о границах свободы, чтобы не потерять связь." },
-    6: { short: "Тёплый семейный союз", full: "Вы создаёте уют и безопасность. Помните: забота о партнёре не должна заменять заботу о себе." },
-    7: { short: "Глубокий духовный союз", full: "Вы растете через осмысление жизни. Уважайте потребность друг друга в уединении и тишине." },
-    8: { short: "Амбициозный союз", full: "Вы достигаете вместе больших целей. Важно не превратить отношения в бизнес-проект и сохранять человечность." },
-    9: { short: "Мудрый гуманистичный союз", full: "Ваши отношения имеют высокий смысл. Вы вдохновляете других, но не забывайте о простых радостях вдвоём." }
-  },
-  compatibility_mission: {
-    1: { short: "Цель: начать новое вместе", full: "Вы даны друг другу, чтобы выйти из застоя, действовать смело, создавать проекты, которые изменят вашу жизнь." },
-    2: { short: "Цель: исцелить отношения", full: "Ваш союз учит доверию, эмпатии, умению договариваться. Через партнёра вы закрываете старые раны." },
-    3: { short: "Цель: делиться радостью", full: "Вы вместе, чтобы вдохновлять мир, творить, жить легко и передавать эту лёгкость другим." },
-    4: { short: "Цель: создать основу", full: "Ваша задача — построить что-то долговечное: семью, бизнес, традиции, которые останутся после вас." },
-    5: { short: "Цель: расти через перемены", full: "Вы даны друг другу, чтобы учиться свободе, адаптироваться, расширять горизонты — не теряя связи." },
-    6: { short: "Цель: научиться заботе", full: "Ваш союз — школа ответственности и верности. Вы создаёте пространство, где могут расти дети и идеи." },
-    7: { short: "Цель: духовный рост", full: "Вы встретились, чтобы искать истину, исцелять прошлое, становиться мудрее через отношения." },
-    8: { short: "Цель: достичь вместе", full: "Ваша миссия — использовать силу, ресурсы, влияние во благо. Учитесь управлять, не подавляя." },
-    9: { short: "Цель: служить миру", full: "Вы даны друг другу, чтобы через свой союз вдохновлять, помогать, менять окружение к лучшему." }
-  },
-  compatibility_realization: {
-    1: { short: "Стратегия: баланс власти", full: "Успех приходит, когда вы делегируете, уважаете инициативу друг друга и избегаете борьбы за лидерство." },
-    2: { short: "Стратегия: эмоциональный диалог", full: "Гармония строится на открытом выражении чувств, умении слушать и разрешать конфликты без обид." },
-    3: { short: "Стратегия: совместное творчество", full: "Укрепляйте связь через общие проекты, общение, социальную активность и лёгкость в отношениях." },
-    4: { short: "Стратегия: структура и план", full: "Создавайте режим, правила, распределяйте обязанности — это основа устойчивого союза." },
-    5: { short: "Стратегия: гибкость в рамках", full: "Сохраняйте свободу, но договоритесь о главных правилах. Двигайтесь вперёд, не теряя ядра отношений." },
-    6: { short: "Стратегия: забота и уют", full: "Вкладывайтесь в создание гармоничного пространства, воспитание, быт — это укрепляет вашу связь." },
-    7: { short: "Стратегия: уважение к пространству", full: "Давайте друг другу время на уединение, практикуйте глубокие разговоры и духовные практики вместе." },
-    8: { short: "Стратегия: честность в целях", full: "Открыто обсуждайте финансы, амбиции, власть. Совместные достижения укрепляют партнёрство." },
-    9: { short: "Стратегия: высокие смыслы", full: "Не зацикливайтесь на быте. Сохраняйте видение миссии — это питает ваши отношения на глубинном уровне." }
-  },
+            document.getElementById('personalYear').textContent = personalYear;
+            document.getElementById('yearText').textContent = getDayMeaning(personalYear);
+            document.getElementById('personalMonth').textContent = personalMonth;
+            document.getElementById('monthText').textContent = getDayMeaning(personalMonth);
+            document.getElementById('personalDay').textContent = personalDay;
+            document.getElementById('dayText').textContent = getDayMeaning(personalDay);
+            document.getElementById('calendarResult').style.display = 'block';
+        }
 
-  // ── ЭНЕРГИЯ ДОГОВОРА (1-9, 11, 22) ──
-  contract: {
-    1: {
-      short: "📜 Договор с лидерством",
-      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> быть сильным, принимать решения, вести, брать ответственность.<br>❌ <em>Не делать:</em> прятаться, ждать спасения, выбирать слабость.<br>🎁 <em>Награда:</em> успех, прорывы, власть, защита.<br>⚠️ <em>Цена нарушения:</em> потери, одиночество, бессилие."
-    },
-    2: {
-      short: "📜 Договор с добротой",
-      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> объединять, мирить, проявлять душевность.<br>❌ <em>Не делать:</em> быть холодным, жить с токсичными людьми, причинять боль.<br>🎁 <em>Награда:</em> забота других, хорошие отношения, защита.<br>⚠️ <em>Цена нарушения:</em> эмоциональная боль, одиночество."
-    },
-    3: {
-      short: "📜 Договор с творчеством",
-      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> проявляться, говорить, вдохновлять.<br>❌ <em>Не делать:</em> молчать, жить в тени, стесняться себя.<br>🎁 <em>Награда:</em> популярность, лёгкость, удача.<br>⚠️ <em>Цена нарушения:</em> апатия, чувство ненужности."
-    },
-    4: {
-      short: "📜 Договор с дисциплиной",
-      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> создавать порядок, трудиться, держать стабильность.<br>❌ <em>Не делать:</em> хаос, лень, бесструктурная жизнь.<br>🎁 <em>Награда:</em> прочность, здоровье, стабильный доход.<br>⚠️ <em>Цена нарушения:</em> болезни, долги, разрушение быта."
-    },
-    5: {
-      short: "📜 Договор со свободой",
-      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> путешествовать, менять, общаться, учиться.<br>❌ <em>Не делать:</em> сидеть на месте, зависеть от людей.<br>🎁 <em>Награда:</em> возможности, богатые связи, удача в дороге.<br>⚠️ <em>Цена нарушения:</em> застой, страхи, потери."
-    },
-    6: {
-      short: "📜 Договор с любовью",
-      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> создавать красоту, заботиться, строить уют.<br>❌ <em>Не делать:</em> жертвовать собой, жить в некрасивом.<br>🎁 <em>Награда:</em> любовь, благодарность, гармония.<br>⚠️ <em>Цена нарушения:</em> обида, слёзы, усталость."
-    },
-    7: {
-      short: "📜 Договор с мудростью",
-      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> учить, передавать знания, искать истину.<br>❌ <em>Не делать:</em> молчать, жить поверхностно.<br>🎁 <em>Награда:</em> прозрение, интуиция, глубокие люди рядом.<br>⚠️ <em>Цена нарушения:</em> одиночество, отрыв от мира."
-    },
-    8: {
-      short: "📜 Договор с силой и деньгами",
-      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> управлять, брать ответственность, масштабироваться.<br>❌ <em>Не делать:</em> жить «маленько», бояться денег, быть ведомым.<br>🎁 <em>Награда:</em> высокий доход, власть, достижения.<br>⚠️ <em>Цена нарушения:</em> долги, враги, давление судьбы."
-    },
-    9: {
-      short: "📜 Договор со служением",
-      full: "<strong>Ваш договор:</strong><br>✅ <em>Делать:</em> помогать, быть примером, делать добро.<br>❌ <em>Не делать:</em> делать зло, жить эгоистично.<br>🎁 <em>Награда:</em> защита рода, поддержка мира, уважение.<br>⚠️ <em>Цена нарушения:</em> потери, кармическое возмездие."
-    },
-    11: {
-      short: "📜 Договор с пробуждением",
-      full: "<strong>Мастер-число 11:</strong><br>✅ <em>Делать:</em> говорить правду, вдохновлять, менять сознание.<br>❌ <em>Не делать:</em> предавать видение, молчать, жить фальшиво.<br>🎁 <em>Награда:</em> влияние, харизма, предназначение лидера.<br>⚠️ <em>Цена нарушения:</em> пустота, психоэмоциональные падения."
-    },
-    22: {
-      short: "📜 Договор со строением миров",
-      full: "<strong>Мастер-число 22:</strong><br>✅ <em>Делать:</em> строить большое, создавать системы, помогать через структуру.<br>❌ <em>Не делать:</em> бояться масштаба, жить мелко, оставаться в одиночку.<br>🎁 <em>Награда:</em> деньги, команда, признание.<br>⚠️ <em>Цена нарушения:</em> разрушение проектов, потеря смысла."
-    }
-  }
-};
+        // ==================== ТАБЛИЦА 3: ЭНЕРГИЯ СОБЫТИЯ ====================
+        function calculateEventEnergy() {
+            const eventDate = getDateFromInput('eventDate');
+            if (!eventDate) {
+                alert('Пожалуйста, выберите дату события');
+                return;
+            }
 
-// 🔍 Вспомогательная функция: получить описание
-function getInterp(type, num) {
-  return INTERPRETATIONS[type]?.[num] || INTERPRETATIONS.universal[num] || { 
-    short: "Описание готовится", 
-    full: "Толкование для этого числа будет добавлено позже." 
-  };
-}
+            const totalSum = sumDigits(eventDate.getDate()) + sumDigits(eventDate.getMonth() + 1) + sumDigits(eventDate.getFullYear());
+            const energy = reduceToSingle(totalSum);
 
-// ─── УТИЛИТЫ ─────────────────────────────────────────────
-function parseDate(s) {
-  if (!s) return null;
-  const p = s.split(/[.\/-]/);
-  if (p.length !== 3) return null;
-  const [d, m, y] = p.map(Number);
-  if (isNaN(d)||isNaN(m)||isNaN(y)||d<1||d>31||m<1||m>12||y<1000) return null;
-  return {d, m, y};
-}
+            document.getElementById('eventEnergyValue').textContent = energy;
+            document.getElementById('eventEnergyText').textContent = getEventEnergyMeaning(energy);
+            document.getElementById('eventResult').style.display = 'block';
+        }
 
-// Сумма цифр числа (один проход)
-function dsum(n) {
-  return String(Math.abs(n)).split('').reduce((a,c)=>a+parseInt(c),0);
-}
+        function getEventEnergyMeaning(num) {
+            const meanings = {
+                1: "СОБЫТИЕ-РЕШЕНИЕ: судьбоносный выбор, новое начало, важный поворот",
+                2: "СОБЫТИЕ-ОТНОШЕНИЕ: встреча, расставание, союз, примирение",
+                3: "СОБЫТИЕ-ТВОРЧЕСТВО: предложение, идея, публичность, общение",
+                4: "СОБЫТИЕ-СТРУКТУРА: контракт, работа, документы, формализация",
+                5: "СОБЫТИЕ-ПЕРЕМЕНА: поездка, переход, перемена места/работы",
+                6: "СОБЫТИЕ-ЛЮБОВЬ: признание, отношения, семья, беременность",
+                7: "СОБЫТИЕ-УРОК: осознание, экзамен, кармические уроки",
+                8: "СОБЫТИЕ-ДЕНЬГИ: сделки, деньги, должности, крупные суммы",
+                9: "СОБЫТИЕ-ЗАВЕРШЕНИЕ: окончание этапа, завершение цикла"
+            };
+            return meanings[num] || "";
+        }
 
-// Привести к одной цифре (повторяя суммирование)
-function reduce(n) {
-  while (n > 9) n = dsum(n);
-  return n;
-}
+        function getDayMeaning(num) {
+            const meanings = {
+                1: "ДЕНЬ РЕШЕНИЙ — принимать важные решения, запускать новое, действовать первым",
+                2: "ДЕНЬ ОТНОШЕНИЙ — общаться, договариваться, заниматься семьёй",
+                3: "ДЕНЬ ТВОРЧЕСТВА — общение, контент, творчество, идеи, встречи",
+                4: "ДЕНЬ ДИСЦИПЛИНЫ — работать по списку, доделывать незавершённое, наводить порядок",
+                5: "ДЕНЬ ПЕРЕМЕН — поездки, встречи, пробовать новое, учиться",
+                6: "ДЕНЬ ЛЮБВИ И КРАСОТЫ — семья, отношения, дети, дом, забота о себе",
+                7: "ДЕНЬ МУДРОСТИ — обучение, книги, анализ, планирование, духовные практики",
+                8: "ДЕНЬ ДЕНЕГ — финансы, зарплаты, сделки, переговоры, материальные цели",
+                9: "ДЕНЬ ДОБРА И ЗАВЕРШЕНИЙ — доделать, закрыть, отпустить, помогать людям"
+            };
+            return meanings[num] || "";
+        }
 
-// Промежуточный шаг (только один)
-function dsum1(n) { return dsum(n); }
+        // ==================== ТАБЛИЦА 4: ЕЖЕДНЕВНЫЙ ПРОГНОЗ ====================
+        function calculateDailyForecast() {
+            const birthDate = getDateFromInput('birthDateDaily');
+            const forecastDate = getDateFromInput('forecastDate');
 
-// Показ цепочки вычислений
-function chain(n) {
-  let steps = [n];
-  let cur = n;
-  while (cur > 9) { cur = dsum(cur); steps.push(cur); }
-  return steps.join(' → ');
-}
+            if (!birthDate || !forecastDate) {
+                alert('Пожалуйста, заполните обе даты');
+                return;
+            }
 
-// Сумма всех цифр даты
-function dateAllDigits(d, m, y) {
-  return dsum(d) + dsum(m) + dsum(y);
-}
+            const generalDay = reduceToSingle(
+                sumDigits(forecastDate.getDate()) + 
+                sumDigits(forecastDate.getMonth() + 1) + 
+                sumDigits(forecastDate.getFullYear())
+            );
 
-// Строка цифр даты для показа шагов
-function dateDigitStr(d, m, y) {
-  const dy = String(d).split('').join('+');
-  const dm = String(m).padStart(2,'0').split('').join('+');
-  const dy2 = String(y).split('').join('+');
-  const total = dsum(d)+dsum(m)+dsum(y);
-  return `${dy} + ${dm} + ${dy2} = ${total}`;
-}
+            const actionNum = reduceToSingle(sumDigits(birthDate.getDate()) + sumDigits(birthDate.getMonth() + 1) + sumDigits(birthDate.getFullYear()));
+            const yearNum = reduceToSingle(sumDigits(forecastDate.getFullYear()));
+            const personalYear = reduceToSingle(actionNum + yearNum);
+            const personalMonth = reduceToSingle(personalYear + (forecastDate.getMonth() + 1));
+            const personalDay = reduceToSingle(personalMonth + sumDigits(forecastDate.getDate()));
 
-// 🔹 ОБНОВЛЁННАЯ ФУНКЦИЯ rBlock С ПОДДЕРЖКОЙ ТОЛКОВАНИЙ
-function rBlock(label, val, steps, note, interpretType = null, number = null) {
-  const interp = (interpretType && number) ? getInterp(interpretType, number) : null;
-  
-  return `<div class="r-block">
-    <div class="r-label">${label}</div>
-    <div class="r-val">${val}</div>
-    ${steps ? `<div class="r-steps">${steps}</div>` : ''}
-    ${note ? `<div class="r-note">${note}</div>` : ''}
-    
-    ${interp ? `
-    <div class="interp-block">
-      <div style="font-size:14px;color:var(--title);margin-bottom:8px;font-weight:500">
-        ✦ ${interp.short}
-      </div>
-      <div class="interp-full">${interp.full}</div>
-      <button class="interp-toggle" onclick="toggleInterp(this)">
-        📖 Показать полное толкование
-      </button>
-    </div>` : ''}
-  </div>`;
-}
+            document.getElementById('generalDayEnergy').textContent = generalDay;
+            document.getElementById('generalDayText').textContent = getDayMeaning(generalDay);
+            document.getElementById('personalDayEnergy').textContent = personalDay;
+            document.getElementById('personalDayForecastText').textContent = getDayMeaning(personalDay);
+            document.getElementById('dayRecommendations').textContent = getDayRecommendations(personalDay);
+            document.getElementById('dailyResult').style.display = 'block';
+        }
 
-// 🔄 Функция переключения полного текста
-function toggleInterp(btn) {
-  const full = btn.previousElementSibling;
-  const isHidden = full.style.display === 'none' || full.style.display === '';
-  full.style.display = isHidden ? 'block' : 'none';
-  btn.textContent = isHidden ? '📕 Скрыть толкование' : '📖 Показать полное толкование';
-  btn.style.background = isHidden ? 'var(--accent2)' : 'var(--accent)';
-}
+        function getDayRecommendations(num) {
+            const recommendations = {
+                1: "✅ Подходит: принимать решения, начинать новое, проявлять инициативу\n❌ Не подходит: ждать, откладывать, действовать пассивно",
+                2: "✅ Подходит: общаться, договариваться, заниматься отношениями\n❌ Не подходит: конфликтовать, принимать холодные решения",
+                3: "✅ Подходит: творчество, общение, встречи, самовыражение\n❌ Не подходит: одиночество, подавление эмоций",
+                4: "✅ Подходит: работа по плану, порядок, завершение дел\n❌ Не подходит: хаос, новые начинания без плана",
+                5: "✅ Подходит: перемены, поездки, обучение, новое\n❌ Не подходит: застой, цепляние за старое",
+                6: "✅ Подходит: семья, забота, красота, отношения\n❌ Не подходит: конфликты в семье, разрушение",
+                7: "✅ Подходит: обучение, анализ, духовные практики\n❌ Не подходит: шумные компании, пустые разговоры",
+                8: "✅ Подходит: финансы, сделки, материальные цели\n❌ Не подходит: бездумные траты, авось",
+                9: "✅ Подходит: завершение, помощь людям, отпускание\n❌ Не подходит: новые большие проекты, обиды"
+            };
+            return recommendations[num] || "";
+        }
 
-function showPanel(i) {
-  document.querySelectorAll('.panel').forEach((p,j)=>{
-    p.classList.toggle('active', j===i);
-  });
-  document.querySelectorAll('.tab').forEach((t,j)=>{
-    t.classList.toggle('active', j===i);
-  });
-}
+        // ==================== ТАБЛИЦА 5: ЛИЧНЫЙ РАЗБОР (ИСПРАВЛЕНО) ====================
+        function calculatePersonalAnalysis() {
+            const birthDate = getDateFromInput('birthDatePersonal');
+            
+            if (!birthDate) {
+                alert('Пожалуйста, выберите дату рождения');
+                return;
+            }
 
-// Автодот для дат
-document.querySelectorAll('input[placeholder="ДД.ММ.ГГГГ"]').forEach(inp=>{
-  let isDel=false;
-  inp.addEventListener('keydown',e=>{isDel=(e.key==='Backspace'||e.key==='Delete');});
-  inp.addEventListener('input',()=>{
-    if(isDel)return;
-    let v=inp.value.replace(/\D/g,'');
-    let o='';
-    if(v.length>0)o=v.slice(0,2);
-    if(v.length>2)o+='.'+v.slice(2,4);
-    if(v.length>4)o+='.'+v.slice(4,8);
-    inp.value=o;
-  });
-});
+            const day = birthDate.getDate();
+            const month = birthDate.getMonth() + 1;
+            const year = birthDate.getFullYear();
 
-function showResult(id, html) {
-  const el = document.getElementById(id);
-  el.classList.add('show');
-  el.style.display = 'block';
-  const body = el.querySelector('[id$="_body"]');
-  if(body) body.innerHTML = html;
-}
+            // 🔹 ШАГ 1: Число Ума / Сознания (день рождения)
+            const consciousness = reduceToSingle(sumDigits(day));
 
-// ─── 1 · ЧИСЛО ДЕЙСТВИЯ ──────────────────────────────────
-function calc1() {
-  const dt = parseDate(document.getElementById('t1_date').value);
-  if (!dt) { alert('Введите дату в формате ДД.ММ.ГГГГ'); return; }
-  const {d, m, y} = dt;
-  const total = dateAllDigits(d, m, y);
-  const result = reduce(total);
-  document.getElementById('r1_title').textContent = `Дата ${d}.${String(m).padStart(2,'0')}.${y}`;
-  const html = `<div class="r-grid" style="grid-template-columns:1fr">
-    ${rBlock('Сумма всех цифр даты', total, dateDigitStr(d,m,y))}
-    ${rBlock('Число Действия', result, chain(total), 'Результат — ваше ключевое число действия', 'universal', result)}
-  </div>`;
-  showResult('r1', html);
-}
+            // 🔹 ШАГ 2: Число Месяца
+            const monthNumber = reduceToSingle(sumDigits(month));
 
-// ─── 2 · ЛИЧНЫЙ КАЛЕНДАРЬ ────────────────────────────────
-function calc2() {
-  const dt = parseDate(document.getElementById('t2_birth').value);
-  const yr = parseInt(document.getElementById('t2_year').value);
-  const mo = parseInt(document.getElementById('t2_month').value);
-  const dy = parseInt(document.getElementById('t2_day').value);
-  if (!dt) { alert('Введите дату рождения'); return; }
-  if (isNaN(yr)||yr<2000||yr>2099) { alert('Введите корректный год (2000–2099)'); return; }
-  if (isNaN(mo)||mo<1||mo>12) { alert('Введите номер месяца (1–12)'); return; }
-  if (isNaN(dy)||dy<1||dy>31) { alert('Введите номер дня (1–31)'); return; }
+            // 🔹 ШАГ 3: Число Года
+            const yearNumber = reduceToSingle(sumDigits(year));
 
-  const {d, m, y} = dt;
-  const action = reduce(dateAllDigits(d,m,y));
-  const yrDigits = dsum(yr);
-  const persYear = reduce(action + yrDigits);
-  const persMonth = reduce(persYear + mo);
-  const persDay = reduce(persMonth + dy);
+            // 🔹 ШАГ 4: Число Действия / Миссии = Ум + Месяц + Год
+            const actionNumber = reduceToSingle(consciousness + monthNumber + yearNumber);
 
-  const html = `
-    ${rBlock('Число Действия (база)', action, chain(dateAllDigits(d,m,y)), 'Ваше базовое число', 'universal', action)}
-    <div class="r-grid3">
-      ${rBlock('Личное Число Года ' + yr, persYear, `${action} + ${yrDigits}(год) = ${action+yrDigits} → ${chain(action+yrDigits)}`, 'Общая тема года', 'universal', persYear)}
-      ${rBlock('Личное Число Месяца ' + mo, persMonth, `${persYear} + ${mo} = ${persYear+mo} → ${chain(persYear+mo)}`, 'Фокус месяца', 'universal', persMonth)}
-      ${rBlock('Личное Число Дня ' + dy, persDay, `${persMonth} + ${dy} = ${persMonth+dy} → ${chain(persMonth+dy)}`, 'Энергия дня', 'universal', persDay)}
-    </div>`;
-  document.getElementById('r2_title').textContent = `Личный Календарь`;
-  showResult('r2', html);
-}
+            // 🔹 ШАГ 5: Число Реализации = Ум + Действие
+            const realization = reduceToSingle(consciousness + actionNumber);
 
-// ─── 3 · ЭНЕРГИЯ СОБЫТИЙ ─────────────────────────────────
-function calc3() {
-  const dt = parseDate(document.getElementById('t3_date').value);
-  if (!dt) { alert('Введите дату события'); return; }
-  const {d, m, y} = dt;
-  const total = dateAllDigits(d,m,y);
-  const result = reduce(total);
-  const html = `
-    ${rBlock('Сумма цифр даты события', total, dateDigitStr(d,m,y))}
-    ${rBlock('Энергия Событий', result, chain(total), 'Вибрационный код этой даты', 'universal', result)}`;
-  document.getElementById('r3_title').textContent = `Дата ${d}.${String(m).padStart(2,'0')}.${y}`;
-  showResult('r3', html);
-}
+            // 🔹 ШАГ 6: ИТОГОВОЕ ЧИСЛО = Ум + Действие + Реализация
+            const finalSum = reduceToSingle(consciousness + actionNumber + realization);
 
-// ─── 4 · ЕЖЕДНЕВНЫЙ ПРОГНОЗ ──────────────────────────────
-function calc4() {
-  const birth = parseDate(document.getElementById('t4_birth').value);
-  const target = parseDate(document.getElementById('t4_target').value);
-  if (!birth) { alert('Введите дату рождения'); return; }
-  if (!target) { alert('Введите дату прогноза'); return; }
+            // 🔹 ШАГ 7: КОД ЛИЧНОСТИ (4 цифры) = Ум + Действие + Реализация + Итог
+            const personalCode = `${consciousness}${actionNumber}${realization}${finalSum}`;
 
-  const {d:bd, m:bm, y:by} = birth;
-  const {d:td, m:tm, y:ty} = target;
+            // Отображение результатов
+            document.getElementById('consciousness').textContent = consciousness;
+            document.getElementById('actionNumber').textContent = actionNumber;
+            document.getElementById('realization').textContent = realization;
+            document.getElementById('finalSum').textContent = finalSum;
+            document.getElementById('personalCode').textContent = personalCode;
 
-  const fonTotal = dateAllDigits(td,tm,ty);
-  const fon = reduce(fonTotal);
-  const action = reduce(dateAllDigits(bd,bm,by));
-  const tyrDigits = dsum(ty);
-  const persYear = reduce(action + tyrDigits);
-  const persMonth = reduce(persYear + tm);
-  const persDay = reduce(persMonth + td);
-  const prognoz = reduce(fon + persDay);
+            // Пошаговый расчёт для отображения
+            document.getElementById('stepConsciousness').innerHTML = 
+                `<strong>Число Ума:</strong> ${day} → ${sumDigits(day)} → <span class="highlight">${consciousness}</span>`;
+            
+            document.getElementById('stepMonth').innerHTML = 
+                `<strong>Число Месяца:</strong> ${month} → ${sumDigits(month)} → <span class="highlight">${monthNumber}</span>`;
+            
+            document.getElementById('stepYear').innerHTML = 
+                `<strong>Число Года:</strong> ${year} → ${sumDigits(year)} → <span class="highlight">${yearNumber}</span>`;
+            
+            document.getElementById('stepAction').innerHTML = 
+                `<strong>Число Действия:</strong> ${consciousness} + ${monthNumber} + ${yearNumber} = ${consciousness + monthNumber + yearNumber} → <span class="highlight">${actionNumber}</span>`;
+            
+            document.getElementById('stepRealization').innerHTML = 
+                `<strong>Число Реализации:</strong> ${consciousness} + ${actionNumber} = ${consciousness + actionNumber} → <span class="highlight">${realization}</span>`;
+            
+            document.getElementById('stepFinal').innerHTML = 
+                `<strong>Итоговое число:</strong> ${consciousness} + ${actionNumber} + ${realization} = ${consciousness + actionNumber + realization} → <span class="highlight">${finalSum}</span>`;
 
-  const html = `
-    <div class="r-grid">
-      ${rBlock('Фон Дня (общая энергия)', fon, dateDigitStr(td,tm,ty) + ' → ' + fonTotal + ' → ' + chain(fonTotal), 'Общая вибрация даты', 'universal', fon)}
-      ${rBlock('Число Действия человека', action, chain(dateAllDigits(bd,bm,by)), 'Ваше базовое число', 'universal', action)}
-      ${rBlock('Личное Число Года ' + ty, persYear, `${action} + ${tyrDigits} = ${action+tyrDigits} → ${chain(action+tyrDigits)}`, 'Тема года', 'universal', persYear)}
-      ${rBlock('Личное Число Месяца ' + tm, persMonth, `${persYear} + ${tm} = ${persYear+tm} → ${chain(persYear+tm)}`, 'Фокус месяца', 'universal', persMonth)}
-      ${rBlock('Личное Число Дня ' + td, persDay, `${persMonth} + ${td} = ${persMonth+td} → ${chain(persMonth+td)}`, 'Энергия дня', 'universal', persDay)}
-    </div>
-    <div style="margin-top:10px">
-      ${rBlock('Итог: Число Прогноза', prognoz, `Фон(${fon}) + Личный день(${persDay}) = ${fon+persDay} → ${chain(fon+persDay)}`, 'Суммарная энергия дня для вас', 'universal', prognoz)}
-    </div>`;
-  document.getElementById('r4_title').textContent = `Прогноз на ${td}.${String(tm).padStart(2,'0')}.${ty}`;
-  showResult('r4', html);
-}
+            document.getElementById('personalResult').style.display = 'block';
+        }
 
-// ─── 5 · ЛИЧНЫЙ РАЗБОР ───────────────────────────────────
-function calc5() {
-  const dt = parseDate(document.getElementById('t5_date').value);
-  if (!dt) { alert('Введите дату рождения'); return; }
-  const {d, m, y} = dt;
+        // ==================== ТАБЛИЦА 6: СОВМЕСТИМОСТЬ ====================
+        function calculateCompatibility() {
+            const date1 = getDateFromInput('partner1Date');
+            const date2 = getDateFromInput('partner2Date');
 
-  const soznanie = reduce(d);
-  const dayFirstSum = dsum(d);
-  const monFirstSum = dsum(m);
-  const udachaRaw = dayFirstSum + monFirstSum;
-  const udacha = reduce(udachaRaw);
-  const yearFirstSum = dsum(y);
-  const missiyaRaw = monFirstSum + yearFirstSum;
-  const missiya = reduce(missiyaRaw);
-  const allSum = dateAllDigits(d,m,y);
-  const realizaciya = reduce(allSum);
+            if (!date1 || !date2) {
+                alert('Пожалуйста, заполните обе даты рождения');
+                return;
+            }
 
-  const html = `
-    <div class="r-grid">
-      ${rBlock('Число Сознания', soznanie, `День ${d} → ${chain(d)}`, 'Ваша ключевая черта характера', 'consciousness', soznanie)}
-      ${rBlock('Число Удачи', udacha, `${dayFirstSum}(день) + ${monFirstSum}(мес) = ${udachaRaw} → ${chain(udachaRaw)}`, 'Канал притяжения удачи', 'luck', udacha)}
-      ${rBlock('Число Миссии', missiya, `${monFirstSum}(мес) + ${yearFirstSum}(год) = ${missiyaRaw} → ${chain(missiyaRaw)}`, 'Ваша жизненная задача', 'mission', missiya)}
-      ${rBlock('Число Реализации', realizaciya, dateDigitStr(d,m,y) + ' → ' + allSum + ' → ' + chain(allSum), 'Как вы воплощаете себя', 'realization', realizaciya)}
-    </div>`;
-  document.getElementById('r5_title').textContent = `Личный Разбор · ${d}.${String(m).padStart(2,'0')}.${y}`;
-  showResult('r5', html);
-}
+            // Числа сознания
+            const consciousness1 = reduceToSingle(sumDigits(date1.getDate()));
+            const consciousness2 = reduceToSingle(sumDigits(date2.getDate()));
+            const pairConsciousness = reduceToSingle(consciousness1 + consciousness2);
 
-// ─── 6 · СОВМЕСТИМОСТЬ ───────────────────────────────────
-function calc6() {
-  const b1 = parseDate(document.getElementById('t6_b1').value);
-  const b2 = parseDate(document.getElementById('t6_b2').value);
-  if (!b1) { alert('Введите первую дату рождения'); return; }
-  if (!b2) { alert('Введите вторую дату рождения'); return; }
+            // Числа миссии
+            const mission1 = reduceToSingle(sumDigits(date1.getMonth() + 1) + sumDigits(date1.getFullYear()));
+            const mission2 = reduceToSingle(sumDigits(date2.getMonth() + 1) + sumDigits(date2.getFullYear()));
+            const pairMission = reduceToSingle(mission1 + mission2);
 
-  function personNums(dt) {
-    const {d,m,y} = dt;
-    const soz = reduce(d);
-    const mis = reduce(dsum(m) + dsum(y));
-    const real = reduce(dateAllDigits(d,m,y));
-    return {soz, mis, real, d, m, y};
-  }
+            // Числа реализации
+            const code1 = reduceToSingle(sumDigits(date1.getDate()) + sumDigits(date1.getMonth() + 1) + sumDigits(date1.getFullYear()));
+            const code2 = reduceToSingle(sumDigits(date2.getDate()) + sumDigits(date2.getMonth() + 1) + sumDigits(date2.getFullYear()));
+            const realization1 = reduceToSingle(code1 + mission1);
+            const realization2 = reduceToSingle(code2 + mission2);
+            const pairRealization = reduceToSingle(realization1 + realization2);
 
-  const p1 = personNums(b1);
-  const p2 = personNums(b2);
+            document.getElementById('pairConsciousness').textContent = pairConsciousness;
+            document.getElementById('pairConsciousnessText').textContent = getCompatibilityMeaning('consciousness', pairConsciousness);
+            document.getElementById('pairMission').textContent = pairMission;
+            document.getElementById('pairMissionText').textContent = getCompatibilityMeaning('mission', pairMission);
+            document.getElementById('pairRealization').textContent = pairRealization;
+            document.getElementById('pairRealizationText').textContent = getCompatibilityMeaning('realization', pairRealization);
+            document.getElementById('compatibilityResult').style.display = 'block';
+        }
 
-  const pairSoz = reduce(p1.soz + p2.soz);
-  const pairMis = reduce(p1.mis + p2.mis);
-  const pairReal = reduce(p1.real + p2.real);
+        function getCompatibilityMeaning(type, num) {
+            const meanings = {
+                consciousness: {
+                    1: "К лидерству и независимости в отношениях",
+                    2: "К партнёрству и гармонии",
+                    3: "К творчеству и общению",
+                    4: "К стабильности и порядку",
+                    5: "К переменам и свободе",
+                    6: "К семье и заботе",
+                    7: "К мудрости и развитию",
+                    8: "К материальному успеху",
+                    9: "К служению и завершению"
+                },
+                mission: {
+                    1: "Вы даны друг другу для новых начинаний",
+                    2: "Вы даны друг другу для поддержки и сотрудничества",
+                    3: "Вы даны друг другу для творчества и радости",
+                    4: "Вы даны друг другу для построения фундамента",
+                    5: "Вы даны друг другу для развития через перемены",
+                    6: "Вы даны друг другу для создания семьи",
+                    7: "Вы даны друг другу для духовного роста",
+                    8: "Вы даны друг другу для материальных достижений",
+                    9: "Вы даны друг другу для завершения кармических задач"
+                },
+                realization: {
+                    1: "Стройте отношения через независимость и уважение",
+                    2: "Стройте отношения через дипломатию и компромиссы",
+                    3: "Стройте отношения через творчество и общение",
+                    4: "Стройте отношения через надёжность и порядок",
+                    5: "Стройте отношения через свободу и доверие",
+                    6: "Стройте отношения через заботу и ответственность",
+                    7: "Стройте отношения через мудрость и понимание",
+                    8: "Стройте отношения через общие цели и достижения",
+                    9: "Стройте отношения через служение и принятие"
+                }
+            };
+            return meanings[type][num] || "";
+        }
 
-  function personBlock(p, n) {
-    return `<div style="margin-bottom:12px">
-      <div class="pair-title">Человек ${n} · ${p.d}.${String(p.m).padStart(2,'0')}.${p.y}</div>
-      <div class="r-grid3">
-        ${rBlock('Число Сознания', p.soz, `День ${p.d} → ${chain(p.d)}`, '', 'consciousness', p.soz)}
-        ${rBlock('Число Миссии', p.mis, `${dsum(p.m)}+${dsum(p.y)}=${dsum(p.m)+dsum(p.y)} → ${chain(dsum(p.m)+dsum(p.y))}`, '', 'mission', p.mis)}
-        ${rBlock('Число Реализации', p.real, chain(dateAllDigits(p.d,p.m,p.y)), '', 'realization', p.real)}
-      </div>
-    </div>`;
-  }
+        // ==================== ТАБЛИЦА 7: ЭНЕРГИЯ ДОГОВОРА ====================
+        function calculateContractEnergy() {
+            const birthDate = getDateFromInput('birthDateContract');
+            
+            if (!birthDate) {
+                alert('Пожалуйста, выберите дату рождения');
+                return;
+            }
 
-  const html = `
-    ${personBlock(p1,1)}
-    ${personBlock(p2,2)}
-    <div class="pair-section">
-      <div class="pair-title">Итоговые числа пары</div>
-      <div class="r-grid3">
-        ${rBlock('Общее Сознание Пары', pairSoz, `${p1.soz}+${p2.soz}=${p1.soz+p2.soz} → ${chain(p1.soz+p2.soz)}`, 'Как пара воспринимает себя', 'compatibility_consciousness', pairSoz)}
-        ${rBlock('Общая Миссия Пары', pairMis, `${p1.mis}+${p2.mis}=${p1.mis+p2.mis} → ${chain(p1.mis+p2.mis)}`, 'Совместное предназначение', 'compatibility_mission', pairMis)}
-        ${rBlock('Общая Реализация Пары', pairReal, `${p1.real}+${p2.real}=${p1.real+p2.real} → ${chain(p1.real+p2.real)}`, 'К чему приведут взаимоотношения', 'compatibility_realization', pairReal)}
-      </div>
-    </div>`;
-  document.getElementById('r6_title').textContent = `Совместимость пары`;
-  showResult('r6', html);
-}
+            const day = birthDate.getDate();
+            const month = birthDate.getMonth() + 1;
+            const year = birthDate.getFullYear();
 
-// ─── 7 · ДОГОВОР ─────────────────────────────────────────
-function calc7() {
-  const dt = parseDate(document.getElementById('t7_date').value);
-  if (!dt) { alert('Введите дату рождения'); return; }
-  const {d, m, y} = dt;
+            // Число Ума (Сознания)
+            const consciousness = reduceToSingle(sumDigits(day));
 
-  const uma = reduce(d);
-  const deystvie = reduce(dateAllDigits(d,m,y));
-  const realizaciya = reduce(uma + deystvie);
-  
-  // Для мастер-чисел 11 и 22 не сворачиваем
-  const contractSum = uma + realizaciya;
-  const dogovor = (contractSum === 11 || contractSum === 22) ? contractSum : reduce(contractSum);
+            // Число Действия
+            const actionNumber = reduceToSingle(sumDigits(day) + sumDigits(month) + sumDigits(year));
 
-  const html = `
-    <div class="r-grid">
-      ${rBlock('Число Ума', uma, `День ${d} → ${chain(d)}`, 'Интеллектуальная составляющая', 'consciousness', uma)}
-      ${rBlock('Число Действия', deystvie, chain(dateAllDigits(d,m,y)), 'Общая сила действия', 'universal', deystvie)}
-      ${rBlock('Число Реализации', realizaciya, `${uma}+${deystvie}=${uma+deystvie} → ${chain(uma+deystvie)}`, 'Способность воплощать', 'realization', realizaciya)}
-      ${rBlock('Энергия Договора', dogovor, `${uma}+${realizaciya}=${contractSum} → ${dogovor}`, 'Итоговая энергия договора', 'contract', dogovor)}
-    </div>`;
-  document.getElementById('r7_title').textContent = `Договор · ${d}.${String(m).padStart(2,'0')}.${y}`;
-  showResult('r7', html);
-}
-</script>
+            // Число Миссии
+            const mission = reduceToSingle(sumDigits(month) + sumDigits(year));
+
+            // Число Реализации
+            const realization = reduceToSingle(actionNumber + mission);
+
+            // Энергия Договора
+            let contractEnergy = consciousness + realization;
+            if (contractEnergy !== 11 && contractEnergy !== 22 && contractEnergy !== 33) {
+                contractEnergy = reduceToSingle(contractEnergy);
+            }
+
+            document.getElementById('contractEnergyValue').textContent = contractEnergy;
+            document.getElementById('contractEnergyText').textContent = getContractMeaning(contractEnergy);
+            document.getElementById('contractResult').style.display = 'block';
+        }
+
+        function getContractMeaning(num) {
+            const meanings = {
+                9: "📜 ДОГОВОР С СЛУЖЕНИЕМ\n\n✅ Обязан:\n- помогать людям\n- быть примером\n- делать добро\n\n❌ Нельзя:\n- делать зло\n- жить эгоистично\n\n🎁 Судьба даёт:\n- защиту рода\n- поддержку мира\n- уважение",
+                11: "⭐ ДОГОВОР С ПРОБУЖДЕНИЕМ ЛЮДЕЙ\n\n✅ Обязан:\n- говорить правду\n- вдохновлять\n- менять сознание\n\n❌ Нельзя:\n- предавать своё видение\n- молчать\n- жить фальшиво\n\n🎁 Судьба даёт:\n- влияние\n- харизму\n- предназначение лидера",
+                22: "⭐⭐ ДОГОВОР СО СТРОЕНИЕМ МИРОВ\n\n✅ Обязан:\n- строить большое\n- создавать системы\n- помогать людям через структуру\n\n❌ Нельзя:\n- бояться масштаба\n- жить мелко\n- оставаться в одиночку\n\n🎁 Судьба даёт:\n- деньги\n- команду\n- признание"
+            };
+            return meanings[num] || "Ваш договор с миром несёт особую энергию для вашего пути";
+        }
+
+        // ==================== ТАБЛИЦА 8: ИТОГОВОЕ ЧИСЛО ====================
+        function calculateFinalNumber() {
+            const birthDate = getDateFromInput('birthDateFinal');
+            
+            if (!birthDate) {
+                alert('Пожалуйста, выберите дату рождения');
+                return;
+            }
+
+            const day = birthDate.getDate();
+            const month = birthDate.getMonth() + 1;
+            const year = birthDate.getFullYear();
+
+            // Число Действия
+            const actionNumber = reduceToSingle(sumDigits(day) + sumDigits(month) + sumDigits(year));
+
+            // Число Ума
+            const mindNumber = reduceToSingle(sumDigits(day));
+
+            // Число Миссии
+            const mission = reduceToSingle(sumDigits(month) + sumDigits(year));
+
+            // Число Реализации
+            const realization = reduceToSingle(actionNumber + mission);
+
+            // Итоговое число
+            const total = reduceToSingle(actionNumber + mindNumber + realization);
+
+            document.getElementById('finalAction').textContent = actionNumber;
+            document.getElementById('finalMind').textContent = mindNumber;
+            document.getElementById('finalRealization').textContent = realization;
+            document.getElementById('finalTotal').textContent = total;
+            document.getElementById('finalText').textContent = getFinalNumberMeaning(total);
+            document.getElementById('finalResult').style.display = 'block';
+        }
+
+        function getFinalNumberMeaning(num) {
+            const meanings = {
+                1: "Ваш путь — лидерство и новые начинания. Вы пришли в этот мир, чтобы быть первым и вести за собой.",
+                2: "Ваш путь — партнёрство и гармония. Вы пришли в этот мир, чтобы создавать союзы и поддерживать баланс.",
+                3: "Ваш путь — творчество и общение. Вы пришли в этот мир, чтобы вдохновлять и радовать людей.",
+                4: "Ваш путь — порядок и стабильность. Вы пришли в этот мир, чтобы строить прочный фундамент.",
+                5: "Ваш путь — свобода и перемены. Вы пришли в этот мир, чтобы исследовать и развиваться.",
+                6: "Ваш путь — забота и семья. Вы пришли в этот мир, чтобы любить и защищать близких.",
+                7: "Ваш путь — мудрость и знание. Вы пришли в этот мир, чтобы искать истину и учить других.",
+                8: "Ваш путь — успех и достаток. Вы пришли в этот мир, чтобы достигать материальных высот.",
+                9: "Ваш путь — служение и завершение. Вы пришли в этот мир, чтобы помогать людям и завершать кармические задачи."
+            };
+            return meanings[num] || "";
+        }
+
+        // Установить сегодняшнюю дату по умолчанию
+        window.onload = function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('targetDate').value = today;
+            document.getElementById('forecastDate').value = today;
+            document.getElementById('eventDate').value = today;
+        };
+    </script>
 </body>
 </html>
