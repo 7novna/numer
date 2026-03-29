@@ -43,9 +43,7 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>🔮 Нумерологический Калькулятор</h1>
-        </header>
+        <header><h1>🔮 Нумерологический Калькулятор</h1></header>
 
         <div class="tabs">
             <button class="tab-btn active" onclick="show('t1')">1. Число Миссии</button>
@@ -57,7 +55,7 @@
             <button class="tab-btn" onclick="show('t8')">8. Итоговое Число</button>
         </div>
 
-        <!-- ТАБЛИЦА 1: ЧИСЛО МИССИИ -->
+        <!-- ТАБЛИЦА 1 -->
         <div id="t1" class="tab-content active">
             <h2>📊 1. Число Миссии</h2>
             <div class="desc">Число Миссии = сумма всей даты рождения (11, 22, 33 — мастер-числа, не сводятся)</div>
@@ -74,7 +72,7 @@
             </div>
         </div>
 
-        <!-- ТАБЛИЦА 2: ЕЖЕДНЕВНЫЙ ПРОГНОЗ -->
+        <!-- ТАБЛИЦА 2 -->
         <div id="t2" class="tab-content">
             <h2>📅 2. Ежедневный Прогноз</h2>
             <div class="desc">Прогноз на основе Числа Миссии и выбранной даты</div>
@@ -97,7 +95,7 @@
             </div>
         </div>
 
-        <!-- ТАБЛИЦА 3: ЭНЕРГИЯ СОБЫТИЙ -->
+        <!-- ТАБЛИЦА 3 -->
         <div id="t3" class="tab-content">
             <h2>🎯 3. Энергия Событий</h2>
             <div class="desc">Энергия важной даты (свадьба, запуск, переезд)</div>
@@ -113,13 +111,12 @@
             </div>
         </div>
 
-        <!-- ТАБЛИЦА 5: РАЗБОР ЛИЧНОСТИ -->
+        <!-- ТАБЛИЦА 5: РАЗБОР ЛИЧНОСТИ (ИСПРАВЛЕНО) -->
         <div id="t5" class="tab-content">
             <h2>🔍 5. Разбор личности</h2>
             <div class="desc">
-                Ум = День рождения → цифра<br>
-                Месяц = Месяц → цифра | Год = Год → цифра<br>
-                Миссия = Ум + Месяц + Год (11, 22, 33 НЕ сводятся)<br>
+                Ум = День рождения → цифра | Месяц = Месяц → цифра | Год = Год → цифра<br>
+                Миссия = Ум + Месяц + Год (11, 22, 33 НЕ сводятся!)<br>
                 Реализация = Ум + Миссия | Итог = Ум + Миссия + Реализация<br>
                 Код = Ум-Миссия-Реализация-Итог (4 цифры)
             </div>
@@ -150,21 +147,13 @@
             </div>
         </div>
 
-        <!-- ТАБЛИЦА 6: СОВМЕСТИМОСТЬ -->
+        <!-- ТАБЛИЦА 6 -->
         <div id="t6" class="tab-content">
             <h2>💕 6. Совместимость</h2>
-            <div class="desc">
-                Сознание = День1 + День2 → цифра | Миссия = (Ум+Месяц+Год)1 + (Ум+Месяц+Год)2 → цифра | Реализация = Реализация1 + Реализация2 → цифра
-            </div>
+            <div class="desc">Сознание = День1+День2 | Миссия = (Ум+Месяц+Год)1+(Ум+Месяц+Год)2 | Реализация = Реализация1+Реализация2</div>
             <div class="grid-2">
-                <div>
-                    <label>Партнёр 1:</label>
-                    <input type="text" id="d6a" placeholder="15.03.1973" maxlength="10" oninput="formatDate(this)">
-                </div>
-                <div>
-                    <label>Партнёр 2:</label>
-                    <input type="text" id="d6b" placeholder="07.07.1989" maxlength="10" oninput="formatDate(this)">
-                </div>
+                <div><label>Партнёр 1:</label><input type="text" id="d6a" placeholder="15.03.1973" maxlength="10" oninput="formatDate(this)"></div>
+                <div><label>Партнёр 2:</label><input type="text" id="d6b" placeholder="07.07.1989" maxlength="10" oninput="formatDate(this)"></div>
             </div>
             <button class="btn" onclick="calc6()">Рассчитать</button>
             <div id="r6" class="result" style="display:none">
@@ -183,7 +172,7 @@
             </div>
         </div>
 
-        <!-- ТАБЛИЦА 7: ДОГОВОР -->
+        <!-- ТАБЛИЦА 7 -->
         <div id="t7" class="tab-content">
             <h2>📜 7. Договор</h2>
             <div class="desc">Энергия Договора = Ум + Реализация (11, 22 не сводятся)</div>
@@ -199,7 +188,7 @@
             </div>
         </div>
 
-        <!-- ТАБЛИЦА 8: ИТОГОВОЕ ЧИСЛО -->
+        <!-- ТАБЛИЦА 8 -->
         <div id="t8" class="tab-content">
             <h2>🎯 8. Итоговое Число</h2>
             <div class="desc">Итог = Действие + Ум + Реализация</div>
@@ -301,33 +290,53 @@
             document.getElementById('r3').style.display='block';
         }
 
+        // ✅ ТАБЛИЦА 5: РАЗБОР ЛИЧНОСТИ — ИСПРАВЛЕННАЯ ФОРМУЛА МИССИИ
         function calc5(){
             const d=parseDate(document.getElementById('d5').value);
-            if(!d)return alert('Введите дату');
+            if(!d)return alert('Введите дату (ДД.ММ.ГГГГ)');
             
+            // Число Ума = День рождения → цифра
             const um=reduce(sum(d.day));
+            
+            // Число Месяца = Месяц → цифра
             const month=reduce(sum(d.month));
+            
+            // Число Года = Год → цифра
             const year=reduce(sum(d.year));
-            const mission=reduce(um+month+year);
-            const realiz=reduce(um+mission);
-            const itog=reduce(um+mission+realiz);
+            
+            // ✅ Число Миссии = Ум + Месяц + Год (11, 22, 33 НЕ сводятся!)
+            const missionSum=um+month+year;
+            const mission=reduce(missionSum);  // reduce сохраняет 11, 22, 33
+            
+            // Число Реализации = Ум + Миссия
+            const realizSum=um+mission;
+            const realiz=reduce(realizSum);
+            
+            // Итоговое число = Ум + Миссия + Реализация
+            const itogSum=um+mission+realiz;
+            const itog=reduce(itogSum);
+            
+            // Код личности = 4 цифры
             const code=`${um}${mission}${realiz}${itog}`;
             
+            // Отображение значений
             document.getElementById('v5a').textContent=um;
             document.getElementById('v5b').textContent=mission;
             document.getElementById('v5c').textContent=realiz;
             document.getElementById('v5d').textContent=itog;
             
+            // Описания чисел
             document.getElementById('d5a').innerHTML=numDesc[um];
             document.getElementById('d5b').innerHTML=numDesc[mission];
             document.getElementById('d5c').innerHTML=numDesc[realiz];
             document.getElementById('d5d').innerHTML=numDesc[itog];
             
+            // Пошаговый расчёт
             document.getElementById('step5a').innerHTML=`<strong>Ум:</strong> ${d.day} → ${sum(d.day)} → ${um}`;
             document.getElementById('step5b').innerHTML=`<strong>Месяц:</strong> ${d.month} → ${sum(d.month)} → ${month} | Год: ${d.year} → ${sum(d.year)} → ${year}`;
-            document.getElementById('step5c').innerHTML=`<strong>Миссия:</strong> ${um}+${month}+${year} = ${um+month+year} → ${mission}${mission===11||mission===22||mission===33?' ⭐':''}`;
-            document.getElementById('step5d').innerHTML=`<strong>Реализация:</strong> ${um}+${mission} = ${um+mission} → ${realiz}`;
-            document.getElementById('step5e').innerHTML=`<strong>Итог:</strong> ${um}+${mission}+${realiz} = ${um+mission+realiz} → ${itog}`;
+            document.getElementById('step5c').innerHTML=`<strong>Миссия:</strong> ${um}+${month}+${year} = ${missionSum} → ${mission}${mission===11||mission===22||mission===33?' ⭐':''}`;
+            document.getElementById('step5d').innerHTML=`<strong>Реализация:</strong> ${um}+${mission} = ${realizSum} → ${realiz}`;
+            document.getElementById('step5e').innerHTML=`<strong>Итог:</strong> ${um}+${mission}+${realiz} = ${itogSum} → ${itog}`;
             
             document.getElementById('code5').textContent=code;
             document.getElementById('r5').style.display='block';
@@ -350,15 +359,26 @@
             document.getElementById('v6b').textContent=pm;
             document.getElementById('v6c').textContent=pr;
             
-            document.getElementById('step6a').innerHTML=`<strong>Партнёр 1:</strong> Ум ${um1}, Миссия ${mis1}${mis1===11||mis1===22||mis1===33?' ⭐':''}, Реализация ${r1}`;
-            document.getElementById('step6b').innerHTML=`<strong>Партнёр 2:</strong> Ум ${um2}, Миссия ${mis2}${mis2===11||mis2===22||mis2===33?' ⭐':''}, Реализация ${r2}`;
-            document.getElementById('step6c').innerHTML=`<strong>Пара:</strong> Сознание ${c1}+${c2}=${c1+c2}→${pc} | Миссия ${mis1}+${mis2}=${mis1+mis2}→${pm} | Реализация ${r1}+${r2}=${r1+r2}→${pr}`;
+            const star1=(mis1===11||mis1===22||mis1===33)?' ⭐':'';
+            const star2=(mis2===11||mis2===22||mis2===33)?' ⭐':'';
+            
+            document.getElementById('step6a').innerHTML='<strong>Партнёр 1:</strong> Ум '+um1+', Миссия '+mis1+star1+', Реализация '+r1;
+            document.getElementById('step6b').innerHTML='<strong>Партнёр 2:</strong> Ум '+um2+', Миссия '+mis2+star2+', Реализация '+r2;
+            document.getElementById('step6c').innerHTML='<strong>Пара:</strong> '+c1+'+'+c2+'='+(c1+c2)+'→'+pc+' | '+mis1+'+'+mis2+'='+(mis1+mis2)+'→'+pm+' | '+r1+'+'+r2+'='+(r1+r2)+'→'+pr;
             
             document.getElementById('t6a').textContent='К чему приведут';
             document.getElementById('t6b').textContent='Для чего даны';
             document.getElementById('t6c').textContent='Как выстроить';
             
-            document.getElementById('t6_desc').innerHTML=`<p><strong>Сознание (${pc}):</strong> ${numDesc[pc].split('. ').slice(1).join('. ')}</p><p><strong>Миссия (${pm}):</strong> ${numDesc[pm].split('. ').slice(1).join('. ')}</p><p><strong>Реализация (${pr}):</strong> ${numDesc[pr].split('. ').slice(1).join('. ')}</p>`;
+            const descPc=numDesc[pc].split('. ').slice(1).join('. ');
+            const descPm=numDesc[pm].split('. ').slice(1).join('. ');
+            const descPr=numDesc[pr].split('. ').slice(1).join('. ');
+            
+            document.getElementById('t6_desc').innerHTML=
+                '<p><strong>Сознание ('+pc+'):</strong> '+descPc+'</p>'+
+                '<p><strong>Миссия ('+pm+'):</strong> '+descPm+'</p>'+
+                '<p><strong>Реализация ('+pr+'):</strong> '+descPr+'</p>';
+            
             document.getElementById('r6').style.display='block';
         }
 
